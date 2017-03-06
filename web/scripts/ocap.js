@@ -1010,10 +1010,6 @@ class Group {
 		return this.units.length;
 	};
 
-	getUnits() {
-		return this.units;
-	};
-
 	getUnit(unit) {
 		return this.units[this.units.indexOf(unit)];
 	};
@@ -1092,30 +1088,6 @@ class Group {
 	isEmpty() {
 		return this.units.length == 0;
 	};
-};
-
-class GameEvents {
-	constructor() {
-		this._events = [];
-	};
-
-	addEvent(event) {
-		this._events.push(event);
-	};
-
-	// Return an array of events that occured on the given frame
-	getEventsAtFrame(f) {
-		var events = [];
-		this._events.forEach((event) => {
-			if (event.frameNum == f) {
-				events.push(event);
-			};
-		});
-
-		return events;
-	};
-
-	getEvents() {return this._events};
 };
 
 // TODO: Handle case where victim is a vehicle
@@ -1242,8 +1214,8 @@ var playbackFrame = 0;
 var entityToFollow = null; // When set, camera will follow this unit
 var ui = null;
 let entities = {};
-var gameEvents = new GameEvents();
 let groups = {};
+let gameEvents = [];
 var worlds = null;
 
 // Mission details
@@ -1634,7 +1606,7 @@ function processOp(filepath) {
 
 			// Add event to gameEvents list
 			if (gameEvent != null) {
-				gameEvents.addEvent(gameEvent);
+				gameEvents.push(gameEvent);
 			};
 		});
 
@@ -1714,7 +1686,7 @@ function startPlaybackLoop() {
 				});
 
 				// Display events for this frame (if any)
-				gameEvents.getEvents().forEach(function playbackEvent(event) {
+				gameEvents.forEach(function playbackEvent(event) {
 
 					// Check if event is supposed to exist by this point
 					if (event.frameNum <= playbackFrame) {
