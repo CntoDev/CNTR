@@ -21,34 +21,6 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-class Entities {
-	constructor() {
-		this._entities = [];
-	};
-
-	add(entity) {
-		this._entities.push(entity);
-	};
-
-	getAll() {
-		return this._entities;
-	};
-	
-	getById(id) {
-		return this._entities[id]; // Assumes entity IDs are always equal to their index in _entities
-	};
-
-	getAllByName(name) {
-		let matching = [];
-		this._entities.forEach(function (entity) {
-			if (entity.getName().indexOf(name) != -1) {
-				matching.push(entity);
-			};
-		});
-		return matching;
-	};
-}
-
 // Should not be instantiated directly. Intended only to be used as extender class
 class Entity {
 	constructor(startFrameNum, id, name, positions) {
@@ -522,7 +494,7 @@ class Vehicle extends Entity {
 
 			// Change vehicle icon depending on driver's side
 			let driverId = crew[0];
-			let driver = entities.getById(driverId);
+			let driver = entities[driverId];
 			//console.log(this);
 			//console.log(driver);
 			let icon = this.iconType[driver.sideClass];
@@ -548,7 +520,7 @@ class Vehicle extends Entity {
 		let str = "";
 		this._crew.forEach(function(unitId) {
 			//if (unitId != -1) {
-				let unit = entities.getById(unitId);
+				let unit = entities[unitId];
 
 				// Only include player names
 				if (unit.isPlayer) {
@@ -563,7 +535,7 @@ class Vehicle extends Entity {
 	getSideColour() {
 		let crew = this._crew;
 		if (crew.length > 0) {
-			return entities.getById(crew[0]).getSideColour();
+			return entities[crew[0]].getSideColour();
 		} else {
 			return "black";
 		};
@@ -1311,7 +1283,7 @@ var playbackPaused = true;
 var playbackFrame = 0;
 var entityToFollow = null; // When set, camera will follow this unit
 var ui = null;
-var entities = new Entities();
+let entities = {};
 var groups = new Groups();
 var gameEvents = new GameEvents();
 var worlds = null;
@@ -1464,7 +1436,7 @@ function createInitialMarkers() {
 		g.setAttribute('fill', 'yellow');
 	}, 100);*/
 
-	entities.getAll().forEach(function(entity) {
+  Object.values(entities).forEach(function(entity) {
 		// Create and set marker for unit
 		var pos = entity.getPosAtFrame(0);
 		if (pos != null) { // If unit did exist at start of game
@@ -1649,13 +1621,9 @@ function processOp(filepath) {
 					groups.addGroup(group);
 				};
 
-				// Create unit and add to entities list
-				var unit = new Unit(startFrameNum, id, name, group, entityJSON.side, (entityJSON.isPlayer == 1), positions, entityJSON.framesFired);
-				entities.add(unit);
+				entities[id] = new Unit(startFrameNum, id, name, group, entityJSON.side, (entityJSON.isPlayer == 1), positions, entityJSON.framesFired);
 			} else {
-				// Create vehicle and add to entities list
-				var vehicle = new Vehicle(startFrameNum, id, entityJSON.class, name, positions);
-				entities.add(vehicle);
+				entities[id] = new Vehicle(startFrameNum, id, entityJSON.class, name, positions);
 			};
 		});
 
@@ -1668,8 +1636,8 @@ function processOp(filepath) {
 			switch (true) {
 				case (type == "killed" || type == "hit"):
 					var causedByInfo = eventJSON[3];
-					var victim = entities.getById(eventJSON[2]);
-					var causedBy = entities.getById(causedByInfo[0]); // In older captures, this will return null
+					var victim = entities[eventJSON[2]];
+					var causedBy = entities[causedByInfo[0]]; // In older captures, this will return null
 					var distance = eventJSON[4];
 
 					//console.log(eventJSON[2]);
@@ -1766,7 +1734,7 @@ function startPlaybackLoop() {
 					map.removeLayer(line);
 				});
 				
-				entities.getAll().forEach(function playbackEntity(entity) {
+				Object.values(entities).forEach(function playbackEntity(entity) {
 					//console.log(entity);
 					entity.manageFrame(playbackFrame);
 
