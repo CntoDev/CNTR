@@ -978,48 +978,6 @@ class UI {
 	};
 };
 
-class Groups {
-	constructor() {
-		this.groups = [];
-	};
-
-	addGroup(group) {
-		this.groups.push(group);
-	};
-
-	getGroups() {
-		return this.groups;
-	};
-
-	removeGroup(group) {
-		var index = this.groups.indexOf(group);
-		this.groups.splice(index, 1);
-	};
-
-	// Find group by name and side
-	findGroup(name, side) {
-		//console.log("Finding group with name: " + name + ", side: " + side);
-
-		if (this.groups.length == 0) {
-			//console.log("Group does not exist (list empty)!");
-			return;
-		};
-
-		for (let i = 0; i < this.groups.length; i++) {
-			var group = this.groups[i];
-			//console.log("Comparing with group name: " + group.name + ", side: " + group.side);
-			
-			if ((group.getName() == name) && (group.getSide() == side)) {
-				//console.log("Group exists!");
-				return group;
-			};
-		};
-
-		//console.log("Group does not exist!");
-		return;
-	};
-};
-
 class Group {
 	constructor(name, side) {
 		this.name = name;
@@ -1069,7 +1027,7 @@ class Group {
 
 		if (wasEmpty) {
 			this.makeElement(); // Make element for group
-			groups.addGroup(this); // Add self to groups list
+			//groups.addGroup(this); // Add self to groups list
 		};
 
 		// Make element for unit too
@@ -1087,7 +1045,7 @@ class Group {
 
 		// Handle what to do if group empty
 		if (this.isEmpty()) {
-			groups.removeGroup(this); // Remove self from global groups object
+			//groups.removeGroup(this); // Remove self from global groups object
 			this.removeElement();
 		};
 
@@ -1284,8 +1242,8 @@ var playbackFrame = 0;
 var entityToFollow = null; // When set, camera will follow this unit
 var ui = null;
 let entities = {};
-var groups = new Groups();
 var gameEvents = new GameEvents();
+let groups = {};
 var worlds = null;
 
 // Mission details
@@ -1615,11 +1573,11 @@ function processOp(filepath) {
 				//if (entityJSON.name == "Error: No unit") {return}; // Temporary fix for old captures that initialised dead units
 
 				// Add group to global groups object (if new)
-				var group = groups.findGroup(entityJSON.group, entityJSON.side);
-				if (group == null) {
+				let group = groups[entityJSON.side + "::" + entityJSON.group];
+        if (group == null) {
 					group = new Group(entityJSON.group, entityJSON.side);
-					groups.addGroup(group);
-				};
+					groups[entityJSON.side + "::" + entityJSON.group] = group;
+				}
 
 				entities[id] = new Unit(startFrameNum, id, name, group, entityJSON.side, (entityJSON.isPlayer == 1), positions, entityJSON.framesFired);
 			} else {
