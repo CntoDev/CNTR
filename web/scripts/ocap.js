@@ -1462,28 +1462,8 @@ function test() {
 };
 
 function dateToTimeString(date) {
-	var hours = date.getUTCHours();
-	var minutes = date.getUTCMinutes();
-	var seconds = date.getUTCSeconds();
-	var string = "";
-
-/*	if (hours < 10) {
-		string += "0";
-	}*/
-	string += (hours + ":");
-
-	if (minutes<10) {
-		string += "0";
-	}
-	string += (minutes + ":");
-
-	if (seconds<10) {
-		string+= "0";
-	};
-	string += seconds;
-
-	return string;
-};
+	return date.toISOString().slice(11,19);
+}
 
 // Convert time in seconds to a more readable time format
 // e.g. 121 seconds -> 2 minutes
