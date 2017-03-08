@@ -686,8 +686,8 @@ class UI {
 			this.hidePlaybackSpeedSlider();
 		});
 
-		this.playbackSpeedSlider.max = maxPlaybackMultipler;
-		this.playbackSpeedSlider.min = minPlaybackMultipler;
+		this.playbackSpeedSlider.max = maxPlaybackMultiplier;
+		this.playbackSpeedSlider.min = minPlaybackMultiplier;
 		this.playbackSpeedSlider.step = playbackMultiplierStep;
 		this.playbackSpeedSlider.value = playbackMultiplier;
 		this.playbackSpeedSlider.addEventListener("input", () => {
@@ -1192,8 +1192,8 @@ var mapDiv = null;
 var mapPanes = null;
 var frameCaptureDelay = 1000; // Delay between capture of each frame in-game (ms). Default: 1000
 var playbackMultiplier = 10; // Playback speed. 1 = realtime.
-var maxPlaybackMultipler = 60; // Max speed user can set playback to
-var minPlaybackMultipler = 1; // Min speed user can set playback to
+var maxPlaybackMultiplier = 60; // Max speed user can set playback to
+var minPlaybackMultiplier = 1; // Min speed user can set playback to
 var playbackMultiplierStep = 1; // Playback speed slider increment value
 var playbackPaused = true;
 var playbackFrame = 0;
