@@ -122,20 +122,6 @@ class Entity {
 		};
 	};
 
-/*	getMarkerEditableGroup() {
-		let doc = this._marker.getElement().contentDocument;
-		return doc.getElementById("editable");
-	};
-
-	setMarkerColour(colour) {
-		let g = this.getMarkerEditableGroup();
-
-		// May be null if not loaded yet
-		if (g != null) {
-			g.style.fill = colour;
-		};
-	};*/
-
 	setMarkerIcon(icon) {
 		this._marker.setIcon(icon);
 		this._curIcon = icon;
@@ -1225,9 +1211,6 @@ var endFrame = 0;
 var missionCurDate = new Date(0);
 
 // Icons
-var followColour = "#FFA81A";
-var hitColour = "#FF0000";
-var deadColour = "#000000";
 const icons = createIcons();
 
 function initOCAP() {
@@ -1357,14 +1340,6 @@ function initMap() {
 };
 
 function createInitialMarkers() {
-/*	setTimeout(function() {
-		let svg = marker.getElement().contentDocument;
-		let g = svg.getElementById("layer1");
-		console.log();
-
-		g.setAttribute('fill', 'yellow');
-	}, 100);*/
-
   Object.values(entities).forEach(function(entity) {
 		// Create and set marker for unit
 		var pos = entity.getPosAtFrame(0);
