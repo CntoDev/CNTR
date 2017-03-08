@@ -1181,6 +1181,8 @@ class ConnectEvent {
 	getElement() {return this._element};
 };
 
+const jsonPath = "images/maps/maps.json";
+
 var imageSize = null;
 var multiplier = null;
 var trim = 0; // Number of pixels that were trimmed when cropping image (used to correct unit placement)
@@ -1188,7 +1190,7 @@ var mapMinZoom = 1;
 var mapMaxNativeZoom = 6;
 var mapMaxZoom = mapMaxNativeZoom+3;
 var map = null;
-var mapDiv = null;
+const mapDiv = document.getElementById("map");
 var mapPanes = null;
 var frameCaptureDelay = 1000; // Delay between capture of each frame in-game (ms). Default: 1000
 var playbackMultiplier = 10; // Playback speed. 1 = realtime.
@@ -1198,7 +1200,7 @@ var playbackMultiplierStep = 1; // Playback speed slider increment value
 var playbackPaused = true;
 var playbackFrame = 0;
 var entityToFollow = null; // When set, camera will follow this unit
-var ui = null;
+const ui = new UI();
 let entities = {};
 let groups = {};
 let gameEvents = [];
@@ -1213,29 +1215,18 @@ var missionCurDate = new Date(0);
 // Icons
 const icons = createIcons();
 
-function initOCAP() {
-	mapDiv = document.getElementById("map");
-	ui = new UI();
-	ui.setModalOpList(opList);
-	setWorlds();
 
-	window.addEventListener("keypress", function(event) {
-		switch (event.charCode) {
-			case 32: // Spacebar
-				event.preventDefault(); // Prevent space from scrolling page on some browsers
-				break;
-		};
-	});
-};
+/*global opList*/
+function initOCAP() {
+	ui.setModalOpList(opList);
+	window.addEventListener("keypress", event => event.charCode === 32 && event.preventDefault());
+
+  setWorlds();
+}
 
 function setWorlds() {
-	let jsonPath = "images/maps/maps.json";
-
-	console.log("Getting worlds from " + jsonPath);
-	$.getJSON(jsonPath, function(data) {
-		worlds = data;
-	});
-};
+	$.getJSON(jsonPath, data => worlds = data);
+}
 
 function getWorldByName(worldName) {
 	console.log("Getting world " + worldName);
@@ -1266,13 +1257,7 @@ function initMap() {
 	mapPanes = map.getPanes();
 
 	// Hide marker popups once below a certain zoom level
-	map.on("zoom", function() {
-		if (map.getZoom() <= 7) {
-			ui.hideMarkerPopups = true;
-		} else {
-			ui.hideMarkerPopups = false;
-		};
-	});
+	map.on("zoom", () => ui.hideMarkerPopups = (map.getZoom() <= 7));
 
 	var world = getWorldByName(worldName);
 	console.log("Got world: ");
@@ -1342,7 +1327,7 @@ function initMap() {
 function createInitialMarkers() {
   Object.values(entities).forEach(function(entity) {
 		// Create and set marker for unit
-		var pos = entity.getPosAtFrame(0);
+		const pos = entity.getPosAtFrame(0);
 		if (pos != null) { // If unit did exist at start of game
 			entity.createMarker(armaToLatLng(pos));
 		}
