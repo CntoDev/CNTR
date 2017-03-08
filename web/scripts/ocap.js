@@ -1593,21 +1593,16 @@ function toggleHitEvents(showHint = true) {
 	};
 };
 
+const lines = [];
 function startPlaybackLoop() {
-	var killlines = [];
-	var firelines = [];
 
 	function playbackFunction() {
 		if (!playbackPaused && !(playbackFrame == endFrame)) {
 
 			requestAnimationFrame(() => {
 				// Remove killines & firelines from last frame
-				killlines.forEach(function(line) {
-					map.removeLayer(line);
-				});
-				firelines.forEach(function(line) {
-					map.removeLayer(line);
-				});
+        lines.forEach(line => map.removeLayer(line));
+        lines.length = 0;
 				
 				Object.values(entities).forEach(function playbackEntity(entity) {
 					//console.log(entity);
@@ -1625,7 +1620,7 @@ function startPlaybackLoop() {
 								opacity: 0.4
 							});
 							line.addTo(map);
-							firelines.push(line);
+              lines.push(line);
 						};
 					};
 				});
@@ -1657,7 +1652,7 @@ function startPlaybackLoop() {
 											opacity: 0.4
 										});
 										line.addTo(map);
-										killlines.push(line);
+                    lines.push(line);
 									};
 								};
 							};
@@ -1692,7 +1687,7 @@ function startPlaybackLoop() {
 
 		// Run timeout again (creating a loop, but with variable intervals)
 		playbackTimeout = setTimeout(playbackFunction, frameCaptureDelay/playbackMultiplier);
-	};
+	}
 
 	var playbackTimeout = setTimeout(playbackFunction, frameCaptureDelay/playbackMultiplier);
-};
+}
