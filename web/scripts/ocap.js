@@ -1225,14 +1225,13 @@ var endFrame = 0;
 var missionCurDate = new Date(0);
 
 // Icons
-var icons = null;
 var followColour = "#FFA81A";
 var hitColour = "#FF0000";
 var deadColour = "#000000";
+const icons = createIcons();
 
 function initOCAP() {
 	mapDiv = document.getElementById("map");
-	defineIcons();
 	ui = new UI();
 	ui.setModalOpList(opList);
 	setWorlds();
@@ -1371,68 +1370,34 @@ function createInitialMarkers() {
 		var pos = entity.getPosAtFrame(0);
 		if (pos != null) { // If unit did exist at start of game
 			entity.createMarker(armaToLatLng(pos));
-		};
+		}
 	});
-};
+}
 
-function defineIcons() {
-	icons = {
-		man: {},
-		ship: {},
-		parachute: {},
-		heli: {},
-		plane: {},
-		truck: {},
-		car: {},
-		apc: {},
-		tank: {},
-		staticMortar: {},
-		staticWeapon: {},
-		unknown: {}
-	};
+function createIcons() {
+  const iconTypes = ["blufor", "opfor", "ind", "civ", "dead", "hit", "follow"];
+	const unitTypes = [
+		{type: 'man', iconSize: [16, 16]},
+		{type: 'ship', iconSize: [16, 16]},
+		{type: 'parachute', iconSize: [16, 16]},
+		{type: 'heli', iconSize: [16, 16]},
+		{type: 'plane', iconSize: [16, 16]},
+		{type: 'truck', iconSize: [16, 16]},
+		{type: 'car', iconSize: [16, 16]},
+		{type: 'apc', iconSize: [16, 16]},
+		{type: 'tank', iconSize: [16, 16]},
+		{type: 'static-mortar', iconSize: [16, 16]},
+		{type: 'static-weapon', iconSize: [16, 16]},
+		{type: 'unknown', iconSize: [16, 16]},
+	];
 
-	let imgPathMan = "images/markers/man/man-";
-	let imgPathShip = "images/markers/ship/ship-";
-	let imgPathParachute = "images/markers/parachute/parachute-";
-	let imgPathHeli = "images/markers/heli/heli-";
-	let imgPathPlane = "images/markers/plane/plane-";
-	let imgPathTruck = "images/markers/truck/truck-";
-	let imgPathCar = "images/markers/car/car-";
-	let imgPathApc = "images/markers/apc/apc-";
-	let imgPathTank = "images/markers/tank/tank-";
-	let imgPathStaticMortar = "images/markers/static-mortar/static-mortar-";
-	let imgPathStaticWeapon = "images/markers/static-weapon/static-weapon-";
-	let imgPathUnknown = "images/markers/unknown/unknown-";
-
-	let imgs = ["blufor", "opfor", "ind", "civ", "dead", "hit", "follow"];
-	imgs.forEach((img) => {
-		icons.man[img] = L.icon({iconSize: [16, 16], iconUrl: `${imgPathMan}${img}.svg`});
-		icons.ship[img] = L.icon({iconSize: [28, 28], iconUrl: `${imgPathShip}${img}.svg`});
-		icons.parachute[img] = L.icon({iconSize: [20, 20], iconUrl: `${imgPathParachute}${img}.svg`});
-		icons.heli[img] = L.icon({iconSize: [32, 32], iconUrl: `${imgPathHeli}${img}.svg`});
-		icons.plane[img] = L.icon({iconSize: [32, 32], iconUrl: `${imgPathPlane}${img}.svg`});
-		icons.truck[img] = L.icon({iconSize: [28, 28], iconUrl: `${imgPathTruck}${img}.svg`});
-		icons.car[img] = L.icon({iconSize: [24, 24], iconUrl: `${imgPathCar}${img}.svg`});
-		icons.apc[img] = L.icon({iconSize: [28, 28], iconUrl: `${imgPathApc}${img}.svg`});
-		icons.tank[img] = L.icon({iconSize: [28, 28], iconUrl: `${imgPathTank}${img}.svg`});
-		icons.staticMortar[img] = L.icon({iconSize: [20, 20], iconUrl: `${imgPathStaticMortar}${img}.svg`});
-		icons.staticWeapon[img] = L.icon({iconSize: [20, 20], iconUrl: `${imgPathStaticWeapon}${img}.svg`});
-		icons.unknown[img] = L.icon({iconSize: [28, 28], iconUrl: `${imgPathUnknown}${img}.svg`});
-	});
-};
-
-function goFullscreen() {
-	var element = document.getElementById("container");
-	if (element.requestFullscreen) {
-		element.requestFullscreen();
-	} else if(element.mozRequestFullScreen) {
-		element.mozRequestFullScreen();
-	} else if(element.webkitRequestFullscreen) {
-		element.webkitRequestFullscreen();
-	} else if(element.msRequestFullscreen) {
-		element.msRequestFullscreen();
-	};
-};
+  const icons = {};
+	unitTypes.forEach(([type, iconSize]) => {
+    icons[type] = {};
+    iconTypes.forEach(iconType => L.icon({iconSize, iconUrl: `images/markers/${type}/${type}-${iconType}.svg`}));
+  });
+  return icons;
+}
 
 // Converts Arma coordinates [x,y] to LatLng
 function armaToLatLng(coords) {
