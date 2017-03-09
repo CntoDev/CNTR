@@ -1,15 +1,26 @@
 {
   "name": "ocap-client",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "build/ocap.js",
   "scripts": {
+    "build": "rollup -c config/rollup.config.js",
+    "watch": "rollup -c config/rollup.config.js -w",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Ivan Šakić",
+  "license": "GPL",
   "devDependencies": {
     "rollup": "^0.41.4",
-    "rollup-plugin-commonjs": "^7.0.0"
+    "rollup-plugin-commonjs": "^7.1.0",
+    "rollup-plugin-node-resolve": "^2.0.0",
+    "rollup-plugin-replace": "^1.1.1",
+    "rollup-watch": "^3.2.2"
+  },
+  "dependencies": {
+    "assert": "^1.4.1",
+    "lodash": "^4.17.4",
+    "tap": "^10.3.0",
+    "tape": "^4.6.3"
   }
 }

@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=no"/>
+  <link rel="stylesheet" href="style/leaflet.css"/>
+  <link rel="stylesheet" href="style/common.css"/>
+  <link rel="stylesheet" href="style/index.css"/>
+  <link rel="icon" type="img/png" href="images/favicon.png">
+  <title>OCAP v2.0.0-beta</title>
+</head>
+<body>
+<div id="map"></div>
+<div id="ui">
+  <div id="topPanel">
+    <div id="ocapLogoButton"></div>
+    <div id="loadOpButton" class="button"></div>
+    <div id="aboutButton" class="bold button">i</div>
+    <span id="toggleFirelines" class="button"></span>
+    <span id="missionName" class="medium"></span>
+  </div>
+  <div id="leftPanel">
+    <div class="title bold"><span>Units</span></div>
+    <div class="filterBox"></div>
+    <div class="panelContent">
+      <ul id="listWest"><span class="blufor sideTitle">BLUFOR</span></ul>
+      <ul id="listEast"><span class="opfor sideTitle">OPFOR</span></ul>
+      <ul id="listGuer"><span class="ind sideTitle">INDEPENDENT</span></ul>
+      <ul id="listCiv"><span class="civ sideTitle">CIVILIAN</span></ul>
+    </div>
+  </div>
+  <div id="rightPanel">
+    <div class="title bold">Events</div>
+    <div class="filterBox">
+      <div id="filterHitEventsButton" class="filterHit"></div>
+      <input type="text" id="filterEventsInput" placeholder="Filter"/>
+    </div>
+    <div class="panelContent">
+      <ul id="eventList"></ul>
+    </div>
+  </div>
+  <div id="bottomPanel">
+    <div class="panelContent">
+      <div id="playPauseButton" onclick="playPause()"></div>
+      <div id="timecodeContainer" class="medium">
+        <span id="missionCurTime">0:00:00</span>
+        <span>/</span>
+        <span id="missionEndTime">0:00:00</span>
+      </div>
+      <div id="frameSliderContainer">
+        <input type="range" id="frameSlider" min="0" value="0" />
+      </div>
+      <div id="playbackSpeedSliderContainer">
+        <span id="playbackSpeedVal"></span>
+        <input type="range" id="playbackSpeedSlider" />
+      </div>
+      <div class="fullscreenButton" id="toggleFullscreen"></div>
+    </div>
+  </div>
+</div>
+
+<div id="modal" class="modal">
+  <div class="modalContent">
+    <div id="modalHeader" class="modalHeader medium"></div>
+    <div id="modalBody" class="modalBody"></div>
+    <div id="modalButtons" class="modalButtons"></div>
+  </div>
+</div>
+<div class="extraInfoBox">
+  <div class="extraInfoBoxContent">
+    <span class="bold">Cursor target: </span><span id="cursorTargetBox">None</span>
+  </div>
+</div>
+
+<script src="build/ocap.js"></script>
+</body>
+</html>
