@@ -1,31 +1,31 @@
-L.ObjectIcon = L.Icon.extend({
+L.SvgIcon = L.Icon.extend({
 	options: {
-		// @section
-		// @aka objectIcon options
-		iconSize: [16, 16], // also can be set through CSS
 		iconUrl: '',
-		className: 'leaflet-object-icon'
+		className: '',
+    classList: [],
 	},
 
-	createIcon: function (oldIcon) {
-		var object = (oldIcon && oldIcon.tagName === 'OBJECT') ? oldIcon : document.createElement('object'),
-		    options = this.options;
+	createIcon: function () {
+		const svg = Object.assign(document.createElementNS('http://www.w3.org/2000/svg', 'svg'), {});
+    svg.classList.add(...this.options.classList, 'leaflet-marker-icon');
+    svg.style.width = this.options.iconSize[0];
+    svg.style.height = this.options.iconSize[1];
 
-		object.data = options.iconUrl;
-		object.type = "image/svg+xml";
+    const use = document.createElementNS('http://www.w3.org/2000/svg', 'use');
+    const xlinkns = "http://www.w3.org/1999/xlink";
+    use.setAttributeNS(xlinkns, 'href', this.options.iconUrl);
 
-		this._setIconStyles(object, 'icon');
+    svg.appendChild(use);
 
-		return object;
+		return svg;
 	},
 
 	createShadow: function () {
 		return null;
-	}
+	},
+
 });
 
-// @factory L.objectIcon(options: objectIcon options)
-// Creates a `objectIcon` instance with the given options.
-L.objectIcon = function (options) {
-	return new L.ObjectIcon(options);
+L.svgIcon = function (options) {
+	return new L.SvgIcon(options);
 };

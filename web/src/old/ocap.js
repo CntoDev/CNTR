@@ -2,7 +2,7 @@
 
 var imageSize = null;
 var multiplier = null;
-var trim = 0; // Number of pixels that were trimmed when cropping image (used to correct unit placement)
+ // Number of pixels that were trimmed when cropping image (used to correct unit placement)
 var mapMinZoom = 1;
 var mapMaxNativeZoom = 6;
 var mapMaxZoom = mapMaxNativeZoom+3;
@@ -296,33 +296,4 @@ function startPlaybackLoop() {
 	}
 
 	var playbackTimeout = setTimeout(playbackFunction, frameCaptureDelay/playbackMultiplier);
-}
-
-
-
-function parse(dataString) {
-  const [headerData, ...events] = dataString.split(/[\r\n]+/)
-      .map(line => line.split(';').filter(entry => entry)
-          .map(entry => entry.split(',')
-              .map(processEntry)));
-
-  return {
-    header: processHeaderData(headerData),
-    events,
-  };
-}
-
-function processHeaderData(data) {
-  const [worldName, missionName, author, captureInterval] = data[0];
-  return {
-    worldName,
-    missionName,
-    author,
-    captureInterval,
-  };
-}
-
-function processEntry(entry) {
-  const number = Number.parseFloat(entry);
-  return Number.isNaN(number) ? entry : number;
 }

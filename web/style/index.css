@@ -372,20 +372,24 @@ input[type=range]::-webkit-slider-runnable-track {
 	font-weight: bold;
 }
 
-.blufor {
-	color: #00a8ff;
+.west {
+	color: rgb(0, 77, 153);
 }
 
-.opfor {
-	color: #ff0000;
+.east {
+	color: rgb(128, 0, 0);
 }
 
 .ind {
-	color: #00cc00;
+	color: rgb(0, 128, 0);
 }
 
 .civ {
-	color: #C900FF;
+	color: rgb(102, 0, 128);
+}
+
+.empty {
+	color: rgb(184, 134, 11);
 }
 
 .modal {
@@ -589,6 +593,26 @@ input[type=range]::-webkit-slider-runnable-track {
 .leaflet-div-icon {
 	background: none;
 	border: none;
-	margin: none;
-	padding: none;
+	margin: unset;
+	padding: unset;
+}
+
+.marker.west {
+  fill: rgb(0, 77, 153);
+}
+
+.marker.east {
+	fill: rgb(128, 0, 0);
+}
+
+.marker.ind {
+	fill: rgb(0, 128, 0);
+}
+
+.marker.civ {
+	fill: rgb(102, 0, 128);
+}
+
+.marker.empty {
+	fill: rgb(184, 134, 11);
 }
