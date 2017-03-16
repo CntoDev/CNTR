@@ -59,18 +59,6 @@ export function createMapController() {
     //map.on("dragstart", () => entityToFollow && entityToFollow.unfollow());
     mapMultiplier = multiplier / 10;
     mapImageSize = imageSize;
-
-    map.on("click", function(e) {
-      console.log(e.latlng, map.project(e.latlng, MAP_MAX_NATIVE_ZOOM));
-
-      var marker = L.circleMarker(e.latlng).addTo(map);
-      marker.setRadius(5);
-    });
-
-    window.test = function test(x, y) {
-      var marker = L.circleMarker(coordinatesToLatLng({x, y})).addTo(map);
-      marker.setRadius(5);
-    };
   }
 
   function update(state) {
@@ -86,13 +74,24 @@ export function createMapController() {
 
     marker.setLatLng(coordinatesToLatLng(entity.pose));
     marker.setRotationAngle(entity.pose.dir);
+
+    marker.setClasses({
+      [entity.side]: true,
+      alive: entity.alive,
+      dead: !entity.alive,
+      hit: false,
+      killed: false,
+    });
   }
 
   function createMarker(entity) {
     const marker = L.marker([-1000000, -1000000]).addTo(map);
 
-    marker.setIcon(L.svgIcon({iconSize: [16, 16], iconUrl: 'images/markers/man.svg#symbol', classList: ['marker', entity.side]}));
-    marker.setRotationOrigin("50% -50% 0");
+    marker.setIcon(L.svgIcon({
+      iconSize: [16, 16],
+      iconUrl: `images/markers/${entity.type}.svg#symbol`,
+      classList: ['marker']
+    }));
 
     marker.entity = entity;
 
@@ -102,17 +101,36 @@ export function createMapController() {
   }
 
   function renderEvent(event, state) {
-    if (event[0] === 'H' || event[0] === 'K') {
+    if (event[0] === 'H') {
+      const line = L.polyline([coordinatesToLatLng(state.entities[event[1]].pose), coordinatesToLatLng(state.entities[event[2]].pose)], {
+        color: '#f862ff',
+        weight: 2,
+        opacity: 0.4
+      });
+
+      state.entities[event[1]].marker.setClasses({
+        hit: true,
+      });
+
+      line.addTo(map);
+      lines.push(line);
+    } else if (event[0] === 'K') {
       const line = L.polyline([coordinatesToLatLng(state.entities[event[1]].pose), coordinatesToLatLng(state.entities[event[2]].pose)], {
         color: '#ff0000',
         weight: 2,
         opacity: 0.4
       });
+
+      state.entities[event[2]].marker.setClasses({
+        killed: true,
+        hit: false,
+      });
+
       line.addTo(map);
       lines.push(line);
     } else if (event[0] === 'F') {
       const line = L.polyline([coordinatesToLatLng(state.entities[event[1]].pose), coordinatesToLatLng({x: event[2], y: event[3]})], {
-        color: '#ff0000',
+        color: '#000000',
         weight: 2,
         opacity: 0.4
       });

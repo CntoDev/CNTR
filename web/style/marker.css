@@ -1,0 +1,38 @@
+.marker.west {
+  fill: rgb(0, 77, 153);
+}
+
+.marker.east {
+  fill: rgb(128, 0, 0);
+}
+
+.marker.ind {
+  fill: rgb(0, 128, 0);
+}
+
+.marker.civ {
+  fill: rgb(102, 0, 128);
+}
+
+.marker.empty {
+  fill: rgb(184, 134, 11);
+}
+
+.marker.alive {
+  opacity: 1;
+}
+
+.marker.dead {
+  opacity: 0.2;
+}
+
+.marker.hit {
+  stroke: #f862ff;
+  stroke-width: 20;
+}
+
+.marker.killed {
+  stroke: red;
+  stroke-width: 20;
+  opacity: 1;
+}
