@@ -20,4 +20,5 @@ export const MAP_MAX_NATIVE_ZOOM = 6;
 export const MAP_MAX_ZOOM = MAP_MAX_NATIVE_ZOOM + 3;
 
 export const FRAME_PLAYBACK_INTERVAL = 1000;
+export const DEFAULT_PLAYBACK_SPEED = 10;
 

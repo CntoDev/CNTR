@@ -201,18 +201,6 @@ html, body, #map {
 	height: 100%;
 }
 
-#playPauseButton {
-	position: relative;
-	background-image: url("../images/play-pause.png");
-	background-position: 0 0;
-	height: 15px;
-	width: 15px;
-	background-size: auto 15px;
-	display: inline-block;
-	top: 2px;
-	margin-left: 10px;
-}
-
 #timecodeContainer, #frameSliderContainer, #versionInfoContainer, #playbackSpeedSliderContainer, #playbackSpeedSliderContainer, .fullscreenButton  {
 	margin-top: 5px;
 	margin-left: 10px;
@@ -451,7 +439,6 @@ input[type=range]::-webkit-slider-runnable-track {
 	width: 100%;
 }
 .modalBody th {
-	background-color: rgba(0,0,0);
 	background-color: rgba(0,0,0,0.7);
 	padding: 3px;
 	font-weight: 500;
@@ -597,22 +584,26 @@ input[type=range]::-webkit-slider-runnable-track {
 	padding: unset;
 }
 
-.marker.west {
-  fill: rgb(0, 77, 153);
+.bottomPanel-element {
+  display: inline-block;
+  background: none;
+  border: none;
+  margin: unset;
+  padding: unset;
 }
 
-.marker.east {
-	fill: rgb(128, 0, 0);
+#playPauseButton {
+	position: relative;
+	background-image: url("../images/play-pause.png");
+	background-position: 0 0;
+	height: 16px;
+	width: 16px;
+	background-size: auto 16px;
+	display: inline-block;
+	top: 2px;
+	margin-left: 10px;
 }
 
-.marker.ind {
-	fill: rgb(0, 128, 0);
-}
-
-.marker.civ {
-	fill: rgb(102, 0, 128);
-}
-
-.marker.empty {
-	fill: rgb(184, 134, 11);
+#playPauseButton.paused {
+	background-position: 100% 0;
 }

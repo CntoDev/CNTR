@@ -1,54 +1,60 @@
-export function createPlaybackWidgetController() {
-  return {
-  };
-}
+import moment from 'moment';
 
+export function createPlaybackWidget(element, playbackControl) {
 
-function setMissionCurTime(f) {
-  missionCurDate.setTime(f*frameCaptureDelay);
-  this.missionCurTime.textContent = dateToTimeString(missionCurDate);
-  this.setFrameSliderVal(f);
-  playbackFrame = f;
-}
+  const playbackSlider = element.querySelector('#playbackSlider');
+  const currentTimeDisplay = element.querySelector('#currentTimeDisplay');
+  const endTimeDisplay = element.querySelector('#endTimeDisplay');
+  const playPauseButton = element.querySelector('#playPauseButton');
 
-function setMissionEndTime(f) {
-  this.missionEndTime.textContent = dateToTimeString(new Date(f*frameCaptureDelay));
-  this.setFrameSliderMax(f);
-}
+  let playbackRunning = false;
 
-function setFrameSliderMax(f) {
-  this.frameSlider.max = f;
-}
+  return Object.assign(element, {
+    initialize,
+  });
 
-function setFrameSliderVal(f) {
-  this.frameSlider.value = f;
-}
+  function initialize() {
+    playbackControl.on('nextFrame', updateTime);
+    playPauseButton.addEventListener('click', togglePlayback);
+    playbackSlider.addEventListener('change', skipToFrame);
+    window.addEventListener("keypress", handleKeyboardInput);
 
-function showPlaybackSpeedSlider() {
-  this.playbackSpeedSlider.style.display = "inherit";
-}
+    currentTimeDisplay.innerText = moment.utc(playbackControl.currentFrameIndex * 1000).format("HH:mm:ss");
+    endTimeDisplay.innerText = moment.utc(playbackControl.totalFrameCount * 1000).format("HH:mm:ss");
+    playbackSlider.value = playbackControl.currentFrameIndex;
+    playbackSlider.max = playbackControl.totalFrameCount;
+  }
 
-function hidePlaybackSpeedSlider() {
-  this.playbackSpeedSlider.style.display = "none";
-}
+  function updateTime(frame, current, total) {
+    currentTimeDisplay.innerText = moment.utc(current * 1000).format("HH:mm:ss");
+    endTimeDisplay.innerText = moment.utc(total * 1000).format("HH:mm:ss");
+    playbackSlider.value = current;
 
-function playPause() {
-  playbackPaused = !playbackPaused;
+    if (current === total) {
+      playbackRunning = !playbackRunning;
+      playPauseButton.classList.toggle('paused');
+    }
+  }
 
-  if (playbackPaused) {
-    playPauseButton.style.backgroundPosition = "0 0";
-  } else {
-    playPauseButton.style.backgroundPosition = `-${playPauseButton.offsetWidth}px 0`;
+  function handleKeyboardInput(event) {
+    console.log(event);
+    switch (event.charCode) {
+      case 32: return togglePlayback();
+    }
+  }
+
+  function skipToFrame() {
+    playbackControl.goTo(Number.parseInt(playbackSlider.value));
+  }
+
+  function togglePlayback() {
+    playbackRunning = !playbackRunning;
+    playPauseButton.classList.toggle('paused');
+
+    if (playbackRunning) {
+      playbackControl.play();
+    } else {
+      playbackControl.pause();
+    }
   }
 }
-
-// Add keypress event listener
-window.addEventListener("keypress", function(event) {
-  //console.log(event);
-
-  switch (event.charCode) {
-    case 32: // Spacebar
-      playPause();
-      break;
-  };
-});

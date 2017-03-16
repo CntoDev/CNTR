@@ -3,7 +3,6 @@ const initIcon = L.Marker.prototype._initIcon;
 L.SvgIcon = L.Icon.extend({
 	options: {
     iconSize: [16, 16],
-	  iconAnchor: [8, 8],
 		iconUrl: '',
 		className: '',
     classList: [],
@@ -14,12 +13,13 @@ L.SvgIcon = L.Icon.extend({
     svg.classList.add(...this.options.classList, 'leaflet-marker-icon');
     svg.style.width = this.options.iconSize[0];
     svg.style.height = this.options.iconSize[1];
-    svg.style.marginLeft = (-this.options.iconAnchor[0]) + 'px';
-    svg.style.marginTop  = (-this.options.iconAnchor[1]) + 'px';
+    const iconAnchor = this.options.iconAnchor || [this.options.iconSize[0] / 2, this.options.iconSize[1] / 2];
+
+    svg.style.marginLeft = (-iconAnchor[0]) + 'px';
+    svg.style.marginTop  = (-iconAnchor[1]) + 'px';
 
     const use = document.createElementNS('http://www.w3.org/2000/svg', 'use');
-    const xlinkns = "http://www.w3.org/1999/xlink";
-    use.setAttributeNS(xlinkns, 'href', this.options.iconUrl);
+    use.setAttributeNS("http://www.w3.org/1999/xlink", 'href', this.options.iconUrl);
 
     svg.appendChild(use);
 

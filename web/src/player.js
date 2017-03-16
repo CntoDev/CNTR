@@ -1,57 +1,77 @@
-import { STATE_CACHING_FREQUENCY } from './constants.js';
-
+import { STATE_CACHING_FREQUENCY, FRAME_PLAYBACK_INTERVAL, DEFAULT_PLAYBACK_SPEED } from './constants.js';
+import { createEmitter } from './emitter.js';
 import { applyEvent } from './events.js';
 
-export function createPlayer(frames, state) {
-  let stateCache = [];
+export function createPlayer(frames, state, map) {
+  let intervalHandle = null;
   let currentFrameIndex = -1;
 
-  return {
-    reset,
-    playNextFrame,
-    goToFrame,
+  const player = createEmitter({
+    play,
+    pause,
+    stop,
+    goTo,
 
+    playbackSpeed: DEFAULT_PLAYBACK_SPEED,
+    get totalFrameCount() { return frames.length },
+    get currentFrame() { return frames[currentFrameIndex] },
     get currentFrameIndex() { return currentFrameIndex },
-  };
+  });
+  
+  return player;
 
-  function reset() {
-    stateCache = [];
-    currentFrameIndex = -1;
+
+
+  function play() {
+    intervalHandle = setInterval(playFrame, FRAME_PLAYBACK_INTERVAL / player.playbackSpeed);
+    player.emit('started');
   }
 
-  function playNextFrame() {
+  function playFrame() {
+    const playing = applyNextFrame();
+
+    player.emit('nextFrame', player.currentFrame, player.currentFrameIndex, player.totalFrameCount);
+    map.update(state);
+
+    if (!playing) {
+      player.pause();
+    }
+  }
+
+  function pause() {
+    clearInterval(intervalHandle);
+
+    player.emit('paused');
+  }
+
+  function stop() {
+    pause();
+    reset();
+
+    player.emit('stopped');
+  }
+
+  function goTo(frameIndex) {
+    currentFrameIndex = -1;
+    while (currentFrameIndex !== frameIndex) applyNextFrame();
+    map.update(state);
+  }
+
+  function reset() {
+    currentFrameIndex = -1;
+    applyNextFrame();
+    map.update(state);
+  }
+
+  function applyNextFrame() {
     const currentFrame = frames[++currentFrameIndex];
 
     if (currentFrame) {
-      const newState = applyFrameToState(currentFrame);
-
-      if (!(currentFrameIndex % STATE_CACHING_FREQUENCY)) {
-        stateCache[currentFrameIndex] = newState;
-      }
-
+      applyFrameToState(currentFrame);
       return true;
     } else {
       return false;
     }
-  }
-
-  function goToFrame(frameIndex) {
-    const lastCachedStateIndex = findLastCachedStateIndex(frameIndex);
-
-    restoreCachedState(stateCache[lastCachedStateIndex]);
-    currentFrameIndex = lastCachedStateIndex;
-
-    while (currentFrameIndex !== frameIndex) playNextFrame();
-  }
-
-  function restoreCachedState(cachedStateIndex) {
-    const cachedState = stateCache[cachedStateIndex];
-
-    Object.assign(state, clone(cachedState));
-  }
-
-  function clone(object) {
-    return JSON.parse(JSON.stringify(object));
   }
 
   function applyFrameToState(frame) {
@@ -59,8 +79,12 @@ export function createPlayer(frames, state) {
     frame.forEach(event => applyEvent(state, event));
   }
 
-  function findLastCachedStateIndex(frameIndex) {
-    return Number.parseInt(findNearestLowerNumber(frameIndex, Object.keys(stateCache)));
+  function clone(object) {
+    return JSON.parse(JSON.stringify(object, (key, value) => {
+      if (key === 'vehicle') return value.id;
+      if (key === 'crew') return undefined;
+      return value;
+    }));
   }
 
   function findNearestLowerNumber(number, array) {

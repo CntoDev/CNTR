@@ -1,7 +1,73 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" height="512" viewBox="0 0 512 512" width="512" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/">
-	<g id="editable">
-		<text style="word-spacing:0px;letter-spacing:0px" xml:space="preserve" font-size="415.38px" line-height="125%" y="404.35202" x="162.42926" font-family="Arial" fill="#000000"><tspan x="162.42926" y="404.35202">?</tspan></text>
-		<circle cx="256" stroke="#000000" cy="256" r="237.47" stroke-width="37.065" fill="none"/>
-	</g>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   height="512"
+   viewBox="0 0 512 512"
+   width="512"
+   version="1.1"
+   id="svg9"
+   sodipodi:docname="unknown.svg"
+   inkscape:version="0.92.1 r15371">
+  <metadata
+     id="metadata15">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs13" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1920"
+     inkscape:window-height="1137"
+     id="namedview11"
+     showgrid="true"
+     inkscape:zoom="0.921875"
+     inkscape:cx="215.99491"
+     inkscape:cy="322.76868"
+     inkscape:window-x="1912"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg9">
+    <inkscape:grid
+       type="xygrid"
+       id="grid4492"
+       empspacing="32" />
+  </sodipodi:namedview>
+  <text
+     id="text4"
+     x="141.34451"
+     y="408.11475"
+     line-height="125%"
+     font-size="415.38px"
+     xml:space="preserve"
+     style="font-size:415.38000488px;line-height:125%;font-family:Arial;letter-spacing:0px;word-spacing:0px;fill:#000000"><tspan
+       id="tspan2"
+       y="408.11475"
+       x="141.34451">?</tspan></text>
+  <circle
+     style="fill:none;stroke:#000000;stroke-width:37.06499863"
+     id="circle6"
+     r="237.47"
+     cy="256"
+     cx="256" />
 </svg>

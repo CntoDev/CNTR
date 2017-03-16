@@ -2,6 +2,7 @@ import { parse } from './parser.js';
 import { createPlayer } from './player.js';
 import { createUiController } from './ui/ui.js';
 import { createMapController } from './map/map.js';
+import { createPlaybackWidget } from './ui/playback-widget.js';
 
 import { MAP_INDEX_URL, CAPTURE_INDEX_URL } from './constants.js';
 
@@ -35,12 +36,16 @@ function loadCaptureFile(captureFilePath, mapIndex) {
     };
 
     const map = createMapController();
-    const player = createPlayer(frames, state);
-    const playback = createPlayback(player, state, map);
+    const player = createPlayer(frames, state, map);
+    const playback = createPlaybackWidget(document.querySelector('#playbackWidget'), player);
 
     const worldInfo = mapIndex.find(world => world.worldName.toLowerCase() === header.worldName.toLowerCase());
 
     map.initialize(document.querySelector('#map'), worldInfo);
+
+    player.goTo(0);
+    map.update(state);
+    playback.initialize();
 
     window.frames = frames;
     window.state = state;
@@ -49,41 +54,3 @@ function loadCaptureFile(captureFilePath, mapIndex) {
     window.map = map;
   });
 }
-
-function createPlayback(player, state, map) {
-
-  let intervalHandle = null;
-
-  return {
-    start,
-    pause,
-    stop,
-    goTo,
-  };
-
-  function start() {
-    intervalHandle = setInterval(playFrame(), 1000);
-  }
-
-  function pause() {
-    clearInterval(intervalHandle);
-  }
-
-  function stop() {
-    pause();
-    player.reset();
-  }
-
-  function goTo(frameIndex) {
-    pause();
-    player.goToFrame(frameIndex);
-    start();
-  }
-
-  function playFrame() {
-    player.playNextFrame();
-    map.update(state);
-  }
-
-}
-

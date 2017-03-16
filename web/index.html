@@ -41,21 +41,21 @@
     </div>
   </div>
   <div id="bottomPanel">
-    <div class="panelContent">
-      <div id="playPauseButton" onclick="playPause()"></div>
-      <div id="timecodeContainer" class="medium">
-        <span id="missionCurTime">0:00:00</span>
+    <div id="playbackWidget" class="panelContent">
+      <div id="playPauseButton" class="bottomPanel-element"></div>
+      <div class="medium bottomPanel-element">
+        <span id="currentTimeDisplay">--:--:--</span>
         <span>/</span>
-        <span id="missionEndTime">0:00:00</span>
+        <span id="endTimeDisplay">--:--:--</span>
       </div>
-      <div id="frameSliderContainer">
-        <input type="range" id="frameSlider" min="0" value="0" />
+      <div id="frameSliderContainer" class="bottomPanel-element">
+        <input type="range" id="playbackSlider" min="0" value="0" step="1" />
       </div>
-      <div id="playbackSpeedSliderContainer">
+      <div id="playbackSpeedSliderContainer" class="bottomPanel-element">
         <span id="playbackSpeedVal"></span>
         <input type="range" id="playbackSpeedSlider" />
       </div>
-      <div class="fullscreenButton" id="toggleFullscreen"></div>
+      <div id="fullscreenButton" class="fullscreenButton bottomPanel-element"></div>
     </div>
   </div>
 </div>

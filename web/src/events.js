@@ -33,12 +33,14 @@ function applyMoveEvent(state, event) {
     y: y !== '' ? y : entityPose.y,
     dir: dir !== '' ? dir : entityPose.dir,
   };
-  return Object.assign(entityPose, newPose);
+  Object.assign(entityPose, newPose);
+
+  (entityPose.crew || []).forEach(unit => Object.assign(unit, newPose))
 }
 
 function applySpawnedEvent(state, event) {
   const entity = createEntity(event);
-  state.entities[entity.id] = entity;
+  state.entities[entity.id] = state.entities[entity.id] || entity;
 }
 
 function applyRespawnedEvent(state, event) {
@@ -75,12 +77,16 @@ function applyKilledEvent(state, event) {
   addEvent(state, event);
 }
 
-function applyGotInEvent(state, [,entityId, vehicleId]) {
-  state.entities[entityId].vehicle = state.entities[vehicleId];
+function applyGotInEvent(state, [,unitId, vehicleId]) {
+  const unit = state.entities[unitId];
+  const vehicle = state.entities[vehicleId];
+
+  vehicle.addCrewMember(unit);
 }
 
 function applyGotOutEvent(state, [,entityId]) {
-  state.entities[entityId].vehicle = null;
+  const unit = state.entities[entityId];
+  unit.vehicle.removeCrewMember(unit);
 }
 
 function addEvent(state, event) {

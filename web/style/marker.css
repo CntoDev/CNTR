@@ -36,3 +36,7 @@
   stroke-width: 20;
   opacity: 1;
 }
+
+.marker.isInVehicle {
+  opacity: 0;
+}

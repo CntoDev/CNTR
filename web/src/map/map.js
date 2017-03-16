@@ -55,8 +55,6 @@ export function createMapController() {
       map.zoomIn(zoom, {animate: false});
     });
 
-    //map.on("zoom", () => ui.hideMarkerPopups = (map.getZoom() <= 7));
-    //map.on("dragstart", () => entityToFollow && entityToFollow.unfollow());
     mapMultiplier = multiplier / 10;
     mapImageSize = imageSize;
   }
@@ -81,6 +79,7 @@ export function createMapController() {
       dead: !entity.alive,
       hit: false,
       killed: false,
+      isInVehicle: entity.vehicle,
     });
   }
 
@@ -88,8 +87,8 @@ export function createMapController() {
     const marker = L.marker([-1000000, -1000000]).addTo(map);
 
     marker.setIcon(L.svgIcon({
-      iconSize: [16, 16],
-      iconUrl: `images/markers/${entity.type}.svg#symbol`,
+      iconSize: entity.kind === 'Man' ? [16, 16] : [32, 32],
+      iconUrl: `images/markers/${entity.kind}.svg#symbol`,
       classList: ['marker']
     }));
 
@@ -102,26 +101,32 @@ export function createMapController() {
 
   function renderEvent(event, state) {
     if (event[0] === 'H') {
-      const line = L.polyline([coordinatesToLatLng(state.entities[event[1]].pose), coordinatesToLatLng(state.entities[event[2]].pose)], {
+      const shooter = state.entities[event[1]];
+      const target = state.entities[event[2]];
+
+      const line = L.polyline([coordinatesToLatLng(shooter.pose), coordinatesToLatLng(target.pose)], {
         color: '#f862ff',
         weight: 2,
         opacity: 0.4
       });
 
-      state.entities[event[1]].marker.setClasses({
+      target.marker.setClasses({
         hit: true,
       });
 
       line.addTo(map);
       lines.push(line);
     } else if (event[0] === 'K') {
-      const line = L.polyline([coordinatesToLatLng(state.entities[event[1]].pose), coordinatesToLatLng(state.entities[event[2]].pose)], {
+      const shooter = state.entities[event[1]];
+      const target = state.entities[event[2]];
+
+      const line = L.polyline([coordinatesToLatLng(shooter.pose), coordinatesToLatLng(target.pose)], {
         color: '#ff0000',
         weight: 2,
         opacity: 0.4
       });
 
-      state.entities[event[2]].marker.setClasses({
+      target.marker.setClasses({
         killed: true,
         hit: false,
       });
@@ -129,7 +134,9 @@ export function createMapController() {
       line.addTo(map);
       lines.push(line);
     } else if (event[0] === 'F') {
-      const line = L.polyline([coordinatesToLatLng(state.entities[event[1]].pose), coordinatesToLatLng({x: event[2], y: event[3]})], {
+      const shooter = state.entities[event[1]];
+
+      const line = L.polyline([coordinatesToLatLng(shooter.pose), coordinatesToLatLng({x: event[2], y: event[3]})], {
         color: '#000000',
         weight: 2,
         opacity: 0.4
