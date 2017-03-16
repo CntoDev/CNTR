@@ -74,6 +74,11 @@ export function createMapController() {
     marker.setRotationAngle(entity.pose.dir);
 
     marker.setClasses({
+      west: false,
+      east: false,
+      ind: false,
+      civ: false,
+      empty: false,
       [entity.side]: true,
       alive: entity.alive,
       dead: !entity.alive,
@@ -101,8 +106,8 @@ export function createMapController() {
 
   function renderEvent(event, state) {
     if (event[0] === 'H') {
-      const shooter = state.entities[event[1]];
-      const target = state.entities[event[2]];
+      const target = state.entities[event[1]];
+      const shooter = state.entities[event[2]];
 
       const line = L.polyline([coordinatesToLatLng(shooter.pose), coordinatesToLatLng(target.pose)], {
         color: '#f862ff',
@@ -117,8 +122,8 @@ export function createMapController() {
       line.addTo(map);
       lines.push(line);
     } else if (event[0] === 'K') {
-      const shooter = state.entities[event[1]];
-      const target = state.entities[event[2]];
+      const target = state.entities[event[1]];
+      const shooter = state.entities[event[2]];
 
       const line = L.polyline([coordinatesToLatLng(shooter.pose), coordinatesToLatLng(target.pose)], {
         color: '#ff0000',

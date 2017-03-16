@@ -79,27 +79,4 @@ export function createPlayer(frames, state, map) {
     frame.forEach(event => applyEvent(state, event));
   }
 
-  function clone(object) {
-    return JSON.parse(JSON.stringify(object, (key, value) => {
-      if (key === 'vehicle') return value.id;
-      if (key === 'crew') return undefined;
-      return value;
-    }));
-  }
-
-  function findNearestLowerNumber(number, array) {
-    let low = 0;
-    let high = array.length - 1;
-
-    while (high - low > 1) {
-      let mid = Math.floor((low + high) / 2);
-      if (array[mid] <= number) {
-        low = mid;
-      } else {
-        high = mid;
-      }
-    }
-
-    return array[low];
-  }
 }

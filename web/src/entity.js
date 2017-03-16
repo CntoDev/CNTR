@@ -44,17 +44,26 @@ function createSoldier(event) {
 function createVehicle(event) {
   const [,, kind, description] = event;
 
-  return Object.assign(createBaseEntity(event), {
+  const vehicle = Object.assign(createBaseEntity(event), {
     kind,
     description,
     crew: [],
-    get side() {
-      return this.crew.length ? this.crew[0].side : 'empty';
-    },
 
     addCrewMember,
     removeCrewMember,
   });
+
+  Object.defineProperties(vehicle, {
+    side: {
+      get() {
+        return this.crew.length ? this.crew[0].side : 'empty';
+      },
+      configurable: true,
+      enumerable: true,
+    },
+  });
+
+  return vehicle;
 
   function addCrewMember(unit) {
     if (!this.crew.includes(unit)) {

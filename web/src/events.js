@@ -39,8 +39,11 @@ function applyMoveEvent(state, event) {
 }
 
 function applySpawnedEvent(state, event) {
+  const oldMarker = state.entities[event[1]] && state.entities[event[1]].marker;
+
   const entity = createEntity(event);
-  state.entities[entity.id] = state.entities[entity.id] || entity;
+  state.entities[entity.id] = entity;
+  entity.marker = oldMarker;
 }
 
 function applyRespawnedEvent(state, event) {
@@ -71,8 +74,8 @@ function applyFiredEvent(state, event) {
 }
 
 function applyKilledEvent(state, event) {
-  const entityId = event[2];
-  state.entities[entityId].alive = false;
+  const victimId = event[1];
+  state.entities[victimId].alive = false;
   addBattleEvent(state, event);
   addEvent(state, event);
 }
