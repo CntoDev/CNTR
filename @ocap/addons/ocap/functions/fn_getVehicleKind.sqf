@@ -7,15 +7,14 @@
 
 params ["_vehicle"];
 
-_apcClasses = [
+private _apcClasses = [
 	"Wheeled_APC_F", "Tracked_APC",
 	"APC_Wheeled_01_base_F", "APC_Wheeled_02_base_F",
 	"APC_Wheeled_03_base_F", "APC_Tracked_01_base_F",
 	"APC_Tracked_02_base_F", "APC_Tracked_03_base_F"
 ];
 
-_isAnyOf = { params ["_entity", "_classes"];
-
+private _isAnyOf = { params ["_entity", "_classes"];
 	_bool = false;
 	{ _x params ["_class"];
 		if (_entity isKindOf _class) exitWith { _bool = true; };

@@ -1,4 +1,4 @@
-_this params ["_callName", "_args"];
+params ["_callName", "_args"];
 
 switch (_callName) do {
     case "start": { "ocap_exporter" callExtension format ["start::%1", _args]; };

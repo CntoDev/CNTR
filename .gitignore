@@ -20,3 +20,5 @@
 
 ## ADDON ##
 @ocap/addons/*.pbo
+web/node_modules
+web/.idea

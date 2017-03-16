@@ -8,18 +8,17 @@
 
 waitUntil { sleep 1; count allPlayers >= ocap_minPlayerCount and ocap_captureRunning; };
 
-_header = [worldName, briefingName, getMissionConfigValue ["author", "Unknown"], ocap_captureInterval];
+private _header = [worldName, briefingName, getMissionConfigValue ["author", "Unknown"], ocap_captureInterval];
 
 ["start", _header joinString ","] call ocap_fnc_export;
 
 while { ocap_captureRunning && (!ocap_endCaptureOnNoPlayers or count allPlayers > 0) } do {
-	systemChat "Capturing...";
-	{ _x call ocap_fnc_processEntity } forEach entities [["Man", "LandVehicle",  "Air", "Ship"], ["Logic"], true, false];
+	{ _x call ocap_fnc_processEntity } forEach entities [["LandVehicle",  "Air", "Ship"], ["Logic"]] + allUnits;
 
 	sleep ocap_captureInterval;
   ocap_currentFrameIndex = ocap_currentFrameIndex + 1;
 };
-systemChat "Done!";
+
 sleep ocap_captureInterval;
 [] call ocap_fnc_flushWriteBuffer;
 ["stop", ocap_exportPath] call ocap_fnc_export;

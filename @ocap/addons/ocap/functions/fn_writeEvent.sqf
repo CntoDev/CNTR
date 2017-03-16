@@ -1,7 +1,7 @@
 #define OCAP_BUFFER_SIZE 8192
 #define NEWLINE toString[10]
 
-_event = _this;
+private _event = _this;
 
 if (ocap_captureRunning) then {
   _event call ocap_fnc_logDebug;

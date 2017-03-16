@@ -7,4 +7,4 @@ ocap_captureRunning = false;
 {
   _x setVariable ["ocap_id", nil];
   _x call ocap_fnc_removeEntityEventHandlers;
-} forEach entities [["Man", "LandVehicle",  "Air", "Ship"], ["Logic"], true, false];
+} forEach entities [["LandVehicle",  "Air", "Ship"], ["Logic"]] + allUnits;

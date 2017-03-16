@@ -12,6 +12,7 @@ _entity = _this;
 _entityNotInitialized = (_entity getVariable ["ocap_id", ""]) isEqualTo "";
 
 if (alive _entity and _entityNotInitialized) then { _entity call ocap_fnc_initEntity; };
+if (not isNull objectParent _entity) exitWith {};
 
 _previousPose = _entity getVariable ["ocap_previousPose", ["", "", ""]];
 

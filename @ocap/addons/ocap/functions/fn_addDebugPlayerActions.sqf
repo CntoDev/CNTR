@@ -1,6 +1,6 @@
-_player = _this;
+private _player = _this;
 
-_addPlayerActions = {
+private _addPlayerActions = {
   _player addAction ["Start capture", {
     if (not ocap_captureRunning) then {
       [] call ocap_fnc_startCapture;

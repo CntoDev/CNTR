@@ -8,7 +8,8 @@
 #define OCAP_EVENT_SPAWNED "S"
 #define OCAP_EVENT_GOT_IN "I"
 
-_entity = _this;
+private _entity = _this;
+private _vehicle = objectParent _entity;
 
 ocap_nextEntityId = ocap_nextEntityId + 1;
 
@@ -27,8 +28,7 @@ if (_entity isKindOf "Man") then {
 	] call ocap_fnc_writeEvent;
 };
 
-if (_entity isKindOf "Man" and not (isNull objectParent _entity)) then {
-	_vehicle = objectParent _entity;
+if (_entity isKindOf "Man" and not (isNull _vehicle)) then {
 	_vehicleNotInitialized = (_vehicle getVariable ["ocap_id", ""]) isEqualTo "";
   if (alive _vehicle and _vehicleNotInitialized) then { _vehicle call ocap_fnc_initEntity; };
 
