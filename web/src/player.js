@@ -2,7 +2,7 @@ import { STATE_CACHING_FREQUENCY, FRAME_PLAYBACK_INTERVAL, DEFAULT_PLAYBACK_SPEE
 import { createEmitter } from './emitter.js';
 import { applyEvent } from './events.js';
 
-export function createPlayer(frames, state, map) {
+export function createPlayer(frames, state, map, unitList) {
   let intervalHandle = null;
   let currentFrameIndex = -1;
 
@@ -32,6 +32,7 @@ export function createPlayer(frames, state, map) {
 
     player.emit('nextFrame', player.currentFrame, player.currentFrameIndex, player.totalFrameCount);
     map.update(state);
+    unitList.update(state);
 
     if (!playing) {
       player.pause();
@@ -55,12 +56,14 @@ export function createPlayer(frames, state, map) {
     currentFrameIndex = -1;
     while (currentFrameIndex !== frameIndex) applyNextFrame();
     map.update(state);
+    unitList.update(state);
   }
 
   function reset() {
     currentFrameIndex = -1;
     applyNextFrame();
     map.update(state);
+    unitList.update(state);
   }
 
   function applyNextFrame() {

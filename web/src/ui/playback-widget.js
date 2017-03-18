@@ -37,7 +37,6 @@ export function createPlaybackWidget(element, playbackControl) {
   }
 
   function handleKeyboardInput(event) {
-    console.log(event);
     switch (event.charCode) {
       case 32: return togglePlayback();
     }

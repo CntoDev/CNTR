@@ -50,7 +50,7 @@ export function createMapController() {
 
     map.setView(map.unproject([imageSize / 2, imageSize / 2]), MAP_MIN_ZOOM);
 
-    mapElement.addEventListener("wheel", event => {
+    mapElement.addEventListener('wheel', event => {
       const zoom = event.deltaY > 0 ? -0.5 : 0.5;
       map.zoomIn(zoom, {animate: false});
     });
@@ -66,7 +66,6 @@ export function createMapController() {
     state.events.forEach(event => renderEvent(event, state));
   }
 
-
   function renderEntity(entity) {
     const marker = entity.marker = (entity.marker || createMarker(entity));
 
@@ -74,11 +73,6 @@ export function createMapController() {
     marker.setRotationAngle(entity.pose.dir);
 
     marker.setClasses({
-      west: false,
-      east: false,
-      ind: false,
-      civ: false,
-      empty: false,
       [entity.side]: true,
       alive: entity.alive,
       dead: !entity.alive,
@@ -86,6 +80,17 @@ export function createMapController() {
       killed: false,
       isInVehicle: entity.vehicle,
     });
+
+    if (entity.vehicle) {
+      marker.closePopup();
+    } else {
+      marker.openPopup();
+    }
+
+    if (entity.crew) {
+      marker.getPopup().setContent(entity.description + ' (' + entity.crew.length + ')<br>' +
+          entity.crew.map(unit => unit.name).join('<br>'));
+    }
   }
 
   function createMarker(entity) {
@@ -97,11 +102,24 @@ export function createMapController() {
       classList: ['marker']
     }));
 
+    marker.bindPopup(createPopup(entity)).openPopup();
+
     marker.entity = entity;
 
     markers[entity.id] = marker;
 
     return marker;
+  }
+
+  function createPopup(entity) {
+    let popup = L.popup({
+      autoPan: false,
+      autoClose: false,
+      closeButton: false,
+      className: entity.kind === 'Man' ? 'leaflet-popup-unit' : 'leaflet-popup-vehicle',
+    });
+    popup.setContent(entity.name);
+    return popup;
   }
 
   function renderEvent(event, state) {
@@ -116,6 +134,7 @@ export function createMapController() {
       });
 
       target.marker.setClasses({
+        [target.side]: true,
         hit: true,
       });
 
@@ -132,6 +151,7 @@ export function createMapController() {
       });
 
       target.marker.setClasses({
+        [target.side]: true,
         killed: true,
         hit: false,
       });
@@ -151,60 +171,10 @@ export function createMapController() {
     }
   }
 
-
   function coordinatesToLatLng({x, y}) {
     return map.unproject({
       x: (x * mapMultiplier) + trim,
       y: (mapImageSize - y * mapMultiplier) + trim,
     }, MAP_MAX_NATIVE_ZOOM);
   }
-
 }
-/*
-// Manage entity at given frame
-manageFrame(f) {
-  f = this.getRelativeFrameIndex(f);
-
-  if (this.isFrameOutOfBounds(f)) { // Entity does not exist on frame
-    this.marker.hide();
-  } else { // Entity does exist on frame
-    this._updateAtFrame(f);
-  };
-};
-
-// Get LatLng at specific frame
-getLatLngAtFrame(f) {
-  var pos = this.getPosAtFrame(f);
-  if (pos != null) {return armaToLatLng(pos)};
-  return;
-};
-
-// Get LatLng at current frame
-getLatLng() {
-  return this.getLatLngAtFrame(playbackFrame);
-};
-
-_createPopup(content) {
-  let popup = L.popup({
-    autoPan: false,
-    autoClose: false,
-    closeButton: false,
-    className: this._popupClassName
-  });
-  popup.setContent(content);
-  return popup;
-};
-
-hideMarkerPopup(bool) {
-  let popup = this.marker.getPopup();
-  if (popup != null) {
-    let element = popup.element;
-    let display = "inherit";
-    if (bool) {
-      display = "none"
-    }
-
-    element.style.display = display;
-  }
-}
-*/

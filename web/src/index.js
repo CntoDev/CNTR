@@ -3,6 +3,7 @@ import { createPlayer } from './player.js';
 import { createUiController } from './ui/ui.js';
 import { createMapController } from './map/map.js';
 import { createPlaybackWidget } from './ui/playback-widget.js';
+import { createUnitList } from './unit-list.js';
 
 import { MAP_INDEX_URL, CAPTURE_INDEX_URL } from './constants.js';
 
@@ -36,7 +37,8 @@ function loadCaptureFile(captureFilePath, mapIndex) {
     };
 
     const map = createMapController();
-    const player = createPlayer(frames, state, map);
+    const unitList = createUnitList(document.querySelector('#unitList'), map);
+    const player = createPlayer(frames, state, map, unitList);
     const playback = createPlaybackWidget(document.querySelector('#playbackWidget'), player);
 
     const worldInfo = mapIndex.find(world => world.worldName.toLowerCase() === header.worldName.toLowerCase());

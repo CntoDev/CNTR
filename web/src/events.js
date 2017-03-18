@@ -1,3 +1,5 @@
+import isNumber from 'lodash/isNumber';
+
 import {
   EVENT_SPAWNED, EVENT_RESPAWNED, EVENT_DESPAWNED,
   EVENT_CONNECTED, EVENT_DISCONNECTED,
@@ -29,9 +31,9 @@ function applyMoveEvent(state, event) {
   const [, entityId, x, y, dir] = event;
   const entityPose = state.entities[entityId].pose;
   const newPose = {
-    x: x !== '' ? x : entityPose.x,
-    y: y !== '' ? y : entityPose.y,
-    dir: dir !== '' ? dir : entityPose.dir,
+    x: isNumber(x) ? x : entityPose.x,
+    y: isNumber(y) ? y : entityPose.y,
+    dir: isNumber(dir) ? dir : entityPose.dir,
   };
   Object.assign(entityPose, newPose);
 
@@ -58,32 +60,36 @@ function applyDespawnedEvent(state, event) {
 }
 
 function applyConnectedEvent(state, event) {
-  addEvent(state, event);
+  addLoggedEvent(state, event);
 }
 
 function applyDisconnectedEvent(state, event) {
-  addEvent(state, event);
+  addLoggedEvent(state, event);
 }
 
 function applyHitEvent(state, event) {
-  addBattleEvent(state, event);
+  if (isNumber(event[1]) && isNumber(event[2])) {
+    addBattleEvent(state, event);
+    addLoggedEvent(state, event);
+  }
 }
 
 function applyFiredEvent(state, event) {
-  addBattleEvent(state, event);
+  if (isNumber(event[1]) && isNumber(event[2]) && isNumber(event[3])) {
+    addBattleEvent(state, event);
+  }
 }
 
 function applyKilledEvent(state, event) {
   const victimId = event[1];
   state.entities[victimId].alive = false;
   addBattleEvent(state, event);
-  addEvent(state, event);
+  addLoggedEvent(state, event);
 }
 
 function applyGotInEvent(state, [,unitId, vehicleId]) {
   const unit = state.entities[unitId];
   const vehicle = state.entities[vehicleId];
-
   vehicle.addCrewMember(unit);
 }
 
@@ -92,8 +98,8 @@ function applyGotOutEvent(state, [,entityId]) {
   unit.vehicle.removeCrewMember(unit);
 }
 
-function addEvent(state, event) {
-  //state.events.push(event);
+function addLoggedEvent(state, event) {
+  //state.loggedEvents.push(event);
 }
 
 function addBattleEvent(state, event) {

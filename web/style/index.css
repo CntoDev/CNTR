@@ -341,22 +341,29 @@ input[type=range]::-webkit-slider-runnable-track {
 }
 
 .liGroup {
+  display: block;
+  padding-left: 16px;
 	padding-top: 10px;
+  margin-top: 0.125em;
+	margin-bottom: 0.25em;
 }
 
 .liUnit {
-	padding-left: 16px;
-	padding-top: 5px;
-	padding-bottom: 5px;
+  display: block;
+	padding-left: 32px;
+	padding-top: 0.5em;
+	padding-bottom: 0.25em;
 }
 
 .liUnit:hover {
-	background-color: rgb(205,134,20);
 	background-color: rgba(205,134,20,0.9);
 }
 
 .sideTitle {
+  display: block;
 	text-shadow: 1px 1px #000000;
+  padding-top: 0.5em;
+  margin-bottom: 0.25em;
 	font-weight: bold;
 }
 
@@ -380,109 +387,6 @@ input[type=range]::-webkit-slider-runnable-track {
 	color: rgb(184, 134, 11);
 }
 
-.modal {
-	display: none;
-	position: fixed;
-	z-index: 1;
-	left: 0;
-	top: 0;
-	width: 100%;
-	height: 100%;
-	overflow: auto;
-	background-color: rgb(0,0,0);
-	background-color: rgba(0,0,0,0.4);
-}
-.modalContent {
-	background: none;
-	margin: auto;
-	margin-top: 10%;
-/*	border: 1px solid black;*/
-	width: 40%;
-}
-.modalHeader {
-	box-sizing: border-box;
-	font-size: 16px;
-	background-color: rgb(205,134,20);
-	background-color: rgba(205,134,20,0.9);
-	width: 100%;
-	margin-bottom: 3px;
-	padding: 5px;
-	padding-left: 10px;
-	padding-right: 10px;
-	font-weight: 500;
-}
-.modalBody {
-	box-sizing: border-box;
-	background-color: rgba(0,0,0);
-	background-color: rgba(0,0,0,0.7);
-	width: 100%;
-	min-height: 200px;
-	max-height: 400px;
-	height: auto;
-	padding: 10px;
-	overflow-y: auto;
-	overflow-x: auto;
-}
-
-.modalBody a {
-	color: white;
-	text-decoration: none;
-}
-
-.modalBody a:hover {
-	text-decoration: underline;
-}
-
-.modalBody table {
-	border-collapse: collapse;
-	border: none;
-	width: 100%;
-}
-.modalBody th {
-	background-color: rgba(0,0,0,0.7);
-	padding: 3px;
-	font-weight: 500;
-}
-.modalBody td {
-	padding-right: 20px;
-	padding: 3px;
-}
-.modalBody tr {
-	text-align: left;
-}
-.modalBody tr:hover {
-	background-color: rgb(205,134,20);
-	background-color: rgba(205,134,20,0.9);
-}
-.modalButtons {
-	box-sizing: border-box;
-	width: 100%;
-	text-align: right;
-	background: none;
-	margin-top: 3px;
-	height: 15px;
-}
-.modalButton {
-	display: inline-block;
-	background-color: none;
-	height: 100%;
-	min-width: 100px;
-	background-color: rgba(0,0,0);
-	background-color: rgba(0,0,0,0.7);
-	margin-right: 10px;
-	padding: 5px;
-	text-transform: uppercase;
-	text-align: left;
-}
-
-.modalButton:last-child {
-	margin-right: 0;
-}
-
-.modalButton:hover {
-	background-color: #FFF;
-	color: #000;
-}
 .fullscreenButton {
 	background-image: url("../images/fullscreen.png");
 	opacity: 0.95;
@@ -600,10 +504,122 @@ input[type=range]::-webkit-slider-runnable-track {
 	width: 16px;
 	background-size: auto 16px;
 	display: inline-block;
-	top: 2px;
-	margin-left: 10px;
+	top: 4px;
+	margin-left: 16px;
+  margin-right: 16px;
 }
 
 #playPauseButton.paused {
 	background-position: 100% 0;
+}
+
+
+
+
+
+
+.modal {
+	display: none;
+	position: fixed;
+	z-index: 99999999;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0,0,0,0.4);
+}
+
+.modal.visible {
+	display: block;
+}
+
+.modalContent {
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+.modalHeader {
+	box-sizing: border-box;
+	font-size: 16px;
+	background-color: rgba(205,134,20,0.9);
+	width: 100%;
+	margin-bottom: 3px;
+	padding: 5px 10px 0 10px;
+	font-weight: 500;
+}
+
+.modalBody {
+	box-sizing: border-box;
+	background-color: rgba(0,0,0,0.7);
+	width: 100%;
+	min-height: 200px;
+	max-height: 400px;
+	height: auto;
+	padding: 10px;
+	overflow-y: auto;
+	overflow-x: auto;
+}
+
+.modalBody a {
+	color: white;
+	text-decoration: none;
+}
+
+.modalBody a:hover {
+	text-decoration: underline;
+}
+
+.modalBody table {
+	border-collapse: collapse;
+	border: none;
+	width: 100%;
+}
+
+.modalBody th {
+	background-color: rgba(0,0,0,0.7);
+	padding: 3px;
+	font-weight: 500;
+}
+
+.modalBody td {
+	padding: 3px;
+	padding-right: 20px;
+}
+
+.modalBody tr {
+	text-align: left;
+}
+
+.modalBody tr:hover {
+	background-color: rgba(205,134,20,0.9);
+}
+
+.modalFooter {
+	box-sizing: border-box;
+	width: 100%;
+	text-align: right;
+	background: none;
+	margin-top: 3px;
+	height: 15px;
+}
+
+.modalButton {
+	display: inline-block;
+	height: 100%;
+	min-width: 100px;
+	background-color: rgba(0,0,0,0.7);
+	margin-right: 10px;
+	padding: 5px;
+	text-transform: uppercase;
+	text-align: left;
+}
+
+.modalButton:last-child {
+	margin-right: 0;
+}
+
+.modalButton:hover {
+	background-color: #FFF;
+	color: #000;
 }

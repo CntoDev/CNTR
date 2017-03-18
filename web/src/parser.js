@@ -22,9 +22,5 @@ function processHeaderData(data) {
 
 function processEntry(entry) {
   const number = Number.parseFloat(entry);
-  return Number.isNaN(number) ?
-      (entry === 'true' ? true :
-          entry === 'false' ? false :
-              entry) :
-      number;
+  return Number.isNaN(number) ? (entry === 'true' ? true : entry === 'false' ? false : entry) : number;
 }

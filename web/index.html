@@ -4,14 +4,16 @@
   <meta charset="utf-8"/>
   <meta name="viewport" content="initial-scale=1.0, user-scalable=no"/>
   <link rel="stylesheet" href="style/leaflet.css"/>
+  <link rel="stylesheet" href="style/marker.css"/>
   <link rel="stylesheet" href="style/common.css"/>
   <link rel="stylesheet" href="style/index.css"/>
-  <link rel="stylesheet" href="style/marker.css"/>
   <link rel="icon" type="img/png" href="images/favicon.png">
-  <title>OCAP v2.0.0-beta</title>
+  <title>OCAP v2.0.0-alpha</title>
 </head>
 <body>
+
 <div id="map"></div>
+
 <div id="ui">
   <div id="topPanel">
     <div id="ocapLogoButton"></div>
@@ -20,16 +22,13 @@
     <span id="toggleFirelines" class="button"></span>
     <span id="missionName" class="medium"></span>
   </div>
+
   <div id="leftPanel">
     <div class="title bold"><span>Units</span></div>
-    <div class="filterBox"></div>
-    <div class="panelContent">
-      <ul id="listWest"><span class="west sideTitle">WEST</span></ul>
-      <ul id="listEast"><span class="east sideTitle">EAST</span></ul>
-      <ul id="listGuer"><span class="ind sideTitle">INDEPENDENT</span></ul>
-      <ul id="listCiv"><span class="civ sideTitle">CIVILIAN</span></ul>
-    </div>
+    <ul id="unitList" class="panelContent">
+    </ul>
   </div>
+
   <div id="rightPanel">
     <div class="title bold">Events</div>
     <div class="filterBox">
@@ -40,6 +39,7 @@
       <ul id="eventList"></ul>
     </div>
   </div>
+
   <div id="bottomPanel">
     <div id="playbackWidget" class="panelContent">
       <div id="playPauseButton" class="bottomPanel-element"></div>
@@ -55,21 +55,16 @@
         <span id="playbackSpeedVal"></span>
         <input type="range" id="playbackSpeedSlider" />
       </div>
-      <div id="fullscreenButton" class="fullscreenButton bottomPanel-element"></div>
     </div>
+    <div id="fullscreenButton" class="fullscreenButton bottomPanel-element"></div>
   </div>
 </div>
 
 <div id="modal" class="modal">
   <div class="modalContent">
-    <div id="modalHeader" class="modalHeader medium"></div>
+    <div id="modalHeader" class="modalHeader"></div>
     <div id="modalBody" class="modalBody"></div>
-    <div id="modalButtons" class="modalButtons"></div>
-  </div>
-</div>
-<div class="extraInfoBox">
-  <div class="extraInfoBoxContent">
-    <span class="bold">Cursor target: </span><span id="cursorTargetBox">None</span>
+    <div id="modalFooter" class="modalFooter"></div>
   </div>
 </div>
 
