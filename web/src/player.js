@@ -29,6 +29,8 @@ export function createPlayer(state) {
 
   function load(newFrames) {
     frames = newFrames;
+    reset();
+    player.emit('load', player.currentFrameIndex, player.totalFrameCount);
   }
 
   function play() {
@@ -41,6 +43,7 @@ export function createPlayer(state) {
     if (!playing) {
       player.pause();
     }
+    player.emit('nextFrame', player.currentFrameIndex, player.totalFrameCount);
   }
 
   function pause() {
@@ -55,6 +58,7 @@ export function createPlayer(state) {
   function goTo(frameIndex) {
     currentFrameIndex = -1;
     while (currentFrameIndex !== frameIndex) applyNextFrame();
+    player.emit('nextFrame', player.currentFrameIndex, player.totalFrameCount);
   }
 
   function reset() {
@@ -64,7 +68,6 @@ export function createPlayer(state) {
 
   function applyNextFrame() {
     const currentFrame = frames[++currentFrameIndex];
-    player.emit('nextFrame', player.currentFrame, player.currentFrameIndex, player.totalFrameCount);
 
     if (currentFrame) {
       applyFrameToState(currentFrame);

@@ -1,0 +1,44 @@
+.container {
+  z-index: 100;
+}
+
+.leftPanel {
+  position: absolute;
+  left: 0;
+  top: 40px;
+  width: 192px;
+  height: calc(100% - 40px - 40px);
+
+  background-color: rgba(0,0,0,0.8);
+}
+
+.rightPanel {
+  position: absolute;
+  right: 0;
+  top: 40px;
+  width: 192px;
+  height: calc(100% - 40px - 40px);
+
+  background-color: rgba(0,0,0,0.8);
+}
+
+.topPanel {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 40px;
+
+  background-color: rgba(0,0,0,0.8);
+}
+
+.bottomPanel {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 32px;
+  background-color: rgba(0, 0, 0, .8);
+  padding-top: 8px;
+  line-height: 1.5em;
+}

@@ -1,17 +1,18 @@
-export function createUiController() {
-  return {};
-}
+import React from 'react';
 
+import cx from 'classnames';
+import styles from './ui.css';
 
-function setMissionName(name) {
-  this.missionName.textContent = name;
-}
+import { UnitList } from './unit-list.js';
+import { PlaybackWidget } from './playback-widget.js';
 
-function showHint(text) {
-  this.hint.textContent = text;
-  this.hint.style.display = "inherit";
-
-  setTimeout(() => {
-    this.hint.style.display = "none";
-  }, 5000);
+export function OcapUi({state, map, player}) {
+  return <div className={styles.container}>
+    <div className={styles.leftPanel}>
+      <UnitList map={map} state={state} player={player}/>
+    </div>
+    <div className={styles.bottomPanel}>
+      <PlaybackWidget player={player}/>
+    </div>
+  </div>;
 }

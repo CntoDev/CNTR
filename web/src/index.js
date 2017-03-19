@@ -1,23 +1,25 @@
 /*global fetch*/
+import React from 'react';
+import ReactDom from 'react-dom';
+
 import { parse } from './parser.js';
 import { createPlayer } from './player.js';
 import { createState } from './state.js';
 import { createMapController } from './map/map.js';
-import { createPlaybackWidget } from './ui/playback-widget.js';
-import { createUnitList } from './unit-list.js';
 import { createCaptureLoadDialog } from './ui/capture-load-dialog.js';
+import { OcapUi } from './ui/ui.js';
 
 import { MAP_INDEX_URL, CAPTURE_INDEX_URL } from './constants.js';
 
 const state = createState();
 const map = createMapController(document.querySelector('#map'), state);
-const unitList = createUnitList(document.querySelector('#unitList'), state);
+//const unitList = createUnitList(document.querySelector('#unitList'), state);
 const player = createPlayer(state);
-const playback = createPlaybackWidget(document.querySelector('#playbackWidget'), player);
+//const playback = createPlaybackWidget(document.querySelector('#playbackWidget'), player);
 
 (function initOcap() {
-  unitList.initialize();
-  playback.initialize();
+  ReactDom.render(<OcapUi map={map} state={state} player={player} />, document.querySelector('#ui'));
+
   return readIndices()
       .then(([mapIndex, captureIndex]) => showLoadDialog(mapIndex, captureIndex))
       .catch(error => console.error(error));
@@ -33,7 +35,7 @@ function readIndices() {
 function showLoadDialog(mapIndex, captureIndex) {
 
   const captureLoadDialog = createCaptureLoadDialog(document.querySelector('#modal'), captureIndex, handleSelectEntry);
-  document.querySelector('#openCaptureLoadDialog').addEventListener('click', () => captureLoadDialog.open());
+  //document.querySelector('#openCaptureLoadDialog').addEventListener('click', () => captureLoadDialog.open());
   captureLoadDialog.initialize();
   captureLoadDialog.open();
 

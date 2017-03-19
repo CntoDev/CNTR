@@ -1,4 +1,11 @@
-body, #map {
+html {
+  font-family: Roboto, Arial, sans-serif;
+  color: white;
+  font-size: 16px;
+  cursor: default;
+}
+
+body {
   position: fixed;
   left: 0;
   top: 0;
@@ -6,11 +13,6 @@ body, #map {
   height: 100%;
 	margin: 0;
 	padding: 0;
-	font-family: Roboto, Arial, sans-serif;
-	color: white;
-	overflow: hidden;
-	font-size: 16px;
-	cursor: default;
 }
 
 #map {
@@ -191,15 +193,7 @@ body, #map {
 	padding: 5px;
 }
 
-#bottomPanel {
-	/*background-color: #343434;*/
-	background-color: rgba(0,0,0,0.8);
-	position: absolute;
-	bottom: 0;
-	left: 0;
-	width: 100%;
-	height: 40px;
-}
+
 
 #bottomPanel .panelContent {
 	padding: 5px;
@@ -299,7 +293,6 @@ body, #map {
 
 input[type=range] {
 	-webkit-appearance: none; /* Hides the slider so that custom slider can be made */
-	width: 100%; /* Specific width is required for Firefox. */
 	background: transparent;
 }
 
@@ -329,6 +322,10 @@ input[type=range]::-webkit-slider-runnable-track {
 	font-weight: 500;
 }
 
+.eventDetails {
+	color: #9A9A9A;
+}
+
 .liEvent {
 	margin-top: 10px;
 	padding-bottom: 10px;
@@ -341,25 +338,20 @@ input[type=range]::-webkit-slider-runnable-track {
 	transition: opacity 1s;
 }
 
-.eventDetails {
-	color: #9A9A9A;
-}
-
 .liGroup {
-  display: block;
-  padding-left: 1em;
-  line-height: 2em;
+	display: block;
+	padding-left: 1em;
+	line-height: 2em;
 }
 
 .liUnit {
-  display: block;
-  padding-left: 2em;
-  line-height: 2em;
+	display: block;
+	padding-left: 2em;
+	line-height: 2em;
 }
 
-
 .liUnit.dead {
-  color: #666;
+	color: #666;
 }
 
 .liUnit:hover {

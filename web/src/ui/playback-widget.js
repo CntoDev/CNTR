@@ -1,56 +1,68 @@
 import moment from 'moment';
+import React from 'react';
 
-export function createPlaybackWidget(element, playbackControl) {
+import cx from 'classnames';
+import styles from './playback-widget.css';
 
-  const playbackSlider = element.querySelector('#playbackSlider');
-  const currentTimeDisplay = element.querySelector('#currentTimeDisplay');
-  const endTimeDisplay = element.querySelector('#endTimeDisplay');
-  const playPauseButton = element.querySelector('#playPauseButton');
+export class PlaybackWidget extends React.Component {
+  constructor() {
+    super();
 
-  let playbackRunning = false;
-
-  return Object.assign(element, {
-    initialize,
-  });
-
-  function initialize() {
-    playbackControl.on('nextFrame', updateTime);
-    playPauseButton.addEventListener('click', togglePlayback);
-    playbackSlider.addEventListener('change', skipToFrame);
-    window.addEventListener("keypress", handleKeyboardInput);
+    this.state = {
+      playing: false,
+      currentFrameIndex: -1,
+      frameCount: -1,
+    };
   }
 
-  function updateTime(frame, current, total) {
-    currentTimeDisplay.innerText = moment.utc(current * 1000).format("HH:mm:ss");
-    endTimeDisplay.innerText = moment.utc(total * 1000).format("HH:mm:ss");
-    playbackSlider.value = playbackControl.currentFrameIndex;
-    playbackSlider.max = playbackControl.totalFrameCount;
-    playbackSlider.value = current;
-
-    if (current === total) {
-      playbackRunning = !playbackRunning;
-      playPauseButton.classList.toggle('paused');
-    }
+  componentDidMount() {
+    this.props.player.on('nextFrame', this.updateTime.bind(this, true));
+    this.props.player.on('load', this.updateTime.bind(this, false));
+    window.addEventListener("keypress", this.handleKeyboardInput.bind(this));
   }
 
-  function handleKeyboardInput(event) {
+  render() {
+    const { playing, currentFrameIndex, frameCount } = this.state;
+
+    const value = currentFrameIndex;
+    const max = frameCount;
+    const currentTime = (currentFrameIndex !== -1) ? moment.utc(currentFrameIndex * 1000).format("HH:mm:ss") : '--:--:--';
+    const endTime = (frameCount !== -1) ? moment.utc(frameCount * 1000).format("HH:mm:ss") : '--:--:--';
+
+    return <div className={styles.container}>
+      <span className={cx(styles.playButton, !playing && styles.paused)} onClick={this.togglePlayback.bind(this)}/>
+      <span className={styles.timeDisplay}>{currentTime}/{endTime}</span>
+      <input className={styles.slider} type="range" min="0" value={value} max={max} step="1" onChange={this.skipToFrame.bind(this)} />
+    </div>;
+  }
+
+  handleKeyboardInput(event) {
     switch (event.charCode) {
-      case 32: return togglePlayback();
+      case 32: return this.togglePlayback();
     }
   }
 
-  function skipToFrame() {
-    playbackControl.goTo(Number.parseInt(playbackSlider.value));
+  skipToFrame(event) {
+    this.props.player.goTo(Number.parseInt(event.target.value));
   }
 
-  function togglePlayback() {
-    playbackRunning = !playbackRunning;
-    playPauseButton.classList.toggle('paused');
+  togglePlayback() {
+    const newPlaying = !this.state.playing;
 
-    if (playbackRunning) {
-      playbackControl.play();
+    if (newPlaying) {
+      this.props.player.play();
     } else {
-      playbackControl.pause();
+      this.props.player.pause();
     }
+
+    this.setState({ playing: newPlaying });
+  }
+
+  updateTime(playing, currentFrameIndex, frameCount) {
+    this.setState({
+      playing,
+      currentFrameIndex,
+      frameCount,
+    });
   }
 }

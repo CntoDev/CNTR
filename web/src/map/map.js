@@ -84,7 +84,7 @@ export function createMapController(mapElement, state) {
       } else {
 
       }
-    };
+    }
   }
 
   function renderEntity(entity) {
@@ -145,52 +145,37 @@ export function createMapController(mapElement, state) {
   }
 
   function renderEvent(event, state) {
+    let line;
     if (event[0] === 'H') {
       const target = state.entities[event[1]];
       const shooter = state.entities[event[2]];
 
-      const line = L.polyline([coordinatesToLatLng(shooter.pose), coordinatesToLatLng(target.pose)], {
-        color: '#f862ff',
-        weight: 2,
-        opacity: 0.4
-      });
+      line = L.polyline([coordinatesToLatLng(shooter.pose), coordinatesToLatLng(target.pose)], {className: 'hitLine hit'});
 
       target.marker.setClasses({
         [target.side]: true,
         hit: true,
       });
 
-      line.addTo(map);
-      lines.push(line);
     } else if (event[0] === 'K') {
       const target = state.entities[event[1]];
       const shooter = state.entities[event[2]];
 
-      const line = L.polyline([coordinatesToLatLng(shooter.pose), coordinatesToLatLng(target.pose)], {
-        color: '#ff0000',
-        weight: 2,
-        opacity: 0.4
-      });
+      line = L.polyline([coordinatesToLatLng(shooter.pose), coordinatesToLatLng(target.pose)], {className: 'hitLine killed'});
 
       target.marker.setClasses({
         [target.side]: true,
         killed: true,
         hit: false,
       });
-
-      line.addTo(map);
-      lines.push(line);
     } else if (event[0] === 'F') {
       const shooter = state.entities[event[1]];
 
-      const line = L.polyline([coordinatesToLatLng(shooter.pose), coordinatesToLatLng({x: event[2], y: event[3]})], {
-        color: '#000000',
-        weight: 2,
-        opacity: 0.4
-      });
-      line.addTo(map);
-      lines.push(line);
+      line = L.polyline([coordinatesToLatLng(shooter.pose), coordinatesToLatLng({x: event[2], y: event[3]})], {className: 'hitLine fired'});
     }
+
+    line.addTo(map);
+    lines.push(line);
   }
 
   function coordinatesToLatLng({x, y}) {
