@@ -1,22 +1,25 @@
+/*global fetch*/
 import { parse } from './parser.js';
 import { createPlayer } from './player.js';
-import { createUiController } from './ui/ui.js';
+import { createState } from './state.js';
 import { createMapController } from './map/map.js';
 import { createPlaybackWidget } from './ui/playback-widget.js';
 import { createUnitList } from './unit-list.js';
+import { createCaptureLoadDialog } from './ui/capture-load-dialog.js';
 
 import { MAP_INDEX_URL, CAPTURE_INDEX_URL } from './constants.js';
 
-const {
-  eventList,
-  unitList,
-  modalDialogs,
-  playbackWidget,
-} = createUiController(document.querySelector('#ui'));
+const state = createState();
+const map = createMapController(document.querySelector('#map'), state);
+const unitList = createUnitList(document.querySelector('#unitList'), state);
+const player = createPlayer(state);
+const playback = createPlaybackWidget(document.querySelector('#playbackWidget'), player);
 
 (function initOcap() {
+  unitList.initialize();
+  playback.initialize();
   return readIndices()
-      .then(([mapIndex, captureIndex]) => loadCaptureFile(captureIndex[0].file, mapIndex))
+      .then(([mapIndex, captureIndex]) => showLoadDialog(mapIndex, captureIndex))
       .catch(error => console.error(error));
 }());
 
@@ -27,32 +30,26 @@ function readIndices() {
   ]);
 }
 
-function loadCaptureFile(captureFilePath, mapIndex) {
-  return fetch(captureFilePath).then(response => response.text()).then(parse).then(({ header, frames }) => {
+function showLoadDialog(mapIndex, captureIndex) {
 
-    const state = {
-      entities: [],
-      events: [],
-      shots: [],
-    };
+  const captureLoadDialog = createCaptureLoadDialog(document.querySelector('#modal'), captureIndex, handleSelectEntry);
+  document.querySelector('#openCaptureLoadDialog').addEventListener('click', () => captureLoadDialog.open());
+  captureLoadDialog.initialize();
+  captureLoadDialog.open();
 
-    const map = createMapController();
-    const unitList = createUnitList(document.querySelector('#unitList'), map);
-    const player = createPlayer(frames, state, map, unitList);
-    const playback = createPlaybackWidget(document.querySelector('#playbackWidget'), player);
 
-    const worldInfo = mapIndex.find(world => world.worldName.toLowerCase() === header.worldName.toLowerCase());
+  function handleSelectEntry(entry) {
+    captureLoadDialog.close();
+    const worldInfo = mapIndex.find(world => world.worldName.toLowerCase() === entry.worldName.toLowerCase());
+    loadCaptureFile(entry.captureFilePath, worldInfo);
+  }
+}
 
-    map.initialize(document.querySelector('#map'), worldInfo);
-
-    player.goTo(0);
-    map.update(state);
-    playback.initialize();
-
-    window.frames = frames;
-    window.state = state;
-    window.player = player;
-    window.playback = playback;
-    window.map = map;
+function loadCaptureFile(captureFilePath, worldInfo) {
+  return fetch(captureFilePath).then(response => response.text()).then(parse).then(({ frames }) => {
+    state.reset();
+    map.loadWorld(worldInfo);
+    player.load(frames);
+    player.reset();
   });
 }

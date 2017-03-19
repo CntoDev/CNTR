@@ -1,20 +1,25 @@
-import { STATE_CACHING_FREQUENCY, FRAME_PLAYBACK_INTERVAL, DEFAULT_PLAYBACK_SPEED } from './constants.js';
 import { createEmitter } from './emitter.js';
 import { applyEvent } from './events.js';
 
-export function createPlayer(frames, state, map, unitList) {
+import { FRAME_PLAYBACK_INTERVAL, DEFAULT_PLAYBACK_SPEED } from './constants.js';
+
+export function createPlayer(state) {
+  let frames = null;
   let intervalHandle = null;
   let currentFrameIndex = -1;
 
   const player = createEmitter({
+    load,
     play,
     pause,
     stop,
     goTo,
+    reset,
 
     playbackSpeed: DEFAULT_PLAYBACK_SPEED,
-    get totalFrameCount() { return frames.length },
-    get currentFrame() { return frames[currentFrameIndex] },
+    get playbackDone() { return currentFrameIndex >= frames.length },
+    get totalFrameCount() { return frames && frames.length },
+    get currentFrame() { return frames && frames[currentFrameIndex] },
     get currentFrameIndex() { return currentFrameIndex },
   });
   
@@ -22,17 +27,16 @@ export function createPlayer(frames, state, map, unitList) {
 
 
 
+  function load(newFrames) {
+    frames = newFrames;
+  }
+
   function play() {
     intervalHandle = setInterval(playFrame, FRAME_PLAYBACK_INTERVAL / player.playbackSpeed);
-    player.emit('started');
   }
 
   function playFrame() {
     const playing = applyNextFrame();
-
-    player.emit('nextFrame', player.currentFrame, player.currentFrameIndex, player.totalFrameCount);
-    map.update(state);
-    unitList.update(state);
 
     if (!playing) {
       player.pause();
@@ -41,33 +45,26 @@ export function createPlayer(frames, state, map, unitList) {
 
   function pause() {
     clearInterval(intervalHandle);
-
-    player.emit('paused');
   }
 
   function stop() {
     pause();
     reset();
-
-    player.emit('stopped');
   }
 
   function goTo(frameIndex) {
     currentFrameIndex = -1;
     while (currentFrameIndex !== frameIndex) applyNextFrame();
-    map.update(state);
-    unitList.update(state);
   }
 
   function reset() {
     currentFrameIndex = -1;
     applyNextFrame();
-    map.update(state);
-    unitList.update(state);
   }
 
   function applyNextFrame() {
     const currentFrame = frames[++currentFrameIndex];
+    player.emit('nextFrame', player.currentFrame, player.currentFrameIndex, player.totalFrameCount);
 
     if (currentFrame) {
       applyFrameToState(currentFrame);
@@ -80,6 +77,6 @@ export function createPlayer(frames, state, map, unitList) {
   function applyFrameToState(frame) {
     state.events = [];
     frame.forEach(event => applyEvent(state, event));
+    state.update({});
   }
-
 }

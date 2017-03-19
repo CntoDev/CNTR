@@ -4,7 +4,7 @@ import '../../vendor/leaflet.rotatedMarker.js';
 
 import { MAP_MAX_NATIVE_ZOOM, MAP_MIN_ZOOM, MAP_MAX_ZOOM } from '../constants.js';
 
-export function createMapController() {
+export function createMapController(mapElement, state) {
 
   const trim = 0;
 
@@ -15,11 +15,21 @@ export function createMapController() {
   let mapImageSize;
 
   return {
-    initialize,
-    update,
+    loadWorld,
   };
 
-  function initialize(mapElement, {worldName, imageSize, multiplier}) {
+  function loadWorld({worldName, imageSize, multiplier}) {
+    state.off('update', update);
+
+    const parent = mapElement.parentNode;
+    const oldMapElement = mapElement;
+    mapElement = Object.assign(document.createElement('div'), {id: 'map'});
+    parent.insertBefore(mapElement, oldMapElement);
+    parent.removeChild(oldMapElement);
+
+    markers = {};
+    lines = [];
+
     map = L.map(mapElement, {
       attributionControl: false,
       closePopupOnClick: false,
@@ -57,6 +67,8 @@ export function createMapController() {
 
     mapMultiplier = multiplier / 10;
     mapImageSize = imageSize;
+
+    state.on('update', update);
   }
 
   function update(state) {
@@ -64,6 +76,15 @@ export function createMapController() {
     lines.forEach(line => map.removeLayer(line));
     lines = [];
     state.events.forEach(event => renderEvent(event, state));
+
+    if (state.followedUnit) {
+      const pose = state.followedUnit.pose;
+      if (pose != null) {
+        map.setView(coordinatesToLatLng(pose), map.getZoom());
+      } else {
+
+      }
+    };
   }
 
   function renderEntity(entity) {
@@ -74,11 +95,12 @@ export function createMapController() {
 
     marker.setClasses({
       [entity.side]: true,
+      followed: (entity.crew || [entity]).includes(state.followedUnit),
       alive: entity.alive,
       dead: !entity.alive,
       hit: false,
       killed: false,
-      isInVehicle: entity.vehicle,
+      inVehicle: entity.vehicle,
     });
 
     if (entity.vehicle) {

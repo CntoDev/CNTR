@@ -18,16 +18,13 @@ export function createPlaybackWidget(element, playbackControl) {
     playPauseButton.addEventListener('click', togglePlayback);
     playbackSlider.addEventListener('change', skipToFrame);
     window.addEventListener("keypress", handleKeyboardInput);
-
-    currentTimeDisplay.innerText = moment.utc(playbackControl.currentFrameIndex * 1000).format("HH:mm:ss");
-    endTimeDisplay.innerText = moment.utc(playbackControl.totalFrameCount * 1000).format("HH:mm:ss");
-    playbackSlider.value = playbackControl.currentFrameIndex;
-    playbackSlider.max = playbackControl.totalFrameCount;
   }
 
   function updateTime(frame, current, total) {
     currentTimeDisplay.innerText = moment.utc(current * 1000).format("HH:mm:ss");
     endTimeDisplay.innerText = moment.utc(total * 1000).format("HH:mm:ss");
+    playbackSlider.value = playbackControl.currentFrameIndex;
+    playbackSlider.max = playbackControl.totalFrameCount;
     playbackSlider.value = current;
 
     if (current === total) {

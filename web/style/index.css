@@ -1,12 +1,15 @@
-html, body, #map {
-	width:100%;
-	height:100%;
-	margin:0;
-	padding:0;
+body, #map {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+	margin: 0;
+	padding: 0;
 	font-family: Roboto, Arial, sans-serif;
-	color: #F2F2F2;
+	color: white;
 	overflow: hidden;
-	font-size: 13px;
+	font-size: 16px;
 	cursor: default;
 }
 
@@ -15,6 +18,8 @@ html, body, #map {
 	position: absolute;
 	left: 0;
 	top: 0;
+  width: 100%;
+  height: 100%;
 }
 
 #uk3cbLogoWatermark {
@@ -39,7 +44,7 @@ html, body, #map {
 	margin: 8px;
 }
 
-#loadOpButton {
+.button-openCaptureLoadDialog {
 	background-image: url("../images/folder.png");
 	background-size: 25px 25px;
 	background-repeat: no-repeat;
@@ -342,17 +347,19 @@ input[type=range]::-webkit-slider-runnable-track {
 
 .liGroup {
   display: block;
-  padding-left: 16px;
-	padding-top: 10px;
-  margin-top: 0.125em;
-	margin-bottom: 0.25em;
+  padding-left: 1em;
+  line-height: 2em;
 }
 
 .liUnit {
   display: block;
-	padding-left: 32px;
-	padding-top: 0.5em;
-	padding-bottom: 0.25em;
+  padding-left: 2em;
+  line-height: 2em;
+}
+
+
+.liUnit.dead {
+  color: #666;
 }
 
 .liUnit:hover {
@@ -541,12 +548,11 @@ input[type=range]::-webkit-slider-runnable-track {
 
 .modalHeader {
 	box-sizing: border-box;
-	font-size: 16px;
 	background-color: rgba(205,134,20,0.9);
 	width: 100%;
-	margin-bottom: 3px;
-	padding: 5px 10px 0 10px;
 	font-weight: 500;
+  line-height: 2em;
+  padding: 0 1em;
 }
 
 .modalBody {
@@ -556,9 +562,10 @@ input[type=range]::-webkit-slider-runnable-track {
 	min-height: 200px;
 	max-height: 400px;
 	height: auto;
-	padding: 10px;
+	padding: 0.5em;
 	overflow-y: auto;
 	overflow-x: auto;
+  text-align: left;
 }
 
 .modalBody a {
@@ -578,17 +585,17 @@ input[type=range]::-webkit-slider-runnable-track {
 
 .modalBody th {
 	background-color: rgba(0,0,0,0.7);
-	padding: 3px;
+  padding: 0 1em;
 	font-weight: 500;
+  text-align: left;
 }
 
 .modalBody td {
-	padding: 3px;
-	padding-right: 20px;
+  padding: 0 1em;
 }
 
 .modalBody tr {
-	text-align: left;
+	text-align: right;
 }
 
 .modalBody tr:hover {
@@ -622,4 +629,20 @@ input[type=range]::-webkit-slider-runnable-track {
 .modalButton:hover {
 	background-color: #FFF;
 	color: #000;
+}
+
+.modalContainer {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.modalTitle {
+}
+
+.modalCloseButton {
+  position: absolute;
+  right: 0;
+  margin: 0 0.5em;
 }

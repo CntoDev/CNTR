@@ -17,7 +17,7 @@
 <div id="ui">
   <div id="topPanel">
     <div id="ocapLogoButton"></div>
-    <div id="loadOpButton" class="button"></div>
+    <div id="openCaptureLoadDialog" class="button button-openCaptureLoadDialog"></div>
     <div id="aboutButton" class="bold button">i</div>
     <span id="toggleFirelines" class="button"></span>
     <span id="missionName" class="medium"></span>
@@ -44,9 +44,7 @@
     <div id="playbackWidget" class="panelContent">
       <div id="playPauseButton" class="bottomPanel-element"></div>
       <div class="medium bottomPanel-element">
-        <span id="currentTimeDisplay">--:--:--</span>
-        <span>/</span>
-        <span id="endTimeDisplay">--:--:--</span>
+        <span id="currentTimeDisplay">--:--:--</span>/<span id="endTimeDisplay">--:--:--</span>
       </div>
       <div id="frameSliderContainer" class="bottomPanel-element">
         <input type="range" id="playbackSlider" min="0" value="0" step="1" />
@@ -56,15 +54,21 @@
         <input type="range" id="playbackSpeedSlider" />
       </div>
     </div>
-    <div id="fullscreenButton" class="fullscreenButton bottomPanel-element"></div>
   </div>
 </div>
 
 <div id="modal" class="modal">
-  <div class="modalContent">
-    <div id="modalHeader" class="modalHeader"></div>
-    <div id="modalBody" class="modalBody"></div>
-    <div id="modalFooter" class="modalFooter"></div>
+  <div id="captureLoadDialog" class="modalContainer">
+    <div class="modalHeader">
+      <span>Load mission capture</span>
+      <span class="modalCloseButton">&#10006;</span>
+    </div>
+    <div class="modalBody">
+      <table>
+        <thead></thead>
+        <tbody></tbody>
+      </table>
+    </div>
   </div>
 </div>
 

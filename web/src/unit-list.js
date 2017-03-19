@@ -1,10 +1,15 @@
-export function createUnitList(element, map) {
+export function createUnitList(element, state) {
+  let entities = {};
   let list = {};
 
   return {
-    update,
     reset,
+    initialize,
   };
+
+  function initialize() {
+    state.on('update', update);
+  }
 
   function update(state) {
     const change = state.entities.reduce((change, entity) => processEntity(entity) || change, false);
@@ -15,10 +20,11 @@ export function createUnitList(element, map) {
 
   function reset() {
     list = {};
+    entities = {};
   }
 
   function processEntity(entity) {
-    let changed = false;
+    let changed = true;
     if (entity.kind === 'Man') {
       if (!list[entity.side]) {
         list[entity.side] = {};
@@ -77,6 +83,24 @@ export function createUnitList(element, map) {
     const unitElement = document.createElement('li');
     unitElement.classList.add('unitName', 'liUnit');
     unitElement.innerText = unit.name;
+
+    if (!unit.alive) {
+      unitElement.innerText += ' ☠';
+      unitElement.classList.add('unitName', 'dead');
+      //unitElement.innerText += '⌖';
+      //unitElement.innerText += '✝';
+      //unitElement.innerText += '⊕';
+    }
+
+    if (unit.vehicle) {
+      unitElement.innerText += ' ⊕';
+    }
+
+
+    unitElement.addEventListener('click', () => {
+      state.followedUnit = unit;
+      state.update();
+    });
 
     return unitElement;
   }

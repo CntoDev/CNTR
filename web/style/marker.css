@@ -37,6 +37,11 @@
   opacity: 1;
 }
 
-.marker.isInVehicle {
+.marker.followed {
+  stroke: rgb(184, 134, 11);
+  stroke-width: 20;
+}
+
+.marker.inVehicle {
   opacity: 0;
 }

@@ -1,4 +1,4 @@
-const initIcon = L.Marker.prototype._initIcon;
+const classes = ['empty', 'east', 'west', 'ind', 'civ', 'hit', 'killed', 'alive', 'dead', 'inVehicle', 'followed'];
 
 L.SvgIcon = L.Icon.extend({
 	options: {
@@ -39,7 +39,7 @@ L.svgIcon = function (options) {
 };
 
 L.Marker.include({
-  setClasses (classes) {
-    Object.keys(classes).forEach(className => this._icon.classList.toggle(className, classes[className]));
+  setClasses (newClasses) {
+    classes.forEach(className => this._icon.classList.toggle(className, !!newClasses[className]));
   }
 });
