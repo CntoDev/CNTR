@@ -7,7 +7,7 @@ import { createPlayer } from './player.js';
 import { createState } from './state.js';
 import { createMapController } from './map/map.js';
 import { createCaptureLoadDialog } from './ui/capture-load-dialog.js';
-import { OcapUi } from './ui/ui.js';
+import { App } from './ui/ui.js';
 
 import { DEFAULT_SETTINGS, MAP_INDEX_URL, CAPTURE_INDEX_URL } from './constants.js';
 
@@ -19,7 +19,7 @@ const player = createPlayer(state, settings);
 
 (function initOcap() {
 
-  ReactDom.render(<OcapUi settings={settings} map={map} state={state} player={player} />, document.querySelector('#ui'));
+  ReactDom.render(<App settings={settings} map={map} state={state} player={player} />, document.querySelector('#root'));
 
   return readIndices()
       .then(([mapIndex, captureIndex]) => showLoadDialog(mapIndex, captureIndex))

@@ -6,8 +6,6 @@ import { MAP_MAX_NATIVE_ZOOM, MAP_MIN_ZOOM, MAP_MAX_ZOOM } from '../constants.js
 
 export function createMapController(mapElement, state, settings) {
 
-  const trim = 0;
-
   let markers = {};
   let lines = [];
   let map = null;
@@ -89,7 +87,7 @@ export function createMapController(mapElement, state, settings) {
   }
 
   function renderEntity(entity) {
-    const marker = entity.marker = (entity.marker || createMarker(entity));
+    const marker = getMarker(entity) || createMarker(entity);
 
     marker.setLatLng(coordinatesToLatLng(entity.pose));
     marker.setRotationAngle(entity.pose.dir);
@@ -101,20 +99,26 @@ export function createMapController(mapElement, state, settings) {
       dead: !entity.alive,
       hit: false,
       killed: false,
-      inVehicle: entity.vehicle,
+      inVehicle: !!entity.vehicle,
     });
 
-    //TODO: add popup filtering
+    renderPopup(marker, entity);
+  }
 
-    if (entity.vehicle) {
-      marker.closePopup();
-    } else {
+  function renderPopup(marker, entity) {
+    marker.closePopup();
+
+    if (entity.isPlayer && !entity.vehicle && settings.labels.players) {
       marker.openPopup();
-    }
+    } else if (entity.kind === 'Man' && settings.labels.ai) {
+      marker.openPopup();
+    } else if (entity.crew && entity.crew.some(unit => unit.isPlayer) && settings.labels.vehicles && settings.labels.players) {
+      marker.openPopup();
 
-    if (entity.crew) {
       marker.getPopup().setContent(entity.description + ' (' + entity.crew.length + ')<br>' +
           entity.crew.map(unit => unit.name).join('<br>'));
+    } else if (entity.crew && entity.crew.some(unit => !unit.isPlayer) && settings.labels.vehicles && settings.labels.ai) {
+      marker.openPopup();
     }
   }
 
@@ -127,9 +131,10 @@ export function createMapController(mapElement, state, settings) {
       classList: ['marker']
     }));
 
-    marker.bindPopup(createPopup(entity)).openPopup();
-
-    marker.entity = entity;
+    marker.bindPopup(createPopup(entity));
+    marker.on('click', () => {
+      state.follow(entity);
+    });
 
     markers[entity.id] = marker;
 
@@ -153,9 +158,11 @@ export function createMapController(mapElement, state, settings) {
       const target = state.entities[event[1]];
       const shooter = state.entities[event[2]];
 
-      line = L.polyline([coordinatesToLatLng(shooter.pose), coordinatesToLatLng(target.pose)], {className: 'hitLine hit'});
+      line = L.polyline(
+          [coordinatesToLatLng(shooter.pose), coordinatesToLatLng(target.pose)],
+          {className: 'hitLine hit'});
 
-      target.marker.setClasses({
+      getMarker(target).setClasses({
         [target.side]: true,
         hit: true,
       });
@@ -164,27 +171,36 @@ export function createMapController(mapElement, state, settings) {
       const target = state.entities[event[1]];
       const shooter = state.entities[event[2]];
 
-      line = L.polyline([coordinatesToLatLng(shooter.pose), coordinatesToLatLng(target.pose)], {className: 'hitLine killed'});
+      line = L.polyline(
+          [coordinatesToLatLng(shooter.pose), coordinatesToLatLng(target.pose)],
+          {className: 'hitLine killed'});
 
-      target.marker.setClasses({
+      getMarker(target).setClasses({
         [target.side]: true,
         killed: true,
         hit: false,
       });
+
     } else if (event[0] === 'F') {
       const shooter = state.entities[event[1]];
 
-      line = L.polyline([coordinatesToLatLng(shooter.pose), coordinatesToLatLng({x: event[2], y: event[3]})], {className: 'hitLine fired'});
+      line = L.polyline(
+          [coordinatesToLatLng(shooter.pose), coordinatesToLatLng({x: event[2], y: event[3]})],
+          {className: 'hitLine fired'});
     }
 
     line.addTo(map);
     lines.push(line);
   }
 
+  function getMarker({id}) {
+    return markers[id];
+  }
+
   function coordinatesToLatLng({x, y}) {
     return map.unproject({
-      x: (x * mapMultiplier) + trim,
-      y: (mapImageSize - y * mapMultiplier) + trim,
+      x: (x * mapMultiplier),
+      y: (mapImageSize - y * mapMultiplier),
     }, MAP_MAX_NATIVE_ZOOM);
   }
 }

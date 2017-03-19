@@ -8,7 +8,7 @@ import { PlaybackWidget } from './playback-widget.js';
 import { HeaderBar } from './header-bar.js';
 import { EventLog } from './event-log.js';
 
-export function OcapUi({state, map, player}) {
+export function App({state, map, player}) {
   return <div className={styles.container}>
     <div className={styles.topPanel}>
       <HeaderBar map={map} state={state} player={player}/>

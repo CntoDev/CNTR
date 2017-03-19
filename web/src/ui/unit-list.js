@@ -79,7 +79,7 @@ function Unit({unit, onClick}) {
   }
 
   if (unit.followed) {
-    symbols.push('👁');//'⌖', '⊕'
+    symbols.push('👁');//'⌖', '⊕', '✔'
   }
 
   return <li className={cx(styles.unit, !unit.alive && styles.dead)} onClick={() => onClick(unit)}>

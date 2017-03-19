@@ -114,26 +114,26 @@ function addBattleEvent(state, event) {
 function KilledLog({shooter, victim, frameIndex}) {
   return <li className={styles.event}>
     <span className={styles[victim.side]}>{victim.name || victim.description}</span> was killed by <span className={styles[shooter.side]}>{shooter.name}</span><br />
-    <span>{moment.utc(frameIndex * 1000).format("HH:mm:ss")}</span>
+    <span className={styles.eventDetails}>{moment.utc(frameIndex * 1000).format("HH:mm:ss")}</span>
   </li>;
 }
 
 function HitLog({shooter, victim, frameIndex}) {
   return <li className={styles.event}>
     <span className={styles[victim.side]}>{victim.name || victim.description}</span> was hit by <span className={styles[shooter.side]}>{shooter.name}</span><br />
-    <span>{moment.utc(frameIndex * 1000).format("HH:mm:ss")}</span>
+    <span className={styles.eventDetails}>{moment.utc(frameIndex * 1000).format("HH:mm:ss")}</span>
   </li>;
 }
 
 function ConnectedLog({player, frameIndex}) {
   return <li className={styles.event}>
     <span className={styles[player.side]}>{player.name}</span> connected.<br />
-    <span>{moment.utc(frameIndex * 1000).format("HH:mm:ss")}</span>
+    <span className={styles.eventDetails}>{moment.utc(frameIndex * 1000).format("HH:mm:ss")}</span>
   </li>;
 }
 
 function DisconnectedLog({player, frameIndex}) {
   return <li className={styles.event}><span className={styles[player.side]}>{player.name}</span> disconnected.<br />
-    <span>{moment.utc(frameIndex * 1000).format("HH:mm:ss")}</span>
+    <span className={styles.eventDetails}>{moment.utc(frameIndex * 1000).format("HH:mm:ss")}</span>
   </li>;
 }

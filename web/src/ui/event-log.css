@@ -8,6 +8,7 @@
 }
 
 .header {
+  background-color: rgba(0, 0, 0, 0.3);
   text-align: center;
   padding: 0.5em;
 }
@@ -19,22 +20,27 @@
   border-top: white 1px solid;
 }
 
+.eventDetails {
+  font-size: 12px;
+  color: #9a9a9a;
+}
+
 .east {
   font-weight: 500;
-  color: rgb(191, 0, 0);
+  color: rgb(255, 0, 0);
 }
 
 .west {
   font-weight: 500;
-  color: rgb(0, 109, 191);
+  color: rgb(0, 150, 255);
 }
 
 .ind {
   font-weight: 500;
-  color: rgb(0, 191, 0);
+  color: rgb(0, 255, 0);
 }
 
 .civ {
   font-weight: 500;
-  color: rgb(160, 0, 191);
+  color: rgb(214, 0, 255);
 }

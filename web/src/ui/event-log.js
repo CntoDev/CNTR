@@ -22,8 +22,8 @@ export class EventLog extends React.Component {
     const { eventLog } = this.state;
 
     return <div>
-      <div className={styles.header}>Events</div>
-      <ul className={styles.list}>{ eventLog }</ul>
+      <div className={cx(styles.header)}>Events</div>
+      <ul className={cx(styles.list)}>{ eventLog }</ul>
     </div>;
   }
 }

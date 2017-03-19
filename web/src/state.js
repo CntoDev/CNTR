@@ -28,10 +28,11 @@ export function createState(settings) {
   }
 
   function follow(unit) {
+    const actualUnit = unit ? state.entities.find(u => u.id === unit.id) : null;
     if (state.followedUnit) {
       state.followedUnit.followed = false;
     }
-    state.followedUnit = unit;
+    state.followedUnit = actualUnit;
     if (state.followedUnit) {
       state.followedUnit.followed = true;
     }

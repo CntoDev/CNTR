@@ -84,4 +84,8 @@ export function createPlayer(state, settings) {
     frame.forEach(event => applyEvent(state, event, currentFrameIndex));
     state.update({});
   }
+
+  function stateToEvents(state) {
+
+  }
 }
