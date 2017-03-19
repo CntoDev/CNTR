@@ -3,7 +3,7 @@ import { applyEvent } from './events.js';
 
 import { FRAME_PLAYBACK_INTERVAL, DEFAULT_PLAYBACK_SPEED } from './constants.js';
 
-export function createPlayer(state) {
+export function createPlayer(state, settings) {
   let frames = null;
   let intervalHandle = null;
   let currentFrameIndex = -1;
@@ -57,11 +57,13 @@ export function createPlayer(state) {
 
   function goTo(frameIndex) {
     currentFrameIndex = -1;
+    state.eventLog = [];
     while (currentFrameIndex !== frameIndex) applyNextFrame();
     player.emit('nextFrame', player.currentFrameIndex, player.totalFrameCount);
   }
 
   function reset() {
+    state.eventLog = [];
     currentFrameIndex = -1;
     applyNextFrame();
   }
@@ -79,7 +81,7 @@ export function createPlayer(state) {
 
   function applyFrameToState(frame) {
     state.events = [];
-    frame.forEach(event => applyEvent(state, event));
+    frame.forEach(event => applyEvent(state, event, currentFrameIndex));
     state.update({});
   }
 }

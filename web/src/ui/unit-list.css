@@ -5,6 +5,15 @@
   font-size: smaller;
 }
 
+.header {
+  text-align: center;
+  padding: 0.5em;
+}
+
+.settings {
+
+}
+
 .side {
   line-height: 2em;
 }
@@ -32,7 +41,7 @@
 }
 
 .unit.dead {
-  color: #666;
+  color: #aaaaaa;
 }
 
 .unit:hover {
@@ -41,4 +50,27 @@
 
 .unitSymbol {
   padding-left: 0.25em;
+}
+
+.sideName {
+  padding-left: 0.5em;
+  text-transform: uppercase;
+  font-size: larger;
+  font-weight: bold;
+}
+
+.sideName.east {
+  color: rgb(128, 0, 0);
+}
+
+.sideName.west {
+  color: rgb(0, 77, 153);
+}
+
+.sideName.ind {
+  color: rgb(0, 128, 0);
+}
+
+.sideName.civ {
+  color: rgb(102, 0, 128);
 }

@@ -9,17 +9,17 @@
   width: 192px;
   height: calc(100% - 40px - 40px);
 
-  background-color: rgba(0,0,0,0.8);
+  background-color: rgba(0,0,0,0.6);
 }
 
 .rightPanel {
   position: absolute;
   right: 0;
   top: 40px;
-  width: 192px;
-  height: calc(100% - 40px - 40px);
+  width: 384px;
+  height: 512px;
 
-  background-color: rgba(0,0,0,0.8);
+  background-color: rgba(0,0,0,0.6);
 }
 
 .topPanel {

@@ -1,0 +1,40 @@
+.list {
+  display: flex;
+  flex-direction: column-reverse;
+  font-size: 14px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.header {
+  text-align: center;
+  padding: 0.5em;
+}
+
+.event {
+  display: block;
+  padding: 0.25em;
+  margin: 0 0.25em;
+  border-top: white 1px solid;
+}
+
+.east {
+  font-weight: 500;
+  color: rgb(191, 0, 0);
+}
+
+.west {
+  font-weight: 500;
+  color: rgb(0, 109, 191);
+}
+
+.ind {
+  font-weight: 500;
+  color: rgb(0, 191, 0);
+}
+
+.civ {
+  font-weight: 500;
+  color: rgb(160, 0, 191);
+}

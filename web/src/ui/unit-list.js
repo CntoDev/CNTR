@@ -39,26 +39,22 @@ export class UnitList extends React.Component {
       }
     });
 
-    const onClick = unit => {
-      this.props.state.followedUnit && (this.props.state.followedUnit.followed = false);
-      this.props.state.followedUnit = unit;
-      unit.followed = true;
-      this.props.state.update();
-    };
+    const onClick = unit => this.props.state.follow(unit);
 
-    return <ul className={styles.container}>
-      {Object.values(list).map(({name, groups}) =>
+    return <div>
+      <div className={styles.header}>Units</div>
+      <ul className={styles.container}> {Object.values(list).map(({name, groups}) =>
           <Side key={name} name={name} groups={groups} onClick={onClick} />
-      )}
-    </ul>;
+      )}</ul>
+    </div>;
   }
 }
 
 function Side({name, groups, onClick}) {
   return <li className={cx(styles.side)}>
-    <span>{name}</span>
+    <span className={cx(styles.sideName, styles[name])}>{name}</span>
     <ul className={styles.groupList}>{Object.values(groups).map(({name, units}) =>
-      <Group key={name} name={name} units={units} onClick={onClick} />
+        <Group key={name} name={name} units={units} onClick={onClick} />
     )}</ul>
   </li>
 }
@@ -67,7 +63,7 @@ function Group({name, units, onClick}) {
   return <li className={cx(styles.group)}>
     <span>{name}</span>
     <ul className={styles.unitList}>{Object.values(units).map(unit =>
-      <Unit key={unit.name} unit={unit} onClick={onClick} />
+        <Unit key={unit.name} unit={unit} onClick={onClick} />
     )}</ul>
   </li>
 }
@@ -79,11 +75,11 @@ function Unit({unit, onClick}) {
   }
 
   if (!unit.alive) {
-    symbols.push('☠');
+    symbols.push('☠');//'✝'
   }
 
   if (unit.followed) {
-    symbols.push('👁');//'⌖', '✝', '⊕'
+    symbols.push('👁');//'⌖', '⊕'
   }
 
   return <li className={cx(styles.unit, !unit.alive && styles.dead)} onClick={() => onClick(unit)}>

@@ -4,7 +4,7 @@ import '../../vendor/leaflet.rotatedMarker.js';
 
 import { MAP_MAX_NATIVE_ZOOM, MAP_MIN_ZOOM, MAP_MAX_ZOOM } from '../constants.js';
 
-export function createMapController(mapElement, state) {
+export function createMapController(mapElement, state, settings) {
 
   const trim = 0;
 
@@ -31,9 +31,9 @@ export function createMapController(mapElement, state) {
     lines = [];
 
     map = L.map(mapElement, {
+      crs: L.CRS.Simple,
       attributionControl: false,
       closePopupOnClick: false,
-      crs: L.CRS.Simple,
       fadeAnimation: true,
       scrollWheelZoom: false,
       zoomAnimation: true,
@@ -59,6 +59,7 @@ export function createMapController(mapElement, state) {
     }).addTo(map);
 
     map.setView(map.unproject([imageSize / 2, imageSize / 2]), MAP_MIN_ZOOM);
+    map.on('dragstart', () => state.follow(null));
 
     mapElement.addEventListener('wheel', event => {
       const zoom = event.deltaY > 0 ? -0.5 : 0.5;
@@ -102,6 +103,8 @@ export function createMapController(mapElement, state) {
       killed: false,
       inVehicle: entity.vehicle,
     });
+
+    //TODO: add popup filtering
 
     if (entity.vehicle) {
       marker.closePopup();

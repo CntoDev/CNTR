@@ -36,16 +36,6 @@ body {
 	opacity: 0.8;
 }
 
-#ocapLogoButton {
-	background-image: url("../images/ocap-logo.png");
-	background-size: 70px 25px;
-	background-repeat: no-repeat;
-	width: 70px;
-	height: 25px;
-	display: inline-block;
-	margin: 8px;
-}
-
 .button-openCaptureLoadDialog {
 	background-image: url("../images/folder.png");
 	background-size: 25px 25px;
