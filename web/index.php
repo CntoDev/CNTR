@@ -62,11 +62,6 @@ if ($result != "") {
 	<link rel="stylesheet" href="style/common.css" />
 	<link rel="stylesheet" href="style/index.css" />
 	<link rel="icon" type="img/png" href="images/favicon.png">
-	<script src="scripts/leaflet-1.0.0-rc1.js"></script>
-	<script src="scripts/leaflet.rotatedMarker.js"></script>
-	<script src="scripts/leaflet.svgIcon.js"></script>
-	<script src="scripts/jquery.min.js"></script>
-	<script src="scripts/ocap.js"></script>
 </head>
 <body>
 
@@ -141,6 +136,11 @@ if ($result != "") {
 
 <div id="hint" class="hint">Test popup</div>
 
+<script src="scripts/leaflet-1.0.0-rc1.js"></script>
+<script src="scripts/leaflet.rotatedMarker.js"></script>
+<script src="scripts/leaflet.svgIcon.js"></script>
+<script src="scripts/jquery.min.js"></script>
+<script src="scripts/ocap.js"></script>
 <script>
 let opList = <?php echo json_encode($ops); ?>;
 let appVersion = <?php echo json_encode(VERSION); ?>;
