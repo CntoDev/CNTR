@@ -1,11 +1,11 @@
-import React from 'react';
+import React from 'react'
 
-import cx from 'classnames';
-import styles from './header-bar.css';
+import cx from 'classnames'
+import styles from './header-bar.css'
 
-export function HeaderBar({state, map, player}) {
+export function HeaderBar ({openLoadProject}) {
   return <div className={cx(styles.container)}>
     <div className={cx(styles.logo)}></div>
-    <div className={cx(styles.loadButton)}></div>
-  </div>;
+    <div className={cx(styles.loadButton)} onClick={openLoadProject}></div>
+  </div>
 }

@@ -1,9 +1,9 @@
-import React from 'react';
-import moment from 'moment';
+import React from 'react'
+import moment from 'moment'
 
-import styles from './load-dialog.css';
+import styles from './load-dialog.css'
 
-export function LoadDialog({ entries, loadCapture }) {
+export function LoadDialog ({entries, loadCapture}) {
   return <div className={styles.modal}>
     <div className={styles.modalContainer}>
       <div className={styles.modalHeader}>
@@ -13,22 +13,25 @@ export function LoadDialog({ entries, loadCapture }) {
       <div className={styles.modalBody}>
         <table>
           <thead>
-          <th>Mission</th><th>World</th><th>Duration</th><th>Date</th>
+          <th>Mission</th>
+          <th>World</th>
+          <th>Duration</th>
+          <th>Date</th>
           </thead>
           <tbody>
-          {entries.map(entry => <CaptureEntry entry={entry} onClick={loadCapture} />)}
+          {entries.map((entry, index) => <CaptureEntry key={index} entry={entry} onClick={loadCapture}/>)}
           </tbody>
         </table>
       </div>
     </div>
-  </div>;
+  </div>
 }
 
-function CaptureEntry({entry, entry: {missionName, worldName, duration, date}, onClick}) {
+function CaptureEntry ({entry, entry: {missionName, worldName, duration, date}, onClick}) {
   return <tr onClick={() => onClick(entry)}>
     <td>{missionName}</td>
     <td>{worldName}</td>
-    <td>{moment.utc(duration * 1000).format("HH:mm:ss")}</td>
-    <td>{moment.unix(date).format("DD.MM.YYYY")}</td>
-  </tr>;
+    <td>{moment.utc(duration * 1000).format('HH:mm:ss')}</td>
+    <td>{moment.unix(date).format('DD.MM.YYYY')}</td>
+  </tr>
 }

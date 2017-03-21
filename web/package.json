@@ -28,7 +28,6 @@
     "tape": "^4.6.3"
   },
   "dependencies": {
-    "assert": "^1.4.1",
     "classnames": "^2.2.5",
     "leaflet": "^1.0.3",
     "lodash": "^4.17.4",

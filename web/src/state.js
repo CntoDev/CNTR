@@ -1,6 +1,6 @@
-import { createEmitter } from './emitter.js';
+import { createEmitter } from './emitter.js'
 
-export function createState(settings) {
+export function createState (settings) {
 
   const state = createEmitter({
     entities: [],
@@ -11,31 +11,31 @@ export function createState(settings) {
     update,
     reset,
     follow,
-  });
+  })
 
-  return state;
+  return state
 
-  function update(newState) {
+  function update (newState) {
     //TODO: complete this!
-    state.emit('update', state);
+    state.emit('update', state)
   }
 
-  function reset() {
-    state.entities = [];
-    state.events = [];
-    state.eventLog = [];
-    state.emit('update', state);
+  function reset () {
+    state.entities = []
+    state.events = []
+    state.eventLog = []
+    state.emit('update', state)
   }
 
-  function follow(unit) {
-    const actualUnit = unit ? state.entities.find(u => u.id === unit.id) : null;
+  function follow (unit) {
+    const actualUnit = unit ? state.entities.find(u => u.id === unit.id) : null
     if (state.followedUnit) {
-      state.followedUnit.followed = false;
+      state.followedUnit.followed = false
     }
-    state.followedUnit = actualUnit;
+    state.followedUnit = actualUnit
     if (state.followedUnit) {
-      state.followedUnit.followed = true;
+      state.followedUnit.followed = true
     }
-    state.emit('update', state);
+    state.emit('update', state)
   }
 }
