@@ -1,10 +1,10 @@
 class CfgPatches
 {
-	class OCAP
+	class ocap
 	{
 		name = "OCAP";
-		author = "MisterGoodson";
-		requiredAddons[] = {"A3_Functions_F", "cba_main"};
+		author = "Shakan";
+		requiredAddons[] = {"A3_Functions_F"};
 		units[] = {};
 		weapons[] = {};
 	};
@@ -12,22 +12,30 @@ class CfgPatches
 
 class CfgFunctions
 {
-	class OCAP
+	class ocap
 	{
 		class null
 		{
 			file = "ocap\functions";
 			class init {postInit = 1;};
-			class exportData {};
-			class callExtension {};
+			class startCapture {};
 			class startCaptureLoop {};
-			class addEventHandlers {};
-			class log {};
-			class eh_killed {};
-			class eh_fired {};
-			class eh_hit {};
-			class eh_disconnected {};
-			class eh_connected {};
+			class stopCapture {};
+			class export {};
+			class writeEvent {};
+			class addMissionEventHandlers {};
+			class removeMissionEventHandlers {};
+			class addEntityEventHandlers {};
+			class removeEntityEventHandlers {};
+			class initEntity {};
+			class processEntity {};
+			class eventHandlerFired {};
+			class eventHandlerShot {};
+			class getVehicleKind {};
+			class round {};
+			class logDebug {};
+			class addDebugPlayerActions {};
+			class flushWriteBuffer {};
 		};
 	};
 };
