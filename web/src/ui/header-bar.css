@@ -1,0 +1,17 @@
+.container {
+  display: flex;
+}
+
+.logo {
+  background: url("images/ocap-logo.png") center no-repeat;
+  background-size: 70px auto;
+  width: 192px;
+  height: 40px;
+}
+
+.loadButton {
+  background: url("images/folder.png") center no-repeat;
+  background-size: 25px 25px;
+  width: 40px;
+  height: 40px;
+}
