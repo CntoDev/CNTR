@@ -1,0 +1,38 @@
+{
+  "name": "ocap-client",
+  "version": "2.0.0",
+  "description": "",
+  "main": "build/ocap.js",
+  "scripts": {
+    "build": "rollup -c config/rollup.config.js",
+    "watch": "rollup -c config/rollup.config.js -w",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ivan Šakić",
+  "license": "GPL-3.0",
+  "devDependencies": {
+    "babel-preset-react": "^6.23.0",
+    "cssnano": "^3.10.0",
+    "postcss-cssnext": "^2.10.0",
+    "postcss-modules": "^0.6.4",
+    "postcss-nested": "^1.0.0",
+    "postcss-simple-vars": "^3.0.0",
+    "rollup": "^0.41.4",
+    "rollup-plugin-babel": "^2.7.1",
+    "rollup-plugin-commonjs": "^7.1.0",
+    "rollup-plugin-node-resolve": "^2.0.0",
+    "rollup-plugin-postcss": "^0.2.0",
+    "rollup-plugin-replace": "^1.1.1",
+    "rollup-watch": "^3.2.2",
+    "tap": "^10.3.0",
+    "tape": "^4.6.3"
+  },
+  "dependencies": {
+    "classnames": "^2.2.5",
+    "leaflet": "^1.0.3",
+    "lodash": "^4.17.4",
+    "moment": "^2.17.1",
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2"
+  }
+}

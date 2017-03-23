@@ -1,0 +1,81 @@
+.container {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: smaller;
+}
+
+.header {
+  background-color: rgba(0, 0, 0, 0.3);
+  text-align: center;
+  padding: 0.5em;
+}
+
+.settings {
+
+}
+
+.side {
+  line-height: 2em;
+}
+
+.groupList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.group {
+  padding-left: 0.5em;
+  line-height: 2em;
+}
+
+.unitList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.unit {
+  padding-left: 1em;
+  line-height: 2em;
+}
+
+.unit.dead {
+  color: #aaaaaa;
+}
+
+.unit:hover {
+  background-color: rgba(205,134,20,0.9);
+}
+
+.unitSymbol {
+  padding-left: 0.25em;
+}
+
+.sideName {
+  padding-left: 0.5em;
+  text-transform: uppercase;
+  font-size: larger;
+  font-weight: bold;
+}
+
+.east {
+  font-weight: 500;
+  color: rgb(255, 0, 0);
+}
+
+.west {
+  font-weight: 500;
+  color: rgb(0, 150, 255);
+}
+
+.ind {
+  font-weight: 500;
+  color: rgb(0, 255, 0);
+}
+
+.civ {
+  font-weight: 500;
+  color: rgb(214, 0, 255);
+}

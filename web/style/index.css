@@ -1,13 +1,18 @@
-html, body, #map {
-	width:100%;
-	height:100%;
-	margin:0;
-	padding:0;
-	font-family: Roboto, Arial, sans-serif;
-	color: #F2F2F2;
-	overflow: hidden;
-	font-size: 13px;
-	cursor: default;
+html {
+  font-family: Roboto, Arial, sans-serif;
+  color: white;
+  font-size: 16px;
+  cursor: default;
+}
+
+body {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+	margin: 0;
+	padding: 0;
 }
 
 #map {
@@ -15,6 +20,9 @@ html, body, #map {
 	position: absolute;
 	left: 0;
 	top: 0;
+  width: 100%;
+  height: 100%;
+  user-select: none;
 }
 
 #uk3cbLogoWatermark {
@@ -29,17 +37,7 @@ html, body, #map {
 	opacity: 0.8;
 }
 
-#ocapLogoButton {
-	background-image: url("../images/ocap-logo.png");
-	background-size: 70px 25px;
-	background-repeat: no-repeat;
-	width: 70px;
-	height: 25px;
-	display: inline-block;
-	margin: 8px;
-}
-
-#loadOpButton {
+.button-openCaptureLoadDialog {
 	background-image: url("../images/folder.png");
 	background-size: 25px 25px;
 	background-repeat: no-repeat;
@@ -186,31 +184,11 @@ html, body, #map {
 	padding: 5px;
 }
 
-#bottomPanel {
-	/*background-color: #343434;*/
-	background-color: rgba(0,0,0,0.8);
-	position: absolute;
-	bottom: 0;
-	left: 0;
-	width: 100%;
-	height: 40px;
-}
+
 
 #bottomPanel .panelContent {
 	padding: 5px;
 	height: 100%;
-}
-
-#playPauseButton {
-	position: relative;
-	background-image: url("../images/play-pause.png");
-	background-position: 0 0;
-	height: 15px;
-	width: 15px;
-	background-size: auto 15px;
-	display: inline-block;
-	top: 2px;
-	margin-left: 10px;
 }
 
 #timecodeContainer, #frameSliderContainer, #versionInfoContainer, #playbackSpeedSliderContainer, #playbackSpeedSliderContainer, .fullscreenButton  {
@@ -306,7 +284,6 @@ html, body, #map {
 
 input[type=range] {
 	-webkit-appearance: none; /* Hides the slider so that custom slider can be made */
-	width: 100%; /* Specific width is required for Firefox. */
 	background: transparent;
 }
 
@@ -336,6 +313,10 @@ input[type=range]::-webkit-slider-runnable-track {
 	font-weight: 500;
 }
 
+.eventDetails {
+	color: #9A9A9A;
+}
+
 .liEvent {
 	margin-top: 10px;
 	padding-bottom: 10px;
@@ -348,150 +329,54 @@ input[type=range]::-webkit-slider-runnable-track {
 	transition: opacity 1s;
 }
 
-.eventDetails {
-	color: #9A9A9A;
-}
-
 .liGroup {
-	padding-top: 10px;
+	display: block;
+	padding-left: 1em;
+	line-height: 2em;
 }
 
 .liUnit {
-	padding-left: 16px;
-	padding-top: 5px;
-	padding-bottom: 5px;
+	display: block;
+	padding-left: 2em;
+	line-height: 2em;
+}
+
+.liUnit.dead {
+	color: #666;
 }
 
 .liUnit:hover {
-	background-color: rgb(205,134,20);
 	background-color: rgba(205,134,20,0.9);
 }
 
 .sideTitle {
+  display: block;
 	text-shadow: 1px 1px #000000;
+  padding-top: 0.5em;
+  margin-bottom: 0.25em;
 	font-weight: bold;
 }
 
-.blufor {
-	color: #00a8ff;
+.west {
+	color: rgb(0, 77, 153);
 }
 
-.opfor {
-	color: #ff0000;
+.east {
+	color: rgb(128, 0, 0);
 }
 
 .ind {
-	color: #00cc00;
+	color: rgb(0, 128, 0);
 }
 
 .civ {
-	color: #C900FF;
+	color: rgb(102, 0, 128);
 }
 
-.modal {
-	display: none;
-	position: fixed;
-	z-index: 1;
-	left: 0;
-	top: 0;
-	width: 100%;
-	height: 100%;
-	overflow: auto;
-	background-color: rgb(0,0,0);
-	background-color: rgba(0,0,0,0.4);
-}
-.modalContent {
-	background: none;
-	margin: auto;
-	margin-top: 10%;
-/*	border: 1px solid black;*/
-	width: 40%;
-}
-.modalHeader {
-	box-sizing: border-box;
-	font-size: 16px;
-	background-color: rgb(205,134,20);
-	background-color: rgba(205,134,20,0.9);
-	width: 100%;
-	margin-bottom: 3px;
-	padding: 5px;
-	padding-left: 10px;
-	padding-right: 10px;
-	font-weight: 500;
-}
-.modalBody {
-	box-sizing: border-box;
-	background-color: rgba(0,0,0);
-	background-color: rgba(0,0,0,0.7);
-	width: 100%;
-	min-height: 200px;
-	max-height: 400px;
-	height: auto;
-	padding: 10px;
-	overflow-y: auto;
-	overflow-x: auto;
+.empty {
+	color: rgb(184, 134, 11);
 }
 
-.modalBody a {
-	color: white;
-	text-decoration: none;
-}
-
-.modalBody a:hover {
-	text-decoration: underline;
-}
-
-.modalBody table {
-	border-collapse: collapse;
-	border: none;
-	width: 100%;
-}
-.modalBody th {
-	background-color: rgba(0,0,0);
-	background-color: rgba(0,0,0,0.7);
-	padding: 3px;
-	font-weight: 500;
-}
-.modalBody td {
-	padding-right: 20px;
-	padding: 3px;
-}
-.modalBody tr {
-	text-align: left;
-}
-.modalBody tr:hover {
-	background-color: rgb(205,134,20);
-	background-color: rgba(205,134,20,0.9);
-}
-.modalButtons {
-	box-sizing: border-box;
-	width: 100%;
-	text-align: right;
-	background: none;
-	margin-top: 3px;
-	height: 15px;
-}
-.modalButton {
-	display: inline-block;
-	background-color: none;
-	height: 100%;
-	min-width: 100px;
-	background-color: rgba(0,0,0);
-	background-color: rgba(0,0,0,0.7);
-	margin-right: 10px;
-	padding: 5px;
-	text-transform: uppercase;
-	text-align: left;
-}
-
-.modalButton:last-child {
-	margin-right: 0;
-}
-
-.modalButton:hover {
-	background-color: #FFF;
-	color: #000;
-}
 .fullscreenButton {
 	background-image: url("../images/fullscreen.png");
 	opacity: 0.95;
@@ -589,6 +474,31 @@ input[type=range]::-webkit-slider-runnable-track {
 .leaflet-div-icon {
 	background: none;
 	border: none;
-	margin: none;
-	padding: none;
+	margin: unset;
+	padding: unset;
+}
+
+.bottomPanel-element {
+  display: inline-block;
+  background: none;
+  border: none;
+  margin: unset;
+  padding: unset;
+}
+
+#playPauseButton {
+	position: relative;
+	background-image: url("../images/play-pause.png");
+	background-position: 0 0;
+	height: 16px;
+	width: 16px;
+	background-size: auto 16px;
+	display: inline-block;
+	top: 4px;
+	margin-left: 16px;
+  margin-right: 16px;
+}
+
+#playPauseButton.paused {
+	background-position: 100% 0;
 }
