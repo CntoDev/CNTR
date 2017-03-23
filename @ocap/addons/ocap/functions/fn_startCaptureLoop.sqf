@@ -5,10 +5,11 @@
 	Captures unit/vehicle data (including dynamically spawned AI/JIP players) during a mission for playback.
 	Compatible with dynamically spawned AI and JIP players.
 */
+#define OCAP_FORMAT_VERSION 0.1
 
 waitUntil { sleep 1; count allPlayers >= ocap_minPlayerCount and ocap_captureRunning; };
 
-private _header = [worldName, briefingName, getMissionConfigValue ["author", "Unknown"], ocap_captureInterval];
+private _header = [OCAP_FORMAT_VERSION, worldName, briefingName, getMissionConfigValue ["author", "Unknown"], ocap_captureInterval];
 
 ["start", _header joinString ","] call ocap_fnc_export;
 
