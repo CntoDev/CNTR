@@ -1,4 +1,4 @@
-export const MAP_INDEX_URL = 'images/maps/maps.json'
+export const MAP_INDEX_URL = 'images/maps/index.json'
 export const CAPTURE_INDEX_URL = 'data/index.json'
 
 export const STATE_CACHING_FREQUENCY = 60

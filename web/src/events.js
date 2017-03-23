@@ -2,7 +2,7 @@ import React from 'react'
 import moment from 'moment'
 import isNumber from 'lodash/isNumber'
 
-import styles from './ui/event-log.css'
+import styles from './components/event-log.css'
 
 import {
   EVENT_SPAWNED, EVENT_RESPAWNED, EVENT_DESPAWNED,

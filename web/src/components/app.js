@@ -1,7 +1,7 @@
 import React from 'react'
 
 import cx from 'classnames'
-import styles from './ui.css'
+import styles from './app.css'
 
 import { parse } from '../parser.js'
 import { UnitList } from './unit-list.js'
@@ -16,7 +16,14 @@ export class App extends React.Component {
 
     this.state = {
       loadDialogOpen: true,
+      eventLog: this.props.state.eventLog,
     }
+  }
+
+  componentDidMount () {
+    this.props.state.on('update', newState => this.setState({
+      eventLog: newState.eventLog,
+    }))
   }
 
   loadCapture (entry) {
@@ -38,7 +45,7 @@ export class App extends React.Component {
 
   render () {
     const {state, map, player, captureIndex} = this.props
-    const {loadDialogOpen} = this.state
+    const {loadDialogOpen, eventLog} = this.state
 
     return <div className={styles.container}>
       <div className={styles.topPanel}>
@@ -48,7 +55,7 @@ export class App extends React.Component {
         <UnitList map={map} state={state} player={player}/>
       </div>
       <div className={styles.rightPanel}>
-        <EventLog state={state}/>
+        <EventLog eventLog={eventLog}/>
       </div>
       <div className={styles.bottomPanel}>
         <PlaybackWidget player={player}/>
