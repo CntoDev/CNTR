@@ -1,7 +1,7 @@
 ﻿/**
  * Author: MisterGoodson
  * Author: Shakan
- * 
+ *
  * ==========================================================================================
  *
  *   Copyright (C) 2016 Jamie Goodson (aka MisterGoodson) (goodsonjamie@yahoo.co.uk)
@@ -39,7 +39,7 @@ namespace OCAPExporter
         static string[] commandSeparator = { "::" };
         static char[] entrySeparator = { ',' };
         static StreamWriter fileWriter = null;
-        
+
 #if WIN64
         [DllExport("RVExtension", CallingConvention = CallingConvention.Winapi)]
 #else
