@@ -22,3 +22,4 @@
 @ocap/addons/*.pbo
 web/node_modules
 web/.idea
+extension/packages/

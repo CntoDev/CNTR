@@ -1,7 +1,7 @@
 ﻿/**
  * Author: MisterGoodson
  * Author: Shakan
- * 
+ *
  * ==========================================================================================
  *
  *   Copyright (C) 2016 Jamie Goodson (aka MisterGoodson) (goodsonjamie@yahoo.co.uk)
@@ -40,8 +40,6 @@ namespace OCAPExporter
         static char[] entrySeparator = { ',' };
         static StreamWriter fileWriter = null;
 
-        // This 2 line are IMPORTANT and if changed will stop everything working
-        // To send a string back to ARMA append to the output StringBuilder, ARMA outputSize limit applies!#if WIN64
 #if WIN64
         [DllExport("RVExtension", CallingConvention = CallingConvention.Winapi)]
 #else
@@ -79,7 +77,10 @@ namespace OCAPExporter
         {
             try
             {
-                if (fileWriter != null) fileWriter.Write(captureData);
+                lock (fileWriter)
+                {
+                    if (fileWriter != null) fileWriter.Write(captureData);
+                }
             }
             catch (Exception exception)
             {
