@@ -24,7 +24,7 @@ export class UnitList extends React.Component {
     })
   }
 
-  shouldComponentUpdate (nextProps, nextState) {
+  shouldComponentUpdate (_, nextState) {
     return (nextState.units.length !== this.state.units.length) ||
       zip(this.state.units, nextState.units).some(([prev, next]) => !isEqual(prev, next))
   }
