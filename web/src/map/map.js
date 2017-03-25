@@ -146,7 +146,7 @@ export function createMapController (mapElement, state, settings) {
       dead: !entity.alive,
       hit: false,
       killed: false,
-      inVehicle: !!entity.vehicle,
+      inVehicle: !!entity.vehicle || (settings.hideCurators && entity.isCurator),
     })
 
     renderPopup(marker, entity)
@@ -162,7 +162,7 @@ export function createMapController (mapElement, state, settings) {
     } else if (entity.crew && entity.crew.some(unit => unit.isPlayer) && settings.labels.vehicles && settings.labels.players) {
       marker.openPopup()
 
-      marker.getPopup().setContent(entity.description + ' (' + entity.crew.length + ')<br>' +
+      marker.getPopup().setContent(`${entity.description} (${entity.crew.length})<br>` +
         entity.crew.map(unit => unit.name).join('<br>'))
     } else if (entity.crew && entity.crew.some(unit => !unit.isPlayer) && settings.labels.vehicles && settings.labels.ai) {
       marker.openPopup()

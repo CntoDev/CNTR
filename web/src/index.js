@@ -9,10 +9,12 @@ import { App } from './components/app.js'
 
 import { DEFAULT_SETTINGS, MAP_INDEX_URL, CAPTURE_INDEX_URL } from './constants.js'
 
-const settings = Object.assign({}, DEFAULT_SETTINGS)
+const mapElement = document.querySelector('#map')
+const appRootElement = document.querySelector('#root')
 
+const settings = Object.assign({}, DEFAULT_SETTINGS)
 const state = createState(settings)
-const map = createMapController(document.querySelector('#map'), state, settings)
+const map = createMapController(mapElement, state, settings)
 const player = createPlayer(state, settings);
 
 (function initOcap () {
@@ -23,7 +25,7 @@ const player = createPlayer(state, settings);
          player={player}
          mapIndex={mapIndex}
          captureIndex={captureIndex}/>,
-    document.querySelector('#root')))
+    appRootElement))
     .catch(error => console.error(error))
 }())
 

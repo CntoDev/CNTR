@@ -56,7 +56,8 @@ export function createPlayer (state, settings) {
   function goTo (frameIndex) {
     currentFrameIndex = -1
     state.eventLog = []
-    while (currentFrameIndex !== frameIndex) applyNextFrame()
+    while (currentFrameIndex < frameIndex) applyNextFrame(true)
+    applyNextFrame()
     player.emit('nextFrame', player.currentFrameIndex, player.totalFrameCount)
   }
 
@@ -66,24 +67,22 @@ export function createPlayer (state, settings) {
     applyNextFrame()
   }
 
-  function applyNextFrame () {
+  function applyNextFrame (suppressUpdate = false) {
     const currentFrame = frames[++currentFrameIndex]
 
     if (currentFrame) {
-      applyFrameToState(currentFrame)
+      applyFrameToState(currentFrame, suppressUpdate)
       return true
     } else {
       return false
     }
   }
 
-  function applyFrameToState (frame) {
+  function applyFrameToState (frame, suppressUpdate) {
     state.events = []
     frame.forEach(event => applyEvent(state, event, currentFrameIndex))
-    state.update({})
-  }
-
-  function stateToEvents (state) {
-
+    if (!suppressUpdate) {
+      state.update({})
+    }
   }
 }

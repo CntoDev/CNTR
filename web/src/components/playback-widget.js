@@ -25,14 +25,14 @@ export class PlaybackWidget extends React.Component {
     const { playing, currentFrameIndex, frameCount } = this.state;
 
     const value = currentFrameIndex;
-    const max = frameCount;
-    const currentTime = (currentFrameIndex !== -1) ? moment.utc(currentFrameIndex * 1000).format("HH:mm:ss") : '--:--:--';
+    const max = frameCount - 1;
+    const currentTime = (currentFrameIndex !== -1) ? moment.utc((currentFrameIndex + 1) * 1000).format("HH:mm:ss") : '--:--:--';
     const endTime = (frameCount !== -1) ? moment.utc(frameCount * 1000).format("HH:mm:ss") : '--:--:--';
 
     return <div className={styles.container}>
       <span className={cx(styles.playButton, !playing && styles.paused)} onClick={this.togglePlayback.bind(this)}/>
       <span className={styles.timeDisplay}>{currentTime}/{endTime}</span>
-      <input className={styles.slider} type="range" min="0" value={value} max={max} step="1" onChange={this.skipToFrame.bind(this)} />
+      <input className={styles.slider} type="range" min="1" value={value} max={max} step="1" onChange={this.skipToFrame.bind(this)} />
     </div>;
   }
 
@@ -43,7 +43,8 @@ export class PlaybackWidget extends React.Component {
   }
 
   skipToFrame(event) {
-    this.props.player.goTo(Number.parseInt(event.target.value));
+    const value = Number.parseInt(event.target.value);
+    this.props.player.goTo(value);
   }
 
   togglePlayback() {

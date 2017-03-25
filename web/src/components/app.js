@@ -11,12 +11,12 @@ import { LoadDialog } from './load-dialog.js'
 import { EventLog } from './event-log.js'
 
 export class App extends React.Component {
-  constructor () {
-    super()
+  constructor (props) {
+    super(props)
 
     this.state = {
       loadDialogOpen: true,
-      eventLog: this.props.state.eventLog,
+      eventLog: props.state.eventLog,
     }
   }
 

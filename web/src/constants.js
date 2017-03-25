@@ -4,6 +4,8 @@ export const CAPTURE_INDEX_URL = 'data/index.json'
 export const STATE_CACHING_FREQUENCY = 60
 
 export const EVENT_SPAWNED = 'S'
+export const EVENT_UNIT_SPAWNED = 'U'
+export const EVENT_VEHICLE_SPAWNED = 'V'
 export const EVENT_RESPAWNED = 'R'
 export const EVENT_DESPAWNED = 'X'
 export const EVENT_CONNECTED = 'C'
@@ -28,4 +30,7 @@ export const DEFAULT_SETTINGS = {
     players: true,
     vehicles: true,
   },
+  hideCurators: true,
 }
+
+export const OCAP_FORMAT_VERSION = 1.0

@@ -151,3 +151,86 @@ function DisconnectedLog ({player, frameIndex}) {
     <span className={styles.eventDetails}>{moment.utc(frameIndex * 1000).format('HH:mm:ss')}</span>
   </li>
 }
+
+/*
+export function createEvent (state, event, frameIndex) {
+  switch (event[0]) {
+    case EVENT_MOVED:
+      return new MoveEvent(event, frameIndex)
+    case EVENT_SPAWNED:
+      return applySpawnedEvent(state, event)
+    case EVENT_RESPAWNED:
+      return applyRespawnedEvent(state, event)
+    case EVENT_DESPAWNED:
+      return applyDespawnedEvent(state, event)
+    case EVENT_CONNECTED:
+      return applyConnectedEvent(state, event, frameIndex)
+    case EVENT_DISCONNECTED:
+      return applyDisconnectedEvent(state, event, frameIndex)
+    case EVENT_FIRED:
+      return applyFiredEvent(state, event)
+    case EVENT_HIT:
+      return applyHitEvent(state, event, frameIndex)
+    case EVENT_KILLED:
+      return applyKilledEvent(state, event, frameIndex)
+    case EVENT_GOT_IN:
+      return applyGotInEvent(state, event)
+    case EVENT_GOT_OUT:
+      return applyGotOutEvent(state, event)
+    default:
+      return
+  }
+}
+
+function SpawnedEvent([, entityId, x, y, dir], frameIndex) {
+  Object.assign(this, {
+    frameIndex,
+    entityId,
+    x,
+    y,
+    dir,
+  })
+}
+
+function UnitSpawnedEvent([], frameIndex) {
+  Object.assign(this, {
+  })
+}
+
+function VehicleSpawnedEvent([], frameIndex) {
+  Object.assign(this, {
+  })
+}
+
+
+SpawnedEvent.prototype.apply = function applySpawnedEvent (state) {
+  const oldMarker = state.entities[event[1]] && state.entities[event[1]].marker
+
+  const entity = createEntity(event)
+  state.entities[entity.id] = entity
+  entity.marker = oldMarker
+}
+
+
+function MoveEvent([, entityId, x, y, dir], frameIndex) {
+  Object.assign(this, {
+    frameIndex,
+    entityId,
+    x,
+    y,
+    dir,
+  })
+}
+
+MoveEvent.prototype.apply = function applyMoveEvent (state) {
+  const entityPose = state.entities[this.entityId].pose
+  const newPose = {
+    x: isNumber(this.x) ? this.x : entityPose.x,
+    y: isNumber(this.y) ? this.y : entityPose.y,
+    dir: isNumber(this.dir) ? this.dir : entityPose.dir,
+  }
+  Object.assign(entityPose, newPose);
+
+  (entityPose.crew || []).forEach(unit => Object.assign(unit.pose, newPose))
+}
+*/
