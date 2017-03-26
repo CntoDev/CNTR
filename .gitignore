@@ -5,12 +5,8 @@ extension/bin/*
 extension/obj/*
 extension/.vs/*
 
-## WEB FILES ##
-web/data/
-web/images/maps/
-
 ## ADDON ##
-@ocap/addons/*.pbo
 web/node_modules
+web/data/
+web/maps/
 web/.idea
-

@@ -1,6 +1,6 @@
 export const OCAP_FORMAT_VERSION = '^0.2.0'
 
-export const MAP_INDEX_URL = 'images/maps/index.json'
+export const MAP_INDEX_URL = 'maps/index.json'
 export const CAPTURE_INDEX_URL = 'data/index.json'
 
 export const EVENTS = {
