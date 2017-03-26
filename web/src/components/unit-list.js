@@ -18,7 +18,7 @@ export class UnitList extends React.Component {
     this.props.state.on('update', () => {
       this.setState({
         units: this.props.state.entities
-          .filter(entity => entity.kind === 'Man')
+          .filter(entity => entity.type === 'Man')
           .map(({alive, vehicle, group, side, followed}) => ({alive, vehicle, group, side, followed})),
       })
     })
@@ -32,7 +32,7 @@ export class UnitList extends React.Component {
   render () {
     const list = {}
     this.props.state.entities.forEach(entity => {
-      if (entity.kind === 'Man') {
+      if (entity.type === 'Man') {
         const side = list[entity.side] || (list[entity.side] = {name: entity.side, groups: {}})
         const group = side.groups[entity.group] || (side.groups[entity.group] = {name: entity.group, units: {}})
         const unit = group.units[entity.id] || (group.units[entity.id] = entity)
@@ -41,12 +41,14 @@ export class UnitList extends React.Component {
 
     const onClick = unit => this.props.state.follow(unit)
 
-    return <div>
-      <div className={styles.header}>Units</div>
-      <ul className={styles.container}> {Object.values(list).map(({name, groups}) =>
-        <Side key={name} name={name} groups={groups} onClick={onClick}/>
-      )}</ul>
-    </div>
+    return <div className={cx(styles.container)}>
+        <div className={styles.header}>Units</div>
+        <div className={cx(styles.listContainer)}>
+          <ul className={styles.list}> {Object.values(list).map(({name, groups}) =>
+            <Side key={name} name={name} groups={groups} onClick={onClick}/>
+          )}</ul>
+        </div>
+      </div>
   }
 }
 

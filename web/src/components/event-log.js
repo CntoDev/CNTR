@@ -4,8 +4,10 @@ import cx from 'classnames'
 import styles from './event-log.css'
 
 export function EventLog ({eventLog}) {
-  return <div>
+  return <div className={cx(styles.container)}>
     <div className={cx(styles.header)}>Events</div>
-    <ul className={cx(styles.list)}>{ eventLog }</ul>
+    <div className={cx(styles.listContainer)}>
+      <ul className={cx(styles.list)}>{ eventLog }</ul>
+    </div>
   </div>
 }

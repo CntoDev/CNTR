@@ -31,7 +31,7 @@ export class App extends React.Component {
 
     const worldInfo = mapIndex.find(world => world.worldName.toLowerCase() === entry.worldName.toLowerCase())
 
-    return fetch(entry.captureFilePath).then(response => response.text()).then(parse).then(({frames}) => {
+    return fetch('data/' + entry.captureFileName).then(response => response.text()).then(parse).then(({frames}) => {
       state.reset()
       map.loadWorld(worldInfo)
       player.load(frames)
