@@ -40,7 +40,6 @@ export function createMapController (mapElement, state, settings) {
       zoomSnap: 0.1,
     }).setView([0, 0], MAP_MAX_NATIVE_ZOOM)
 
-
     const mapBounds = new L.LatLngBounds(
       map.unproject([0, imageSize], MAP_MAX_NATIVE_ZOOM),
       map.unproject([imageSize, 0], MAP_MAX_NATIVE_ZOOM)
@@ -90,7 +89,6 @@ export function createMapController (mapElement, state, settings) {
         thisLine.addTo(map)
       }
     })
-
 
     map.on('mousemove', function (e) {
       if (drawing && line) {
@@ -146,7 +144,7 @@ export function createMapController (mapElement, state, settings) {
       dead: !entity.alive,
       hit: false,
       killed: false,
-      inVehicle: !!entity.vehicle,
+      inVehicle: !!entity.vehicle || (settings.hideCurators && entity.isCurator),
     })
 
     renderPopup(marker, entity)
@@ -157,12 +155,12 @@ export function createMapController (mapElement, state, settings) {
 
     if (entity.isPlayer && !entity.vehicle && settings.labels.players) {
       marker.openPopup()
-    } else if (entity.kind === 'Man' && settings.labels.ai) {
+    } else if (entity.type === 'Man' && settings.labels.ai) {
       marker.openPopup()
     } else if (entity.crew && entity.crew.some(unit => unit.isPlayer) && settings.labels.vehicles && settings.labels.players) {
       marker.openPopup()
 
-      marker.getPopup().setContent(entity.description + ' (' + entity.crew.length + ')<br>' +
+      marker.getPopup().setContent(`${entity.description} (${entity.crew.length})<br>` +
         entity.crew.map(unit => unit.name).join('<br>'))
     } else if (entity.crew && entity.crew.some(unit => !unit.isPlayer) && settings.labels.vehicles && settings.labels.ai) {
       marker.openPopup()
@@ -173,8 +171,8 @@ export function createMapController (mapElement, state, settings) {
     const marker = L.marker([-1000000, -1000000]).addTo(map)
 
     marker.setIcon(L.svgIcon({
-      iconSize: entity.kind === 'Man' ? [16, 16] : [32, 32],
-      iconUrl: `images/markers/${entity.kind}.svg#symbol`,
+      iconSize: entity.type === 'Man' ? [16, 16] : [32, 32],
+      iconUrl: `images/markers/${entity.type}.svg#symbol`,
       classList: ['marker']
     }))
 
@@ -193,7 +191,7 @@ export function createMapController (mapElement, state, settings) {
       autoPan: false,
       autoClose: false,
       closeButton: false,
-      className: entity.kind === 'Man' ? 'leaflet-popup-unit' : 'leaflet-popup-vehicle',
+      className: entity.type === 'Man' ? 'leaflet-popup-unit' : 'leaflet-popup-vehicle',
     })
     popup.setContent(entity.name)
     return popup
@@ -218,15 +216,17 @@ export function createMapController (mapElement, state, settings) {
       const target = state.entities[event[1]]
       const shooter = state.entities[event[2]]
 
-      line = L.polyline(
-        [coordinatesToLatLng(shooter.pose), coordinatesToLatLng(target.pose)],
-        {className: 'hitLine killed'})
+      if (shooter) {
+        line = L.polyline(
+          [coordinatesToLatLng(shooter.pose), coordinatesToLatLng(target.pose)],
+          {className: 'hitLine killed'})
 
-      getMarker(target).setClasses({
-        [target.side]: true,
-        killed: true,
-        hit: false,
-      })
+        getMarker(target).setClasses({
+          [target.side]: true,
+          killed: true,
+          hit: false,
+        })
+      }
 
     } else if (event[0] === 'F') {
       const shooter = state.entities[event[1]]
@@ -236,8 +236,10 @@ export function createMapController (mapElement, state, settings) {
         {className: 'hitLine fired'})
     }
 
-    line.addTo(map)
-    lines.push(line)
+    if (line) {
+      line.addTo(map)
+      lines.push(line)
+    }
   }
 
   function getMarker ({id}) {

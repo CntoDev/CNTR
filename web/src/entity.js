@@ -1,82 +1,69 @@
-export function createEntity(event) {
-  switch (event[2]) {
-    case 'Man': return createSoldier(event);
-    default: return createVehicle(event);
-  }
-}
-
-function createBaseEntity([, id, type]) {
+function createBaseEntity ([, id, type, name, x, y, dir]) {
   const pose = {
-    x: 0,
-    y: 0,
-    dir: 0,
-  };
+    x,
+    y,
+    dir,
+  }
 
   return {
     id,
     type,
+    name,
     alive: true,
     visible: true,
-    vehicle: null,
-    get pose() {
-      return this.vehicle && this.vehicle.pose || pose;
+    get pose () {
+      return this.vehicle && this.vehicle.pose || pose
     },
-    set pose(newPose) {
+    set pose (newPose) {
       if (!this.vehicle) {
-        Object.assign(pose, newPose);
+        Object.assign(pose, newPose)
       }
     },
-  };
+  }
 }
 
-function createSoldier(event) {
-  const [,,, name, group, side, isPlayer, isCurator] = event;
+export function createUnit (event) {
+  const [, , , , , , , group, side, isPlayer, isCurator] = event
   return Object.assign(createBaseEntity(event), {
-    kind: 'Man',
-    name,
     group,
     side: side.toLowerCase(),
     isPlayer,
     isCurator,
+    vehicle: null,
   })
 }
 
-function createVehicle(event) {
-  const [,, kind, description] = event;
-
+export function createVehicle (event) {
   const vehicle = Object.assign(createBaseEntity(event), {
-    kind,
-    description,
     crew: [],
-
     addCrewMember,
     removeCrewMember,
-  });
+  })
 
   Object.defineProperties(vehicle, {
     side: {
       get() {
-        return this.crew.length ? this.crew[0].side : 'empty';
+        return this.crew.length ? this.crew[0].side : 'empty'
       },
       configurable: true,
       enumerable: true,
     },
-  });
+  })
 
-  return vehicle;
+  return vehicle
 
-  function addCrewMember(unit) {
+  function addCrewMember (unit) {
     if (!this.crew.includes(unit)) {
-      this.crew.push(unit);
-      unit.vehicle = this;
+      this.crew.push(unit)
+      unit.vehicle = this
     }
   }
 
-  function removeCrewMember(unit) {
-    const index = this.crew.indexOf(unit);
+  function removeCrewMember (unit) {
+    const index = this.crew.indexOf(unit)
     if (index !== -1) {
-      this.crew.splice(index, 1);
-      unit.vehicle = null;
+      this.crew.splice(index, 1)
+      unit.vehicle = null
     }
   }
 }

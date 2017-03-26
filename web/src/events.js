@@ -2,41 +2,39 @@ import React from 'react'
 import moment from 'moment'
 import isNumber from 'lodash/isNumber'
 
-import styles from './ui/event-log.css'
+import styles from './components/event-log.css'
 
-import {
-  EVENT_SPAWNED, EVENT_RESPAWNED, EVENT_DESPAWNED,
-  EVENT_CONNECTED, EVENT_DISCONNECTED,
-  EVENT_MOVED,
-  EVENT_FIRED, EVENT_HIT, EVENT_KILLED,
-  EVENT_GOT_IN, EVENT_GOT_OUT
-} from './constants.js'
+import { EVENTS } from './constants.js'
 
-import { createEntity } from './entity.js'
+import { createUnit, createVehicle } from './entity.js'
 
 export function applyEvent (state, event, frameIndex) {
-  switch (event[0]) {
-    case EVENT_MOVED:
+  const eventId = event[0]
+
+  switch (eventId) {
+    case EVENTS.MOVED.ID:
       return applyMoveEvent(state, event)
-    case EVENT_SPAWNED:
-      return applySpawnedEvent(state, event)
-    case EVENT_RESPAWNED:
+    case EVENTS.UNIT_SPAWNED.ID:
+      return applyUnitSpawnedEvent(state, event)
+    case EVENTS.VEHICLE_SPAWNED.ID:
+      return applyVehicleSpawnedEvent(state, event)
+    case EVENTS.RESPAWNED.ID:
       return applyRespawnedEvent(state, event)
-    case EVENT_DESPAWNED:
+    case EVENTS.DESPAWNED.ID:
       return applyDespawnedEvent(state, event)
-    case EVENT_CONNECTED:
+    case EVENTS.CONNECTED.ID:
       return applyConnectedEvent(state, event, frameIndex)
-    case EVENT_DISCONNECTED:
+    case EVENTS.DISCONNECTED.ID:
       return applyDisconnectedEvent(state, event, frameIndex)
-    case EVENT_FIRED:
+    case EVENTS.FIRED.ID:
       return applyFiredEvent(state, event)
-    case EVENT_HIT:
+    case EVENTS.HIT.ID:
       return applyHitEvent(state, event, frameIndex)
-    case EVENT_KILLED:
+    case EVENTS.KILLED.ID:
       return applyKilledEvent(state, event, frameIndex)
-    case EVENT_GOT_IN:
+    case EVENTS.GOT_IN.ID:
       return applyGotInEvent(state, event)
-    case EVENT_GOT_OUT:
+    case EVENTS.GOT_OUT.ID:
       return applyGotOutEvent(state, event)
     default:
       return
@@ -45,27 +43,47 @@ export function applyEvent (state, event, frameIndex) {
 
 function applyMoveEvent (state, event) {
   const [, entityId, x, y, dir] = event
+
   const entityPose = state.entities[entityId].pose
   const newPose = {
     x: isNumber(x) ? x : entityPose.x,
     y: isNumber(y) ? y : entityPose.y,
     dir: isNumber(dir) ? dir : entityPose.dir,
   }
-  Object.assign(entityPose, newPose);
+  Object.assign(entityPose, newPose)
 
-  (entityPose.crew || []).forEach(unit => Object.assign(unit, newPose))
+  ;(entityPose.crew || []).forEach(unit => Object.assign(unit, newPose))
 }
 
-function applySpawnedEvent (state, event) {
-  const oldMarker = state.entities[event[1]] && state.entities[event[1]].marker
+function applyUnitSpawnedEvent (state, event) {
+  const unitId = event[1]
+  const vehicleId = event[11]
 
-  const entity = createEntity(event)
-  state.entities[entity.id] = entity
-  entity.marker = oldMarker
+  const oldMarker = state.entities[unitId] && state.entities[unitId].marker
+
+  const unit = state.entities[unitId] = createUnit(event)
+
+  if (isNumber(vehicleId)) {
+    const unit = state.entities[unitId]
+    const vehicle = state.entities[vehicleId]
+    vehicle.addCrewMember(unit)
+  }
+
+  unit.marker = oldMarker
+}
+
+function applyVehicleSpawnedEvent (state, event) {
+  const vehicleId = event[1]
+
+  const oldMarker = state.entities[vehicleId] && state.entities[vehicleId].marker
+
+  const vehicle = state.entities[vehicleId] = createVehicle(event)
+
+  vehicle.marker = oldMarker
 }
 
 function applyRespawnedEvent (state, event) {
-  const entityId = event[2]
+  const entityId = event[1]
   state.entities[entityId].alive = true
 }
 
@@ -86,7 +104,7 @@ function applyDisconnectedEvent (state, event, frameIndex) {
 function applyHitEvent (state, event, frameIndex) {
   if (isNumber(event[1]) && isNumber(event[2])) {
     addBattleEvent(state, event)
-    //addLoggedEvent(state, <HitLog victim={state.entities[event[1]]} shooter={state.entities[event[2]]}/>);
+    //addLoggedEvent(state, <HitLog victim={state.entities[event[1]]} shooter={state.entities[event[2]]}/>)
   }
 }
 
@@ -124,11 +142,16 @@ function addBattleEvent (state, event) {
 }
 
 function KilledLog ({shooter, victim, frameIndex}) {
-  return <li className={styles.event}>
-    <span className={styles[victim.side]}>{victim.name || victim.description}</span> was killed by <span
-    className={styles[shooter.side]}>{shooter.name}</span><br />
-    <span className={styles.eventDetails}>{moment.utc(frameIndex * 1000).format('HH:mm:ss')}</span>
-  </li>
+  return shooter ?
+    <li className={styles.event}>
+      <span className={styles[victim.side]}>{victim.name || victim.description}</span> was killed by <span
+      className={styles[shooter.side]}>{shooter.name}</span><br />
+      <span className={styles.eventDetails}>{moment.utc(frameIndex * 1000).format('HH:mm:ss')}</span>
+    </li> :
+    <li className={styles.event}>
+      <span className={styles[victim.side]}>{victim.name || victim.description}</span> was killed<br />
+      <span className={styles.eventDetails}>{moment.utc(frameIndex * 1000).format('HH:mm:ss')}</span>
+    </li>
 }
 
 function HitLog ({shooter, victim, frameIndex}) {

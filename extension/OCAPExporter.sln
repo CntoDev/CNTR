@@ -1,0 +1,27 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26228.9
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OCAPExporter_x64", "OCAPExporter_x64.csproj", "{C0D3E9F7-04B8-4555-AD82-3CF202F864C8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OCAPExporter_x86", "OCAPExporter_x86.csproj", "{2FCD0BE6-E8DB-4BA5-BBCD-266D732239A8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C0D3E9F7-04B8-4555-AD82-3CF202F864C8}.Release|x64.ActiveCfg = Release|x64
+		{C0D3E9F7-04B8-4555-AD82-3CF202F864C8}.Release|x64.Build.0 = Release|x64
+		{C0D3E9F7-04B8-4555-AD82-3CF202F864C8}.Release|x86.ActiveCfg = Release|x64
+		{2FCD0BE6-E8DB-4BA5-BBCD-266D732239A8}.Release|x64.ActiveCfg = Release|x86
+		{2FCD0BE6-E8DB-4BA5-BBCD-266D732239A8}.Release|x64.Build.0 = Release|x86
+		{2FCD0BE6-E8DB-4BA5-BBCD-266D732239A8}.Release|x86.ActiveCfg = Release|x86
+		{2FCD0BE6-E8DB-4BA5-BBCD-266D732239A8}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
