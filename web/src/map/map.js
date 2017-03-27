@@ -2,7 +2,7 @@ import '../../vendor/leaflet.js'
 import '../../vendor/leaflet.svgIcon.js'
 import '../../vendor/leaflet.rotatedMarker.js'
 
-import { MAP_MAX_NATIVE_ZOOM, MAP_MIN_ZOOM, MAP_MAX_ZOOM } from '../constants.js'
+import { MAP_DIRECTORY, MAP_MAX_NATIVE_ZOOM, MAP_MIN_ZOOM, MAP_MAX_ZOOM } from '../constants.js'
 
 export function createMapController (mapElement, state, settings) {
 
@@ -48,7 +48,7 @@ export function createMapController (mapElement, state, settings) {
 
     map.fitBounds(mapBounds)
 
-    L.tileLayer('images/maps/' + worldName + '/{z}/{x}/{y}.png', {
+    L.tileLayer(`${MAP_DIRECTORY}/${worldName}/{z}/{x}/{y}.png`, {
       maxNativeZoom: MAP_MAX_NATIVE_ZOOM,
       maxZoom: MAP_MAX_ZOOM,
       minZoom: MAP_MIN_ZOOM,
@@ -233,7 +233,7 @@ export function createMapController (mapElement, state, settings) {
 
       line = L.polyline(
         [coordinatesToLatLng(shooter.pose), coordinatesToLatLng({x: event[2], y: event[3]})],
-        {className: 'hitLine fired'})
+        {className: 'hitLine ' + shooter.side})
     }
 
     line.addTo(map)

@@ -1,21 +1,23 @@
-export const MAP_INDEX_URL = 'images/maps/index.json'
+export const OCAP_FORMAT_VERSION = '^0.2.0'
+
+export const MAP_DIRECTORY = 'maps'
+export const MAP_INDEX_URL = `${MAP_DIRECTORY}/index.json`
 export const CAPTURE_INDEX_URL = 'data/index.json'
 
-export const STATE_CACHING_FREQUENCY = 60
-
-export const EVENT_SPAWNED = 'S'
-export const EVENT_UNIT_SPAWNED = 'U'
-export const EVENT_VEHICLE_SPAWNED = 'V'
-export const EVENT_RESPAWNED = 'R'
-export const EVENT_DESPAWNED = 'X'
-export const EVENT_CONNECTED = 'C'
-export const EVENT_DISCONNECTED = 'D'
-export const EVENT_MOVED = 'M'
-export const EVENT_FIRED = 'F'
-export const EVENT_HIT = 'H'
-export const EVENT_KILLED = 'K'
-export const EVENT_GOT_IN = 'I'
-export const EVENT_GOT_OUT = 'O'
+export const EVENTS = {
+  UNIT_SPAWNED: { ID: 'U', LENGTH: 12 },
+  VEHICLE_SPAWNED: { ID: 'V', LENGTH: 7 },
+  RESPAWNED: { ID: 'R', LENGTH: 2 },
+  DESPAWNED: { ID: 'X', LENGTH: 2 },
+  CONNECTED: { ID: 'C', LENGTH: 2 },
+  DISCONNECTED: { ID: 'D', LENGTH: 2 },
+  MOVED: { ID: 'M', LENGTH: 5 },
+  FIRED: { ID: 'F', LENGTH: 4 },
+  HIT: { ID: 'H', LENGTH: 3 },
+  KILLED: { ID: 'K', LENGTH: 3 },
+  GOT_IN: { ID: 'I', LENGTH: 3 },
+  GOT_OUT: { ID: 'O', LENGTH: 3 },
+}
 
 export const MAP_MIN_ZOOM = 1
 export const MAP_MAX_NATIVE_ZOOM = 6
@@ -32,5 +34,3 @@ export const DEFAULT_SETTINGS = {
   },
   hideCurators: true,
 }
-
-export const OCAP_FORMAT_VERSION = 1.0

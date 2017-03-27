@@ -46,7 +46,7 @@
   opacity: 0;
 }
 
-.hitLine.fired {
+.hitLine {
   stroke: #000000;
   stroke-width: 2;
   opacity: 0.4;
@@ -60,6 +60,30 @@
 
 .hitLine.killed {
   stroke: #ff0000;
+  stroke-width: 2;
+  opacity: 0.4;
+}
+
+.hitLine.west {
+  stroke: rgb(0, 77, 153);
+  stroke-width: 2;
+  opacity: 0.4;
+}
+
+.hitLine.east {
+  stroke: rgb(128, 0, 0);
+  stroke-width: 2;
+  opacity: 0.4;
+}
+
+.hitLine.ind {
+  stroke: rgb(0, 128, 0);
+  stroke-width: 2;
+  opacity: 0.4;
+}
+
+.hitLine.civ {
+  stroke: rgb(102, 0, 128);
   stroke-width: 2;
   opacity: 0.4;
 }
