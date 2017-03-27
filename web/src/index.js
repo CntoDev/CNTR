@@ -15,9 +15,9 @@ const appRootElement = document.querySelector('#root')
 const settings = Object.assign({}, DEFAULT_SETTINGS)
 const state = createState(settings)
 const map = createMapController(mapElement, state, settings)
-const player = createPlayer(state, settings);
+const player = createPlayer(state, settings)
 
-(function initOcap () {
+;(function initOcap () {
   return readIndices().then(([mapIndex, captureIndex]) => ReactDom.render(
     <App settings={settings}
          map={map}

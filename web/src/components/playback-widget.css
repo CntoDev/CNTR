@@ -33,3 +33,25 @@
   flex-shrink: 1;
   margin: 0 0.5em;
 }
+
+.playbackSpeedWidget {
+  display: inline-block;
+  position: relative;
+}
+
+.playbackSpeedButton {
+  position: relative;
+}
+
+.playbackSpeedSlider {
+  display: none;
+  position: absolute;
+  top: -48px;
+  left: -24px;
+  width: 80px;
+  transform: rotate(270deg);
+}
+
+.playbackSpeedSlider.visible {
+  display: block;
+}
