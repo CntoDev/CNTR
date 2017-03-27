@@ -41,3 +41,10 @@ private _handlePlayerConnectedIndex = addMissionEventHandler ["PlayerConnected",
   [OCAP_EVENT_CONNECTED, _uid, _name] call ocap_fnc_writeEvent;
 }];
 ocap_missionEventHandlers pushBack ["PlayerConnected", _handlePlayerConnectedIndex];
+
+if (ocap_endCaptureOnEndMission) then {
+	private _handleEndedIndex = addMissionEventHandler ["Ended", {
+		[] call ocap_fnc_stopCapture;
+	}];
+	ocap_missionEventHandlers pushBack ["Ended", _handleEndedIndex];
+};

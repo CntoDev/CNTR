@@ -21,5 +21,4 @@ while { ocap_captureRunning && (!ocap_endCaptureOnNoPlayers or count allPlayers 
 };
 
 sleep ocap_captureInterval;
-[] call ocap_fnc_flushWriteBuffer;
 ["stop", ocap_exportPath] call ocap_fnc_export;
