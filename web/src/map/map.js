@@ -179,8 +179,9 @@ export function createMapController (mapElement, state, settings) {
     marker.bindPopup(createPopup(entity))
     marker.on('click', () => {
       state.follow(entity)
+      marker.openPopup()
     })
-    marker.on('mouseover', () => settings.labels.mouseOver && marker.openPopup())
+    marker.on('mouseover', () => (entity.followed ||settings.labels.mouseOver) && marker.openPopup())
     marker.on('mouseout', () => settings.labels.mouseOver && marker.closePopup())
 
     markers[entity.id] = marker

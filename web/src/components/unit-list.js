@@ -52,22 +52,51 @@ export class UnitList extends React.Component {
   }
 }
 
-function Side ({name, groups, onClick}) {
-  return <li className={cx(styles.side)}>
-    <span className={cx(styles.sideName, styles[name])}>{name}</span>
-    <ul className={styles.groupList}>{Object.values(groups).map(({name, units}) =>
-      <Group key={name} name={name} units={units} onClick={onClick}/>
-    )}</ul>
-  </li>
+
+export class Side extends React.Component {
+  constructor () {
+    super()
+
+    this.state = {
+      collapsed: true,
+    }
+  }
+
+  render () {
+    const {name, groups, onClick} = this.props;
+    const {collapsed} = this.state;
+
+    return <li className={cx(styles.side)}>
+      <span className={cx(styles.collapseButton)} onClick={() => this.setState({collapsed: !collapsed})}>{collapsed ? '▸' : '▾'}</span>
+      <span className={cx(styles.sideName, styles[name])}>{name}</span>
+      <ul className={cx(styles.groupList, collapsed && styles.collapsed)}>{Object.values(groups).map(({name, units}) =>
+        <Group key={name} name={name} units={units} onClick={onClick}/>
+      )}</ul>
+    </li>
+  }
 }
 
-function Group ({name, units, onClick}) {
-  return <li className={cx(styles.group)}>
-    <span>{name}</span>
-    <ul className={styles.unitList}>{Object.values(units).map(unit =>
-      <Unit key={unit.name} unit={unit} onClick={onClick}/>
-    )}</ul>
-  </li>
+export class Group extends React.Component {
+  constructor () {
+    super()
+
+    this.state = {
+      collapsed: true,
+    }
+  }
+
+  render () {
+    const {name, units, onClick} = this.props;
+    const {collapsed} = this.state;
+
+    return <li className={cx(styles.group)}>
+      <span className={cx(styles.collapseButton)} onClick={() => this.setState({collapsed: !collapsed})}>{collapsed ? '▸' : '▾'}</span>
+      <span className={cx(styles.groupName)}>{name}</span>
+      <ul className={cx(styles.unitList, collapsed && styles.collapsed)}>{Object.values(units).map(unit =>
+        <Unit key={unit.name} unit={unit} onClick={onClick}/>
+      )}</ul>
+    </li>
+  }
 }
 
 function Unit ({unit, onClick}) {

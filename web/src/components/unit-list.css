@@ -21,10 +21,14 @@
   padding: 0;
   margin: 0;
   font-size: smaller;
+  padding-left: 0.5em;
 }
 
 .settings {
 
+}
+
+.collapseButton {
 }
 
 .side {
@@ -35,21 +39,33 @@
   list-style: none;
   padding: 0;
   margin: 0;
+  padding-left: 0.75em;
+}
+
+.groupList.collapsed {
+  display: none;
 }
 
 .group {
-  padding-left: 0.5em;
   line-height: 2em;
+}
+
+.groupName {
+  padding-left: 0.5em;
 }
 
 .unitList {
   list-style: none;
   padding: 0;
   margin: 0;
+  padding-left: 1em;
+}
+
+.unitList.collapsed {
+  display: none;
 }
 
 .unit {
-  padding-left: 1em;
   line-height: 2em;
 }
 
@@ -64,6 +80,7 @@
 .unitSymbol {
   padding-left: 0.25em;
 }
+
 
 .sideName {
   padding-left: 0.5em;
