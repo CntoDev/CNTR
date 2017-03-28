@@ -28,6 +28,7 @@ export const DEFAULT_PLAYBACK_SPEED = 10
 
 export const DEFAULT_SETTINGS = {
   labels: {
+    mouseOver: true,
     ai: false,
     players: true,
     vehicles: true,
