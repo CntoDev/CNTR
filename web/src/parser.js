@@ -1,3 +1,5 @@
+import semver from 'semver'
+
 import { OCAP_FORMAT_VERSION } from './constants.js'
 
 export function parse (dataString) {
@@ -7,7 +9,7 @@ export function parse (dataString) {
 
   const header = processHeader (headerLine)
 
-  if (header.formatVersion !== OCAP_FORMAT_VERSION) throw new Error ('Incompatible OCAP format!')
+  if (!semver.satisfies(header.formatVersion, OCAP_FORMAT_VERSION)) throw new Error ('Incompatible OCAP format!')
 
   const frames = frameLines
     .map(line => line.split(';')
@@ -26,7 +28,7 @@ export function parse (dataString) {
 function processHeader (headerString) {
   const [formatVersion, worldName, missionName, author, captureInterval] = headerString.split(',')
   return {
-    formatVersion: Number.parseFloat(formatVersion),
+    formatVersion,
     worldName,
     missionName,
     author,
@@ -36,6 +38,5 @@ function processHeader (headerString) {
 
 function processEntry (entry) {
   const number = Number.parseFloat(entry)
-  return Number.isNaN(number) ? (entry === 'true' ? true : entry === 'false' ? false : entry) : number
+  return Number.isNaN(number) ? entry : number
 }
-
