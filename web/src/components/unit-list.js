@@ -54,7 +54,7 @@ export class UnitList extends React.Component {
 
 
 export class Side extends React.Component {
-  constructor () {
+  constructor ({}) {
     super()
 
     this.state = {
@@ -67,8 +67,10 @@ export class Side extends React.Component {
     const {collapsed} = this.state;
 
     return <li className={cx(styles.side)}>
-      <span className={cx(styles.collapseButton)} onClick={() => this.setState({collapsed: !collapsed})}>{collapsed ? '▸' : '▾'}</span>
-      <span className={cx(styles.sideName, styles[name])}>{name}</span>
+      <span onClick={() => this.setState({collapsed: !collapsed})}>
+        <span className={cx(styles.collapseButton)}>{collapsed ? '▸' : '▾'}</span>
+        <span className={cx(styles.sideName, styles[name])}>{name}</span>
+      </span>
       <ul className={cx(styles.groupList, collapsed && styles.collapsed)}>{Object.values(groups).map(({name, units}) =>
         <Group key={name} name={name} units={units} onClick={onClick}/>
       )}</ul>
@@ -90,8 +92,10 @@ export class Group extends React.Component {
     const {collapsed} = this.state;
 
     return <li className={cx(styles.group)}>
-      <span className={cx(styles.collapseButton)} onClick={() => this.setState({collapsed: !collapsed})}>{collapsed ? '▸' : '▾'}</span>
-      <span className={cx(styles.groupName)}>{name}</span>
+      <span onClick={() => this.setState({collapsed: !collapsed})}>
+        <span className={cx(styles.collapseButton)}>{collapsed ? '▸' : '▾'}</span>
+        <span className={cx(styles.groupName)}>{name}</span>
+      </span>
       <ul className={cx(styles.unitList, collapsed && styles.collapsed)}>{Object.values(units).map(unit =>
         <Unit key={unit.name} unit={unit} onClick={onClick}/>
       )}</ul>
