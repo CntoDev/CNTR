@@ -37,14 +37,14 @@
      guidetolerance="10"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:window-width="1920"
-     inkscape:window-height="1137"
+     inkscape:window-width="1857"
+     inkscape:window-height="1177"
      id="namedview11"
      showgrid="true"
-     inkscape:zoom="0.921875"
-     inkscape:cx="215.99491"
-     inkscape:cy="322.76868"
-     inkscape:window-x="1912"
+     inkscape:zoom="1.84375"
+     inkscape:cx="229.08151"
+     inkscape:cy="246.32741"
+     inkscape:window-x="55"
      inkscape:window-y="-8"
      inkscape:window-maximized="1"
      inkscape:current-layer="svg9">
@@ -53,21 +53,10 @@
        id="grid4492"
        empspacing="32" />
   </sodipodi:namedview>
-  <text
-     id="text4"
-     x="141.34451"
-     y="408.11475"
-     line-height="125%"
-     font-size="415.38px"
-     xml:space="preserve"
-     style="font-size:415.38000488px;line-height:125%;font-family:Arial;letter-spacing:0px;word-spacing:0px;fill:#000000"><tspan
-       id="tspan2"
-       y="408.11475"
-       x="141.34451">?</tspan></text>
-  <circle
-     style="fill:none;stroke:#000000;stroke-width:37.06499863"
-     id="circle6"
-     r="237.47"
-     cy="256"
-     cx="256" />
+  <symbol id="symbol" viewBox="0 0 512 512">
+    <path
+       d="m 237.07662,334.89591 q -0.20282,-7.3016 -0.20282,-10.95241 0,-21.49916 6.08467,-37.11647 4.46209,-11.76369 14.40038,-23.73021 7.3016,-8.72135 26.16407,-25.35278 19.0653,-16.83425 24.74432,-26.77254 5.67902,-9.93829 5.67902,-21.70198 0,-21.29634 -16.63142,-37.3193 -16.63143,-16.22578 -40.76728,-16.22578 -23.32456,0 -38.94187,14.6032 -15.61732,14.60321 -20.48505,45.63501 l -37.52212,-4.46209 q 5.07055,-41.57856 30.01769,-63.68619 25.14996,-22.10763 66.32288,-22.10763 43.60679,0 69.56804,23.73021 25.96125,23.73021 25.96125,57.3987 0,19.47094 -9.127,35.89954 -9.127,16.42861 -35.69672,39.95599 -17.84836,15.82014 -23.32456,23.32456 -5.4762,7.50442 -8.11289,17.23989 -2.63669,9.73547 -3.04233,31.64028 z m -2.23104,73.21884 v -41.57857 h 41.57856 v 41.57857 z" />
+    <path
+       d="M 256 0 A 256 256 0 0 0 0 256 A 256 256 0 0 0 256 512 A 256 256 0 0 0 512 256 A 256 256 0 0 0 256 0 z M 256 32 A 224 224 0 0 1 480 256 A 224 224 0 0 1 256 480 A 224 224 0 0 1 32 256 A 224 224 0 0 1 256 32 z " />
+  </symbol>
 </svg>
