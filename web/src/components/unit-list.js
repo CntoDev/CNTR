@@ -33,8 +33,21 @@ export class UnitList extends React.Component {
     const list = {}
     this.props.state.entities.forEach(entity => {
       if (entity.type === 'Man') {
-        const side = list[entity.side] || (list[entity.side] = {name: entity.side, groups: {}})
-        const group = side.groups[entity.group] || (side.groups[entity.group] = {name: entity.group, units: {}})
+        const side = list[entity.side] || (list[entity.side] = {
+            name: entity.side,
+            groups: {},
+          })
+
+        side.open = side.open || entity.followed
+
+        const group = side.groups[entity.group] || (side.groups[entity.group] = {
+            name: entity.group,
+            units: {},
+            open: entity.followed,
+          })
+
+        group.open = group.open || entity.followed
+
         const unit = group.units[entity.id] || (group.units[entity.id] = entity)
       }
     })
@@ -42,61 +55,76 @@ export class UnitList extends React.Component {
     const onClick = unit => this.props.state.follow(unit)
 
     return <div className={cx(styles.container)}>
-        <div className={styles.header}>Units</div>
-        <div className={cx(styles.listContainer)}>
-          <ul className={styles.list}> {Object.values(list).map(({name, groups}) =>
-            <Side key={name} name={name} groups={groups} onClick={onClick}/>
-          )}</ul>
-        </div>
+      <div className={styles.header}>Units</div>
+      <div className={cx(styles.listContainer)}>
+        <ul className={styles.list}> {Object.values(list).map(({name, groups, open}) =>
+          <Side key={name} name={name} groups={groups} open={open} onClick={onClick}/>
+        )}</ul>
       </div>
+    </div>
   }
 }
 
-
 export class Side extends React.Component {
-  constructor ({}) {
+  constructor ({open = false}) {
     super()
 
     this.state = {
-      collapsed: true,
+      open,
+    }
+  }
+
+  componentWillReceiveProps ({open}) {
+    if (open !== this.state.open) {
+      this.setState({
+        open,
+      })
     }
   }
 
   render () {
-    const {name, groups, onClick} = this.props;
-    const {collapsed} = this.state;
+    const {name, groups, onClick} = this.props
+    const {open} = this.state
 
     return <li className={cx(styles.side)}>
-      <span onClick={() => this.setState({collapsed: !collapsed})}>
-        <span className={cx(styles.collapseButton)}>{collapsed ? '▸' : '▾'}</span>
+      <span onClick={() => this.setState({open: !open})}>
+        <span className={cx(styles.collapseButton)}>{open ? '▸' : '▾'}</span>
         <span className={cx(styles.sideName, styles[name])}>{name}</span>
       </span>
-      <ul className={cx(styles.groupList, collapsed && styles.collapsed)}>{Object.values(groups).map(({name, units}) =>
-        <Group key={name} name={name} units={units} onClick={onClick}/>
+      <ul className={cx(styles.groupList, open && styles.open)}>{Object.values(groups).map(({name, units, open}) =>
+        <Group key={name} name={name} units={units} open={open} onClick={onClick}/>
       )}</ul>
     </li>
   }
 }
 
 export class Group extends React.Component {
-  constructor () {
+  constructor ({open = false}) {
     super()
 
     this.state = {
-      collapsed: true,
+      open,
+    }
+  }
+
+  componentWillReceiveProps ({open}) {
+    if (open !== this.state.open) {
+      this.setState({
+        open,
+      })
     }
   }
 
   render () {
-    const {name, units, onClick} = this.props;
-    const {collapsed} = this.state;
+    const {name, units, onClick} = this.props
+    const {open} = this.state
 
     return <li className={cx(styles.group)}>
-      <span onClick={() => this.setState({collapsed: !collapsed})}>
-        <span className={cx(styles.collapseButton)}>{collapsed ? '▸' : '▾'}</span>
+      <span onClick={() => this.setState({open: !open})}>
+        <span className={cx(styles.collapseButton)}>{open ? '▸' : '▾'}</span>
         <span className={cx(styles.groupName)}>{name}</span>
       </span>
-      <ul className={cx(styles.unitList, collapsed && styles.collapsed)}>{Object.values(units).map(unit =>
+      <ul className={cx(styles.unitList, open && styles.open)}>{Object.values(units).map(unit =>
         <Unit key={unit.name} unit={unit} onClick={onClick}/>
       )}</ul>
     </li>

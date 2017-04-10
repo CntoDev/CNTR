@@ -36,14 +36,15 @@
 }
 
 .groupList {
+  display: none;
   list-style: none;
   padding: 0;
   margin: 0;
   padding-left: 0.75em;
 }
 
-.groupList.collapsed {
-  display: none;
+.groupList.open {
+  display: block;
 }
 
 .group {
@@ -55,14 +56,15 @@
 }
 
 .unitList {
+  display: none;
   list-style: none;
   padding: 0;
   margin: 0;
   padding-left: 1em;
 }
 
-.unitList.collapsed {
-  display: none;
+.unitList.open {
+  display: block;
 }
 
 .unit {
