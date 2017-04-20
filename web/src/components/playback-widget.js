@@ -47,7 +47,7 @@ export class PlaybackWidget extends React.Component {
 
   skipToFrame (event) {
     const value = Number.parseInt(event.target.value)
-    this.props.player.goTo(value)
+    this.props.player.goTo(value - 1)
   }
 
   togglePlayback () {
@@ -94,7 +94,7 @@ export class PlaybackSpeedWidget extends React.Component {
     return <div  className={cx(styles.playbackSpeedWidget)}>
       <span className={styles.playbackSpeedButton} onClick={() => this.setState({sliderVisible: !sliderVisible})}>{playbackSpeed}×</span>
       <input className={cx(styles.playbackSpeedSlider, sliderVisible && styles.visible)}
-             type="range" min="1" value={playbackSpeed} max="60" step="1"
+             type="range" min="1" value={playbackSpeed} max="20" step="1"
              onChange={event => this.updatePlaybackSpeed(Number.parseFloat(event.target.value))}/>
     </div>
   }

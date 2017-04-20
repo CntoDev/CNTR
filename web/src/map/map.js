@@ -151,8 +151,6 @@ export function createMapController (mapElement, state, settings) {
   }
 
   function renderPopup (marker, entity) {
-    marker.closePopup()
-
     if (entity.isPlayer && !entity.vehicle && settings.labels.players) {
       marker.openPopup()
     } else if (entity.type === 'Man' && settings.labels.ai) {
@@ -164,6 +162,8 @@ export function createMapController (mapElement, state, settings) {
         entity.crew.map(unit => unit.name).join('<br>'))
     } else if (entity.crew && entity.crew.some(unit => !unit.isPlayer) && settings.labels.vehicles && settings.labels.ai) {
       marker.openPopup()
+    } else {
+      marker.closePopup()
     }
   }
 
@@ -179,7 +179,10 @@ export function createMapController (mapElement, state, settings) {
     marker.bindPopup(createPopup(entity))
     marker.on('click', () => {
       state.follow(entity)
+      marker.openPopup()
     })
+    marker.on('mouseover', () => (entity.followed ||settings.labels.mouseOver) && marker.openPopup())
+    marker.on('mouseout', () => settings.labels.mouseOver && marker.closePopup())
 
     markers[entity.id] = marker
 

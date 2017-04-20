@@ -6,7 +6,7 @@ import { FRAME_PLAYBACK_INTERVAL, DEFAULT_PLAYBACK_SPEED } from './constants.js'
 export function createPlayer (state, settings) {
   let frames = null
   let intervalHandle = null
-  let currentFrameIndex = -1
+  let currentFrameIndex = 0
 
   const player = createEmitter({
     load,
@@ -54,7 +54,7 @@ export function createPlayer (state, settings) {
   }
 
   function goTo (frameIndex) {
-    currentFrameIndex = -1
+    currentFrameIndex = 0
     state.eventLog = []
     while (currentFrameIndex < frameIndex) applyNextFrame(true)
     applyNextFrame()
@@ -63,7 +63,7 @@ export function createPlayer (state, settings) {
 
   function reset () {
     state.eventLog = []
-    currentFrameIndex = -1
+    currentFrameIndex = 0
     applyNextFrame()
   }
 
