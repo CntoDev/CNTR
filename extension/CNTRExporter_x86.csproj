@@ -7,8 +7,8 @@
     <ProjectGuid>{2FCD0BE6-E8DB-4BA5-BBCD-266D732239A8}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OCAPExporter</RootNamespace>
-    <AssemblyName>ocap_exporter</AssemblyName>
+    <RootNamespace>CNTRExporter</RootNamespace>
+    <AssemblyName>cntr_exporter</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <NuGetPackageImportStamp>

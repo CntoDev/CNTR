@@ -1,8 +1,8 @@
 {
-  "name": "ocap-client",
-  "version": "2.0.0",
+  "name": "cntr-player",
+  "version": "0.9.0",
   "description": "",
-  "main": "build/ocap.js",
+  "main": "build/index.js",
   "scripts": {
     "build": "rollup -c config/rollup.config.js",
     "watch": "rollup -c config/rollup.config.js -w",

@@ -1,8 +1,8 @@
 class CfgPatches
 {
-	class ocap
+	class cntr
 	{
-		name = "OCAP";
+		name = "CNTR";
 		author = "Shakan";
 		requiredAddons[] = {"A3_Functions_F"};
 		units[] = {};
@@ -12,11 +12,11 @@ class CfgPatches
 
 class CfgFunctions
 {
-	class ocap
+	class cntr
 	{
 		class null
 		{
-			file = "ocap\functions";
+			file = "cntr\functions";
 			class init {postInit = 1;};
 			class startCapture {};
 			class startCaptureLoop {};

@@ -21,7 +21,7 @@ This guide assumes you have the program OSGeo4W installed.
 
 6. 	Copy <worldname>.emf (from step 4) to same folder as where we just copied EmfToPng.exe.
 	Create a shortcut of EmfToPng.exe that launches with arguments: <worldname>.emf N
-	
+
 	N is the zoom level. We want to find the N which results in an image with dimensions that adheres to
 	the tile size chart (see below). This may take some experimenting and will vary between maps.
 	N is usually somewhere between 0.1 and 2. The recommended target is 16384.
@@ -29,7 +29,7 @@ This guide assumes you have the program OSGeo4W installed.
 	to tile size chart.
 	e.g. If N=1 results in image size of 20480, and we want zoom level 6 (16384), then we'd do
 	16384/20480 = 0.8 = N
-	
+
 	Note: The resulting image dimensions (both X and Y) must equal *exactly* 16384.
 	If the dimensions of the image are not even, you will need to trim the image using an image editing
 	program such as Photoshop or GIMP (free). Crop the image to remove any black borders/edges so that the
@@ -48,12 +48,8 @@ This guide assumes you have the program OSGeo4W installed.
 	Note: gdal2tiles_legacy_no-tms is a modified version of gdal2tiles.
 	To install, just drag the included gdal2tiles_legacy_no-tms .py and .bat
 	files into OSGeo4W64\bin\.
-	
-If you wish to submit your tileset to be added to the OCAP map repository, please archive the folder
-into a .tar file and upload somewhere (e.g. Dropbox). Ensure the name of the folder matches the
-name of the terrian, and is in lowercase (e.g. isladuala3). Then please submit it via this GitHub ticket:
-https://github.com/mistergoodson/OCAP/issues/34
-You must include details on:
+
+Add the map to maps/index.json. You must include details on:
 	- World name (e.g. Stratis)
 	- Image size (size of image used to create tiles, e.g. 16384)
 	- World size (size of image when N=1). Note: Please do not rely on the 'worldSize' value in Arma.
