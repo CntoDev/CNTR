@@ -1,5 +1,4 @@
 ﻿/**
- * Author: MisterGoodson
  * Author: Shakan
  *
  * ==========================================================================================
@@ -28,13 +27,13 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace OCAPExporter
+namespace CNTRExporter
 {
     public class Main
     {
         static string captureDir = @"Temp";
         static string captureFileName = null;
-        static string logFile = @"logs\ocap.log";
+        static string logFile = @"logs\cntr.log";
         static string indexFileName = @"index.json";
         static string[] commandSeparator = { "::" };
         static char[] entrySeparator = { ',' };
@@ -63,7 +62,7 @@ namespace OCAPExporter
             try
             {
                 header = captureHeader.Split(entrySeparator);
-                captureFileName = header[1] + DateTime.Now.ToString("__yyyy-MM-dd__HH-mm") + ".ocap";
+                captureFileName = header[1] + DateTime.Now.ToString("__yyyy-MM-dd__HH-mm") + ".cntr";
 
                 if (fileWriter != null) fileWriter.Close();
                 fileWriter = File.CreateText(Path.Combine(captureDir, captureFileName));

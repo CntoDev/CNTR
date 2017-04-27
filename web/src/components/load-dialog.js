@@ -3,12 +3,12 @@ import moment from 'moment'
 
 import styles from './load-dialog.css'
 
-export function LoadDialog ({entries, loadCapture}) {
+export function LoadDialog ({entries, loadCapture, closeDialog}) {
   return <div className={styles.modal}>
     <div className={styles.modalContainer}>
       <div className={styles.modalHeader}>
         <span>Load mission capture</span>
-        <span className={styles.modalCloseButton} onClick={close}>&#10006;</span>
+        <span className={styles.modalCloseButton} onClick={closeDialog}>&#10006;</span>
       </div>
       <div className={styles.modalBody}>
         <table>

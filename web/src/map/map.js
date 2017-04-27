@@ -38,6 +38,7 @@ export function createMapController (mapElement, state, settings) {
       zoomControl: false,
       zoomDelta: 1,
       zoomSnap: 0.1,
+      maxBoundsViscosity: 1.0,
     }).setView([0, 0], MAP_MAX_NATIVE_ZOOM)
 
     const mapBounds = new L.LatLngBounds(
@@ -46,6 +47,7 @@ export function createMapController (mapElement, state, settings) {
     )
 
     map.fitBounds(mapBounds)
+    map._zoom = 6 //FIXME: investigate why this needs to be hardcoded on init!
 
     L.tileLayer(`${MAP_DIRECTORY}/${worldName}/{z}/{x}/{y}.png`, {
       maxNativeZoom: MAP_MAX_NATIVE_ZOOM,
@@ -58,7 +60,28 @@ export function createMapController (mapElement, state, settings) {
 
     map.setView(map.unproject([imageSize / 2, imageSize / 2]), MAP_MIN_ZOOM)
 
+    mapMultiplier = multiplier / 10
+    mapImageSize = imageSize
+
+    addDrawingTool(window, map)
+    attachListeners(map, mapElement, state)
+  }
+
+  function attachListeners (map, mapElement, state) {
+    map.on('dragstart', () => state.follow(null))
+
+    mapElement.addEventListener('wheel', event => {
+      const zoom = event.deltaY > 0 ? -0.5 : 0.5
+      map.zoomIn(zoom, {animate: false})
+    })
+
+    state.on('update', update)
+    state.on('reset', reset)
+  }
+
+  function addDrawingTool (window, map) {
     let drawing = false
+    let line
 
     window.addEventListener('keydown', function (e) {
       if (e.ctrlKey) {
@@ -69,7 +92,6 @@ export function createMapController (mapElement, state, settings) {
         drawing = false
       }
     })
-
     window.addEventListener('keyup', function (e) {
       if (e.ctrlKey) {
         map.dragging.disable()
@@ -80,8 +102,6 @@ export function createMapController (mapElement, state, settings) {
       }
     })
 
-    let line
-
     map.on('mousedown', function (e) {
       if (drawing) {
         const thisLine = line = L.polyline([e.latlng], {className: 'testLine'})
@@ -89,37 +109,26 @@ export function createMapController (mapElement, state, settings) {
         thisLine.addTo(map)
       }
     })
-
     map.on('mousemove', function (e) {
       if (drawing && line) {
         line.addLatLng(e.latlng)
       }
     })
-
     map.on('mouseup', function (e) {
       if (drawing) {
         line = null
       }
     })
-
-    map.on('dragstart', () => state.follow(null))
-
-    mapElement.addEventListener('wheel', event => {
-      const zoom = event.deltaY > 0 ? -0.5 : 0.5
-      map.zoomIn(zoom, {animate: false})
-    })
-
-    mapMultiplier = multiplier / 10
-    mapImageSize = imageSize
-
-    state.on('update', update)
   }
 
   function update (state) {
     state.entities.forEach(renderEntity)
+
     lines.forEach(line => map.removeLayer(line))
     lines = []
     state.events.forEach(event => renderEvent(event, state))
+
+    Object.values(markers).forEach(marker => marker.toggleClass('unused', !marker.used))
 
     if (state.followedUnit) {
       const pose = state.followedUnit.pose
@@ -134,6 +143,8 @@ export function createMapController (mapElement, state, settings) {
   function renderEntity (entity) {
     const marker = getMarker(entity) || createMarker(entity)
 
+    marker.used = true
+
     marker.setLatLng(coordinatesToLatLng(entity.pose))
     marker.setRotationAngle(entity.pose.dir)
 
@@ -144,6 +155,7 @@ export function createMapController (mapElement, state, settings) {
       dead: !entity.alive,
       hit: false,
       killed: false,
+      unused: false,
       inVehicle: !!entity.vehicle || (settings.hideCurators && entity.isCurator),
     })
 
@@ -162,8 +174,6 @@ export function createMapController (mapElement, state, settings) {
         entity.crew.map(unit => unit.name).join('<br>'))
     } else if (entity.crew && entity.crew.some(unit => !unit.isPlayer) && settings.labels.vehicles && settings.labels.ai) {
       marker.openPopup()
-    } else {
-      marker.closePopup()
     }
   }
 
@@ -178,13 +188,29 @@ export function createMapController (mapElement, state, settings) {
 
     marker.bindPopup(createPopup(entity))
     marker.on('click', () => {
+      if (state.followedUnit) {
+        markers[state.followedUnit.id].closePopup()
+      }
       state.follow(entity)
       marker.openPopup()
     })
-    marker.on('mouseover', () => (entity.followed ||settings.labels.mouseOver) && marker.openPopup())
-    marker.on('mouseout', () => settings.labels.mouseOver && marker.closePopup())
+    marker.on('mouseover', () => {
+      if (state.followedUnit !== entity && settings.labels.mouseOver) {
+        console.log('yay')
+        marker.openPopup()
+        marker.popupOnMouse = true
+      }
+    })
+    marker.on('mouseout', () => {
+      if (state.followedUnit !== entity && marker.popupOnMouse) {
+        console.log('damn')
+        marker.closePopup()
+        marker.popupOnMouse = false
+      }
+    })
 
     markers[entity.id] = marker
+    marker.used = true
 
     return marker
   }
@@ -246,7 +272,17 @@ export function createMapController (mapElement, state, settings) {
   }
 
   function getMarker ({id}) {
-    return markers[id]
+    const marker = markers[id]
+
+    if (marker) {
+      marker.used = true
+    }
+
+    return marker
+  }
+
+  function reset () {
+    Object.values(markers).forEach(marker => marker.used = false)
   }
 
   function coordinatesToLatLng ({x, y}) {

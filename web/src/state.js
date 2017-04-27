@@ -24,7 +24,7 @@ export function createState (settings) {
     state.entities = []
     state.events = []
     state.eventLog = []
-    state.emit('update', state)
+    state.emit('reset', state)
   }
 
   function follow (unit) {

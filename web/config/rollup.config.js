@@ -14,7 +14,7 @@ const cssExportMap = {}
 export default {
   entry: 'src/index.js',
   format: 'umd',
-  dest: 'build/ocap.js',
+  dest: 'build/index.js',
   plugins: [
     postCss({
       plugins: [

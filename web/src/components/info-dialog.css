@@ -1,0 +1,117 @@
+
+.modal {
+  position: fixed;
+  z-index: 99999999;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modalContent {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.modalHeader {
+  box-sizing: border-box;
+  background-color: rgba(205,134,20,0.9);
+  width: 100%;
+  font-weight: 500;
+  line-height: 2em;
+  padding: 0 1em;
+}
+
+.modalBody {
+  box-sizing: border-box;
+  background-color: rgba(0,0,0,0.7);
+  width: 100%;
+  min-height: 200px;
+  max-height: 400px;
+  height: auto;
+  padding: 0.5em;
+  overflow-y: auto;
+  overflow-x: auto;
+  text-align: left;
+}
+
+.modalBody a {
+  color: rgba(96, 192, 255, 1);
+  text-decoration: none;
+}
+
+.modalBody a:hover {
+  text-decoration: underline;
+}
+
+.modalBody table {
+  border-collapse: collapse;
+  border: none;
+  width: 100%;
+}
+
+.modalBody th {
+  background-color: rgba(0,0,0,0.7);
+  padding: 0 1em;
+  font-weight: 500;
+  text-align: left;
+}
+
+.modalBody td {
+  padding: 0 1em;
+}
+
+.modalBody tr {
+  text-align: right;
+}
+
+.modalBody tr:hover {
+  background-color: rgba(205,134,20,0.9);
+}
+
+.modalFooter {
+  box-sizing: border-box;
+  width: 100%;
+  text-align: right;
+  background: none;
+  margin-top: 3px;
+  height: 15px;
+}
+
+.modalButton {
+  display: inline-block;
+  height: 100%;
+  min-width: 100px;
+  background-color: rgba(0,0,0,0.7);
+  margin-right: 10px;
+  padding: 5px;
+  text-transform: uppercase;
+  text-align: left;
+}
+
+.modalButton:last-child {
+  margin-right: 0;
+}
+
+.modalButton:hover {
+  background-color: #FFF;
+  color: #000;
+}
+
+.modalContainer {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.modalTitle {
+}
+
+.modalCloseButton {
+  position: absolute;
+  right: 0;
+  margin: 0 0.5em;
+}

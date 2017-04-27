@@ -1,8 +1,6 @@
 import React from 'react'
-import moment from 'moment'
 import isNumber from 'lodash/isNumber'
 
-import styles from './components/event-log.css'
 
 import { EVENTS } from './constants.js'
 
@@ -94,17 +92,32 @@ function applyDespawnedEvent (state, event) {
 }
 
 function applyConnectedEvent (state, event, frameIndex) {
-  addLoggedEvent(state, <ConnectedLog frameIndex={frameIndex} player={state.entities[event[1]]}/>)
+  addLoggedEvent(state, {
+    frameIndex,
+    type: event[0],
+    player: state.entities[event[1]],
+  })
 }
 
 function applyDisconnectedEvent (state, event, frameIndex) {
-  addLoggedEvent(state, <DisconnectedLog frameIndex={frameIndex} player={state.entities[event[1]]}/>)
+  addLoggedEvent(state, {
+    frameIndex,
+    type: event[0],
+    player: state.entities[event[1]],
+  })
 }
 
 function applyHitEvent (state, event, frameIndex) {
   if (isNumber(event[1]) && isNumber(event[2])) {
     addBattleEvent(state, event)
-    //addLoggedEvent(state, <HitLog victim={state.entities[event[1]]} shooter={state.entities[event[2]]}/>)
+    /*
+    addLoggedEvent(state, {
+      frameIndex,
+      type: event[0],
+      victim: state.entities[event[1]],
+      shooter: state.entities[event[2]],
+    })
+    */
   }
 }
 
@@ -118,8 +131,12 @@ function applyKilledEvent (state, event, frameIndex) {
   const victimId = event[1]
   state.entities[victimId].alive = false
   addBattleEvent(state, event)
-  addLoggedEvent(state, <KilledLog frameIndex={frameIndex} victim={state.entities[event[1]]}
-                                   shooter={state.entities[event[2]]}/>)
+  addLoggedEvent(state, {
+    frameIndex,
+    type: event[0],
+    victim: state.entities[event[1]],
+    shooter: state.entities[event[2]],
+  })
 }
 
 function applyGotInEvent (state, [, unitId, vehicleId]) {
@@ -139,38 +156,4 @@ function addLoggedEvent (state, event) {
 
 function addBattleEvent (state, event) {
   state.events.push(event)
-}
-
-function KilledLog ({shooter, victim, frameIndex}) {
-  return shooter ?
-    <li className={styles.event}>
-      <span className={styles[victim.side]}>{victim.name || victim.description}</span> was killed by <span
-      className={styles[shooter.side]}>{shooter.name}</span><br />
-      <span className={styles.eventDetails}>{moment.utc(frameIndex * 1000).format('HH:mm:ss')}</span>
-    </li> :
-    <li className={styles.event}>
-      <span className={styles[victim.side]}>{victim.name || victim.description}</span> was killed<br />
-      <span className={styles.eventDetails}>{moment.utc(frameIndex * 1000).format('HH:mm:ss')}</span>
-    </li>
-}
-
-function HitLog ({shooter, victim, frameIndex}) {
-  return <li className={styles.event}>
-    <span className={styles[victim.side]}>{victim.name || victim.description}</span> was hit by <span
-    className={styles[shooter.side]}>{shooter.name}</span><br />
-    <span className={styles.eventDetails}>{moment.utc(frameIndex * 1000).format('HH:mm:ss')}</span>
-  </li>
-}
-
-function ConnectedLog ({player, frameIndex}) {
-  return <li className={styles.event}>
-    <span className={styles[player.side]}>{player.name}</span> connected.<br />
-    <span className={styles.eventDetails}>{moment.utc(frameIndex * 1000).format('HH:mm:ss')}</span>
-  </li>
-}
-
-function DisconnectedLog ({player, frameIndex}) {
-  return <li className={styles.event}><span className={styles[player.side]}>{player.name}</span> disconnected.<br />
-    <span className={styles.eventDetails}>{moment.utc(frameIndex * 1000).format('HH:mm:ss')}</span>
-  </li>
 }

@@ -1,3 +1,7 @@
+.marker.unused {
+  display: none !important;
+}
+
 .marker.west {
   fill: rgb(0, 77, 153);
 }

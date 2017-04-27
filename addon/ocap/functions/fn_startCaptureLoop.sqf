@@ -13,7 +13,7 @@ private _header = [OCAP_FORMAT_VERSION, worldName, briefingName, getMissionConfi
 
 ["start", _header joinString ","] call ocap_fnc_export;
 
-while { ocap_captureRunning && (!ocap_endCaptureOnNoPlayers or count allPlayers > 0) } do {
+while { ocap_captureRunning && (!ocap_endCaptureOnNoPlayers or count allPlayers >= ocap_minPlayerCount) } do {
 	{ _x call ocap_fnc_processEntity } forEach entities [["LandVehicle",  "Air", "Ship"], ["Logic"]] + allUnits;
 
 	sleep ocap_captureInterval;

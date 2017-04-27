@@ -27,7 +27,7 @@ body {
 }
 
 .button-openCaptureLoadDialog {
-	background-image: url("../images/folder.png");
+	background-image: url("../images/icons/folder.png");
 	background-size: 25px 25px;
 	background-repeat: no-repeat;
 }

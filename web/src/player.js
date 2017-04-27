@@ -46,6 +46,7 @@ export function createPlayer (state, settings) {
 
   function pause () {
     clearInterval(intervalHandle)
+    intervalHandle = 0
   }
 
   function stop () {
@@ -54,16 +55,21 @@ export function createPlayer (state, settings) {
   }
 
   function goTo (frameIndex) {
-    currentFrameIndex = 0
-    state.eventLog = []
-    while (currentFrameIndex < frameIndex) applyNextFrame(true)
+    currentFrameIndex = -1
+    state.reset()
+    while (currentFrameIndex < frameIndex - 1) applyNextFrame(true)
     applyNextFrame()
     player.emit('nextFrame', player.currentFrameIndex, player.totalFrameCount)
+
+    if (!!intervalHandle) {
+      pause()
+      play()
+    }
   }
 
   function reset () {
     state.eventLog = []
-    currentFrameIndex = 0
+    currentFrameIndex = -1
     applyNextFrame()
   }
 
