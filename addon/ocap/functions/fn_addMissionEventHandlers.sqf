@@ -4,48 +4,48 @@
 	Description:
 	Attaches relevant mission event handlers.
 */
-#define OCAP_EVENT_CONNECTED "C"
-#define OCAP_EVENT_RESPAWNED "R"
-#define OCAP_EVENT_DISCONNECTED "D"
-#define OCAP_EVENT_KILLED "K"
+#define CNTR_EVENT_CONNECTED "C"
+#define CNTR_EVENT_RESPAWNED "R"
+#define CNTR_EVENT_DISCONNECTED "D"
+#define CNTR_EVENT_KILLED "K"
 
 private _hanldeEntityKilledIndex = addMissionEventHandler ["EntityKilled", { params ["_victim", "", "_instigator"];
-	if (not ((_victim getVariable ["ocap_id", ""]) isEqualTo "")) then {
-		[OCAP_EVENT_KILLED, _victim, _instigator] call ocap_fnc_eventHandlerShot;
+	if (not ((_victim getVariable ["cntr_id", ""]) isEqualTo "")) then {
+		[CNTR_EVENT_KILLED, _victim, _instigator] call cntr_fnc_eventHandlerShot;
 
-		_victim call ocap_fnc_removeEntityEventHandlers;
+		_victim call cntr_fnc_removeEntityEventHandlers;
 	};
 }];
-ocap_missionEventHandlers pushBack ["EntityKilled", _hanldeEntityKilledIndex];
+cntr_missionEventHandlers pushBack ["EntityKilled", _hanldeEntityKilledIndex];
 
 private _handleEntityRespawnedIndex = addMissionEventHandler ["EntityRespawned", { params ["_newEntity", "_oldEntity"];
-	if (not ((_oldEntity getVariable ["ocap_id", ""]) isEqualTo "")) then {
+	if (not ((_oldEntity getVariable ["cntr_id", ""]) isEqualTo "")) then {
 
-		_newEntity setVariable ["ocap_id", _oldEntity getVariable ["ocap_id", ""]];
-		_oldEntity setVariable ["ocap_id", nil];
+		_newEntity setVariable ["cntr_id", _oldEntity getVariable ["cntr_id", ""]];
+		_oldEntity setVariable ["cntr_id", nil];
 
-		_newEntity call ocap_fnc_addEntityEventHandlers;
+		_newEntity call cntr_fnc_addEntityEventHandlers;
 
-		[OCAP_EVENT_RESPAWNED, _newEntity getVariable ["ocap_id", ""]] call ocap_fnc_writeEvent;
+		[CNTR_EVENT_RESPAWNED, _newEntity getVariable ["cntr_id", ""]] call cntr_fnc_writeEvent;
 	};
 }];
-ocap_missionEventHandlers pushBack ["EntityRespawned", _handleEntityRespawnedIndex];
+cntr_missionEventHandlers pushBack ["EntityRespawned", _handleEntityRespawnedIndex];
 
 private _handleHandleDisconnectIndex = addMissionEventHandler ["HandleDisconnect", { params ["_entity", "", "_uid", "_name"];
-	[OCAP_EVENT_DISCONNECTED, _name] call ocap_fnc_writeEvent;
+	[CNTR_EVENT_DISCONNECTED, _name] call cntr_fnc_writeEvent;
 	false;
 }];
-ocap_missionEventHandlers pushBack ["HandleDisconnect", _handleHandleDisconnectIndex];
+cntr_missionEventHandlers pushBack ["HandleDisconnect", _handleHandleDisconnectIndex];
 
 private _handlePlayerConnectedIndex = addMissionEventHandler ["PlayerConnected", { params ["", "_uid", "_name"];
-  [OCAP_EVENT_CONNECTED, _name] call ocap_fnc_writeEvent;
+  [CNTR_EVENT_CONNECTED, _name] call cntr_fnc_writeEvent;
 }];
-ocap_missionEventHandlers pushBack ["PlayerConnected", _handlePlayerConnectedIndex];
+cntr_missionEventHandlers pushBack ["PlayerConnected", _handlePlayerConnectedIndex];
 
-if (ocap_endCaptureOnEndMission) then {
+if (cntr_endCaptureOnEndMission) then {
 	private _handleEndedIndex = addMissionEventHandler ["Ended", {
-		[] call ocap_fnc_stopCapture;
-		["stop", ocap_exportPath] call ocap_fnc_export;
+		[] call cntr_fnc_stopCapture;
+		["stop", cntr_exportPath] call cntr_fnc_export;
 	}];
-	ocap_missionEventHandlers pushBack ["Ended", _handleEndedIndex];
+	cntr_missionEventHandlers pushBack ["Ended", _handleEndedIndex];
 };

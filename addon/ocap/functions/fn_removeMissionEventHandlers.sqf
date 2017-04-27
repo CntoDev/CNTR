@@ -1,1 +1,1 @@
-{ removeMissionEventHandler _x; } forEach ocap_missionEventHandlers;
+{ removeMissionEventHandler _x; } forEach cntr_missionEventHandlers;

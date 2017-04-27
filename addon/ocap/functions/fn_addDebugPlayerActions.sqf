@@ -2,13 +2,13 @@ private _player = _this;
 
 private _addPlayerActions = {
   _player addAction ["Start capture", {
-    if (not ocap_captureRunning) then {
-      [] call ocap_fnc_startCapture;
+    if (not cntr_captureRunning) then {
+      [] call cntr_fnc_startCapture;
     };
   }];
   _player addAction ["Stop capture", {
-    if (ocap_captureRunning) then {
-      [] call ocap_fnc_stopCapture;
+    if (cntr_captureRunning) then {
+      [] call cntr_fnc_stopCapture;
     };
   }];
 };
@@ -16,4 +16,4 @@ private _addPlayerActions = {
 _player addEventHandler ["Respawn", _addPlayerActions];
 [] call _addPlayerActions;
 
-"Debug enabled!" call ocap_fnc_logDebug;
+"Debug enabled!" call cntr_fnc_logDebug;

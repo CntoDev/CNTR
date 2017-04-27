@@ -1,10 +1,10 @@
-"Stopping capture." call ocap_fnc_logDebug;
+"Stopping capture." call cntr_fnc_logDebug;
 
-ocap_captureRunning = false;
+cntr_captureRunning = false;
 
-[] call ocap_fnc_removeMissionEventHandlers;
+[] call cntr_fnc_removeMissionEventHandlers;
 
 {
-  _x setVariable ["ocap_id", nil];
-  _x call ocap_fnc_removeEntityEventHandlers;
+  _x setVariable ["cntr_id", nil];
+  _x call cntr_fnc_removeEntityEventHandlers;
 } forEach entities [["LandVehicle",  "Air", "Ship"], ["Logic"]] + allUnits;

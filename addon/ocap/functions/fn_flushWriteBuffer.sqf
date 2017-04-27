@@ -1,2 +1,2 @@
-["append", ocap_writeBuffer] call ocap_fnc_export;
-ocap_writeBuffer = "";
+["append", cntr_writeBuffer] call cntr_fnc_export;
+cntr_writeBuffer = "";

@@ -2,17 +2,17 @@
 
 private _event = _this;
 
-if (ocap_captureRunning) then {
+if (cntr_captureRunning) then {
 
   private _eventString = (_event joinString ",") + ";";
 
-  if (ocap_lastWrittenFrameIndex != ocap_currentFrameIndex) then {
+  if (cntr_lastWrittenFrameIndex != cntr_currentFrameIndex) then {
     _eventString = NEWLINE + _eventString;
-    ocap_lastWrittenFrameIndex = ocap_currentFrameIndex;
+    cntr_lastWrittenFrameIndex = cntr_currentFrameIndex;
   };
 
-  ["append", _eventString] call ocap_fnc_export;
+  ["append", _eventString] call cntr_fnc_export;
 
-  if (ocap_debugLogEvents) then { _eventString call ocap_fnc_logDebug; };
+  if (cntr_debugLogEvents) then { _eventString call cntr_fnc_logDebug; };
 
 };

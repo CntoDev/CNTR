@@ -1,13 +1,13 @@
-"Starting capture." call ocap_fnc_logDebug;
+"Starting capture." call cntr_fnc_logDebug;
 
-ocap_captureRunning = true;
-ocap_missionEventHandlers = [];
-ocap_writeBuffer = "";
-ocap_lastWrittenFrameIndex = -1;
-ocap_currentFrameIndex = -1;
-ocap_nextEntityId = -1;
-ocap_nextWeaponId = -1;
+cntr_captureRunning = true;
+cntr_missionEventHandlers = [];
+cntr_writeBuffer = "";
+cntr_lastWrittenFrameIndex = -1;
+cntr_currentFrameIndex = -1;
+cntr_nextEntityId = -1;
+cntr_nextWeaponId = -1;
 
-[] call ocap_fnc_addMissionEventHandlers;
+[] call cntr_fnc_addMissionEventHandlers;
 
-[] spawn ocap_fnc_startCaptureLoop;
+[] spawn cntr_fnc_startCaptureLoop;
