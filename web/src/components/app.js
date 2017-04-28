@@ -112,7 +112,7 @@ export class App extends React.Component {
         <UnitList map={map} state={state} player={player}/>
       </div>
       <div className={styles.rightPanel}>
-        <EventLog eventLog={eventLog}/>
+        <EventLog eventLog={eventLog} jumpToEvent={frameIndex => player.goTo(frameIndex)}/>
       </div>
       <div className={styles.bottomPanel}>
         <PlaybackWidget togglePlayback={player.togglePlayback} goTo={player.goTo} setPlaybackSpeed={setPlaybackSpeed} playback={playback}/>
