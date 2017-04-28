@@ -32,6 +32,10 @@ class PlaybackSpeedWidget extends React.Component {
     }
   }
 
+  componentDidMount() {
+    this.interactionSurface.addEventListener('mouseleave', () => this.setState({sliderVisible: false}));
+  }
+
   render () {
     const {playbackSpeed, setPlaybackSpeed} = this.props
     const {sliderVisible} = this.state
@@ -40,6 +44,7 @@ class PlaybackSpeedWidget extends React.Component {
       <span className={styles.playbackSpeedButton}
             onClick={() => this.setState({sliderVisible: !sliderVisible})}>{playbackSpeed}×</span>
       <input className={cx(styles.playbackSpeedSlider, sliderVisible && styles.visible)}
+             ref={input => this.interactionSurface = input}
              type="range" min={MIN_PLAYBACK_SPEED} value={playbackSpeed} max={MAX_PLAYBACK_SPEED} step={1}
              onChange={({target: {value}}) => setPlaybackSpeed(value)}/>
     </div>

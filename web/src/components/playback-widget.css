@@ -41,14 +41,17 @@
 
 .playbackSpeedButton {
   position: relative;
+  display: inline-block;
+  width: 2em;
 }
 
 .playbackSpeedSlider {
   display: none;
   position: absolute;
-  top: -48px;
-  left: -24px;
-  width: 80px;
+  top: -60px;
+  left: -36px;
+  width: 96px;
+  height: 2em;
   transform: rotate(270deg);
 }
 
