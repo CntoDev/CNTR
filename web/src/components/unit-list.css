@@ -13,7 +13,7 @@
 
 .listContainer {
   flex-grow: 1;
-  overflow: scroll;
+  overflow-y: overlay;
 }
 
 .list {

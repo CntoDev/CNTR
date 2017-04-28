@@ -17,8 +17,8 @@ export class App extends React.Component {
     super(props)
 
     this.state = {
-      infoDialogOpen: false,
       loadDialogOpen: true,
+      infoDialogOpen: false,
       loadMapDialogOpen: false,
       eventLog: props.state.eventLog,
       playback: {
@@ -74,6 +74,14 @@ export class App extends React.Component {
     })
   }
 
+  closeAllDialogs() {
+    this.setState({
+      loadDialogOpen: false,
+      infoDialogOpen: false,
+      loadMapDialogOpen: false,
+    })
+  }
+
   loadMap (entry) {
     const {state, map, mapIndex} = this.props
     const worldInfo = mapIndex.find(world => world.worldName.toLowerCase() === entry.worldName.toLowerCase())
@@ -93,11 +101,12 @@ export class App extends React.Component {
 
     return <div className={styles.container}>
       <div className={styles.topPanel}>
-        <HeaderBar
-          openLoadProject={() => this.setState({loadDialogOpen: true})}
-          openLoadMap={() => this.setState({loadMapDialogOpen: true})}
-          openInfo={() => this.setState({infoDialogOpen: true})}
-        />
+        <HeaderBar>
+          <div className={cx(styles.logo)} />
+          <button className={cx(styles.button, styles.loadButton)} onClick={() => this.setState({loadDialogOpen: true})} />
+          <button className={cx(styles.button, styles.loadMapButton)} onClick={() => this.setState({loadMapDialogOpen: true})} />
+          <button className={cx(styles.button, styles.infoButton)} onClick={() => this.setState({infoDialogOpen: true})} />
+        </HeaderBar>
       </div>
       <div className={styles.leftPanel}>
         <UnitList map={map} state={state} player={player}/>
@@ -108,9 +117,10 @@ export class App extends React.Component {
       <div className={styles.bottomPanel}>
         <PlaybackWidget togglePlayback={player.togglePlayback} goTo={player.goTo} setPlaybackSpeed={setPlaybackSpeed} playback={playback}/>
       </div>
-      { loadDialogOpen && <LoadDialog entries={captureIndex} loadCapture={this.loadCapture.bind(this)} closeDialog={() => this.setState({loadDialogOpen: false})} /> }
-      { infoDialogOpen && <InfoDialog closeDialog={() => this.setState({infoDialogOpen: false})} /> }
-      { loadMapDialogOpen && <LoadMapDialog entries={mapIndex} loadMap={this.loadMap.bind(this)} closeDialog={() => this.setState({loadMapDialogOpen: false})} /> }
+
+      <LoadDialog open={loadDialogOpen} onClose={this.closeAllDialogs.bind(this)} entries={captureIndex} loadCapture={this.loadCapture.bind(this)} />
+      <LoadMapDialog open={loadMapDialogOpen} onClose={this.closeAllDialogs.bind(this)} maps={mapIndex} loadMap={this.loadMap.bind(this)} />
+      <InfoDialog open={infoDialogOpen} onClose={this.closeAllDialogs.bind(this)} />
     </div>
   }
 }

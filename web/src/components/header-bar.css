@@ -1,31 +1,3 @@
 .container {
   display: flex;
 }
-
-.logo {
-  background: url("images/cntr-logo.png") center no-repeat;
-  background-size: 70px auto;
-  width: 192px;
-  height: 40px;
-}
-
-.loadButton {
-  background: url("images/icons/folder.png") center no-repeat;
-  background-size: 24px 24px;
-  width: 40px;
-  height: 40px;
-}
-
-.infoButton {
-  background: url("images/icons/info.png") center no-repeat;
-  background-size: 24px 24px;
-  width: 40px;
-  height: 40px;
-}
-
-.loadMapButton {
-  background: url("images/icons/map.png") center no-repeat;
-  background-size: 24px 24px;
-  width: 40px;
-  height: 40px;
-}

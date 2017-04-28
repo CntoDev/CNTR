@@ -10,7 +10,7 @@
   fill: rgb(128, 0, 0);
 }
 
-.marker.ind {
+.marker.guer {
   fill: rgb(0, 128, 0);
 }
 
@@ -80,7 +80,7 @@
   opacity: 0.4;
 }
 
-.hitLine.ind {
+.hitLine.guer {
   stroke: rgb(0, 128, 0);
   stroke-width: 2;
   opacity: 0.4;
