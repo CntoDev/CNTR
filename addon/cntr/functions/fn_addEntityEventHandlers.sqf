@@ -23,20 +23,20 @@ private _hitEventHandler = _entity addEventHandler ["Hit", { params ["_victim", 
 }];
 
 private _gotInEventHandler = _entity addEventHandler ["GetIn", { params ["_vehicle", "", "_entity"];
-  if (alive _entity and not _entity call _hasId) then {
+  if (alive _entity and (not _entity call _hasId)) then {
     _entity call cntr_fnc_initEntity;
   };
-  if (alive _vehicle and not _vehicle call _hasId) then {
+  if (alive _vehicle and (not _vehicle call _hasId)) then {
     _vehicle call cntr_fnc_initEntity;
   };
   [CNTR_EVENT_GOT_IN, _entity call _getId, _vehicle call _getId] call cntr_fnc_writeEvent;
 }];
 
 private _gotOutEventHandler = _entity addEventHandler ["GetOut", { params ["_vehicle", "", "_entity"];
-  if (alive _entity and not _entity call _hasId) then {
+  if (alive _entity and (not _entity call _hasId)) then {
     _entity call cntr_fnc_initEntity;
   };
-  if (alive _vehicle and not _vehicle call _hasId) then {
+  if (alive _vehicle and (not _vehicle call _hasId)) then {
     _vehicle call cntr_fnc_initEntity;
   };
   [CNTR_EVENT_GOT_OUT, _entity call _getId, _vehicle call _getId] call cntr_fnc_writeEvent;
