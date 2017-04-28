@@ -21,13 +21,40 @@ export class App extends React.Component {
       loadDialogOpen: true,
       loadMapDialogOpen: false,
       eventLog: props.state.eventLog,
+      playback: {
+        currentFrameIndex: null,
+        totalFrameCount: null,
+        playing: false,
+        playbackSpeed: 10,
+      }
     }
   }
 
   componentDidMount () {
+    const {player} = this.props
+
     this.props.state.on('update', newState => this.setState({
       eventLog: newState.eventLog,
     }))
+
+    this.props.player.on('update', this.updatePlaybackState.bind(this))
+
+    window.addEventListener('keypress', ({charCode}) => {
+      if (charCode === 32) {
+        player.togglePlayback()
+      }
+    })
+  }
+
+  updatePlaybackState ({currentFrameIndex, totalFrameCount, playing, playbackSpeed}) {
+    this.setState({
+      playback: {
+        playing,
+        currentFrameIndex,
+        totalFrameCount,
+        playbackSpeed,
+      }
+    })
   }
 
   loadCapture (entry) {
@@ -60,7 +87,9 @@ export class App extends React.Component {
 
   render () {
     const {state, map, player, captureIndex, mapIndex} = this.props
-    const {loadDialogOpen, infoDialogOpen, loadMapDialogOpen, eventLog} = this.state
+    const {loadDialogOpen, infoDialogOpen, loadMapDialogOpen, eventLog, playback} = this.state
+
+    const setPlaybackSpeed = newPlaybackSpeed => player.playbackSpeed = newPlaybackSpeed
 
     return <div className={styles.container}>
       <div className={styles.topPanel}>
@@ -77,7 +106,7 @@ export class App extends React.Component {
         <EventLog eventLog={eventLog}/>
       </div>
       <div className={styles.bottomPanel}>
-        <PlaybackWidget player={player}/>
+        <PlaybackWidget togglePlayback={player.togglePlayback} goTo={player.goTo} setPlaybackSpeed={setPlaybackSpeed} playback={playback}/>
       </div>
       { loadDialogOpen && <LoadDialog entries={captureIndex} loadCapture={this.loadCapture.bind(this)} closeDialog={() => this.setState({loadDialogOpen: false})} /> }
       { infoDialogOpen && <InfoDialog closeDialog={() => this.setState({infoDialogOpen: false})} /> }

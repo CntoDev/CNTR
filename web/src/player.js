@@ -7,32 +7,57 @@ export function createPlayer (state, settings) {
   let frames = null
   let intervalHandle = null
   let currentFrameIndex = 0
+  let playbackSpeed = DEFAULT_PLAYBACK_SPEED
 
   const player = createEmitter({
     load,
     play,
     pause,
+    togglePlayback,
     stop,
     goTo,
     reset,
 
-    playbackSpeed: DEFAULT_PLAYBACK_SPEED,
-    get playbackDone () { return currentFrameIndex >= frames.length },
-    get totalFrameCount () { return frames && frames.length },
-    get currentFrame () { return frames && frames[currentFrameIndex] },
-    get currentFrameIndex () { return currentFrameIndex },
+    get playbackSpeed () { return playbackSpeed },
+    set playbackSpeed (newPlaybackSpeed) { updatePlaybackSpeed(newPlaybackSpeed) },
+    get playing () { return !!intervalHandle },
+    get totalFrameCount () { return frames ? frames.length : null },
+    get currentFrame () { return frames ? frames[currentFrameIndex] : null },
+    get currentFrameIndex () { return frames ? currentFrameIndex : null },
   })
 
   return player
 
+  function togglePlayback() {
+    if (player.playing) {
+      pause()
+    } else {
+      play()
+    }
+  }
+
   function load (newFrames) {
     frames = newFrames
     reset()
-    player.emit('nextFrame', player.currentFrameIndex, player.totalFrameCount, !!intervalHandle)
+    emitUpdate()
+  }
+
+  function emitUpdate() {
+    player.emit('update', player)
+  }
+
+  function updatePlaybackSpeed(newPlaybackSpeed) {
+    playbackSpeed = newPlaybackSpeed
+    if (intervalHandle) {
+      clearInterval(intervalHandle)
+      intervalHandle = setInterval(playFrame, FRAME_PLAYBACK_INTERVAL / playbackSpeed)
+    }
+    emitUpdate()
   }
 
   function play () {
-    intervalHandle = setInterval(playFrame, FRAME_PLAYBACK_INTERVAL / player.playbackSpeed)
+    intervalHandle = setInterval(playFrame, FRAME_PLAYBACK_INTERVAL / playbackSpeed)
+    emitUpdate()
   }
 
   function playFrame () {
@@ -42,12 +67,13 @@ export function createPlayer (state, settings) {
       player.pause()
     }
 
-    player.emit('nextFrame', player.currentFrameIndex, player.totalFrameCount, !!intervalHandle)
+    emitUpdate()
   }
 
   function pause () {
     clearInterval(intervalHandle)
     intervalHandle = 0
+    emitUpdate()
   }
 
   function stop () {
@@ -60,7 +86,8 @@ export function createPlayer (state, settings) {
     state.reset()
     while (currentFrameIndex < frameIndex - 1) applyNextFrame(true)
     applyNextFrame()
-    player.emit('nextFrame', player.currentFrameIndex, player.totalFrameCount)
+
+    emitUpdate()
 
     if (!!intervalHandle) {
       pause()
