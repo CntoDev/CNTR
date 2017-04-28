@@ -5,7 +5,7 @@ import { ModalDialog } from './modal-dialog.js'
 
 import styles from './load-dialog.css'
 
-export function LoadDialog ({open, entries, loadCapture, onClose}) {
+export function LoadCaptureDialog ({open, entries, loadCapture, onClose}) {
   return <ModalDialog title="Load mission capture" open={open} onClose={onClose}>
     <table className={styles.captureList}>
       <thead className={styles.captureListHeader}>

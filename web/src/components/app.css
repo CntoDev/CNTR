@@ -24,6 +24,7 @@
 
 .topPanel {
   position: absolute;
+  display: flex;
   top: 0;
   left: 0;
   width: 100%;
@@ -60,10 +61,10 @@
 }
 
 .button:focus {
-  outline: none;
+  box-shadow: none;
 }
 
-.loadButton {
+.loadCaptureButton {
   background: url("images/icons/folder.png") center no-repeat;
   background-size: 24px 24px;
 }
