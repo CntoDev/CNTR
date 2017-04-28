@@ -21,7 +21,6 @@ export class PlaybackWidget extends React.Component {
 
   componentDidMount () {
     this.props.player.on('nextFrame', this.updateTime.bind(this))
-    this.props.player.on('load', this.updateTime.bind(this, false))
     window.addEventListener('keypress', this.handleKeyboardInput.bind(this))
   }
 
@@ -61,8 +60,9 @@ export class PlaybackWidget extends React.Component {
     this.setState({playing: newPlaying})
   }
 
-  updateTime (currentFrameIndex, frameCount) {
+  updateTime (currentFrameIndex, frameCount, playing) {
     this.setState({
+      playing,
       currentFrameIndex,
       frameCount,
     })

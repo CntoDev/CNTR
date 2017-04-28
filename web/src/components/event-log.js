@@ -41,15 +41,14 @@ function HitLog ({shooter, victim, frameIndex}) {
   </li>
 }
 
-function ConnectedLog ({player, frameIndex}) {
-  return <li className={styles.event}>
-    <span className={styles[player.side]}>{player.name}</span> connected.<br />
+function ConnectedLog ({playerName, frameIndex}) {
+  return <li className={styles.event}><span>{playerName}</span> connected.<br />
     <span className={styles.eventDetails}>{moment.utc(frameIndex * 1000).format('HH:mm:ss')}</span>
   </li>
 }
 
-function DisconnectedLog ({player, frameIndex}) {
-  return <li className={styles.event}><span className={styles[player.side]}>{player.name}</span> disconnected.<br />
+function DisconnectedLog ({playerName, frameIndex}) {
+  return <li className={styles.event}><span>{playerName}</span> disconnected.<br />
     <span className={styles.eventDetails}>{moment.utc(frameIndex * 1000).format('HH:mm:ss')}</span>
   </li>
 }

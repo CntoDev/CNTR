@@ -9,4 +9,5 @@ extension/.vs/*
 web/node_modules
 web/data/
 web/maps/
-web/.idea
+**/.idea
+

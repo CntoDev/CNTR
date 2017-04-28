@@ -95,7 +95,7 @@ function applyConnectedEvent (state, event, frameIndex) {
   addLoggedEvent(state, {
     frameIndex,
     type: event[0],
-    player: state.entities[event[1]],
+    playerName: event[1],
   })
 }
 
@@ -103,7 +103,7 @@ function applyDisconnectedEvent (state, event, frameIndex) {
   addLoggedEvent(state, {
     frameIndex,
     type: event[0],
-    player: state.entities[event[1]],
+    playerName: event[1],
   })
 }
 

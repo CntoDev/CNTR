@@ -196,14 +196,12 @@ export function createMapController (mapElement, state, settings) {
     })
     marker.on('mouseover', () => {
       if (state.followedUnit !== entity && settings.labels.mouseOver) {
-        console.log('yay')
         marker.openPopup()
         marker.popupOnMouse = true
       }
     })
     marker.on('mouseout', () => {
       if (state.followedUnit !== entity && marker.popupOnMouse) {
-        console.log('damn')
         marker.closePopup()
         marker.popupOnMouse = false
       }

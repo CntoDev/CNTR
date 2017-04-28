@@ -28,7 +28,7 @@ export function createPlayer (state, settings) {
   function load (newFrames) {
     frames = newFrames
     reset()
-    player.emit('load', player.currentFrameIndex, player.totalFrameCount)
+    player.emit('nextFrame', player.currentFrameIndex, player.totalFrameCount, !!intervalHandle)
   }
 
   function play () {
@@ -41,7 +41,8 @@ export function createPlayer (state, settings) {
     if (!playing) {
       player.pause()
     }
-    player.emit('nextFrame', player.currentFrameIndex, player.totalFrameCount)
+
+    player.emit('nextFrame', player.currentFrameIndex, player.totalFrameCount, !!intervalHandle)
   }
 
   function pause () {
