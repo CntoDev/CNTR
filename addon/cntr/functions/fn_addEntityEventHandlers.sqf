@@ -41,7 +41,7 @@ private _gotOutEventHandler = _entity addEventHandler ["GetOut", { params ["_veh
   [CNTR_EVENT_GOT_OUT, _entity getVariable ["cntr_id", ""], _vehicle getVariable ["cntr_id", ""]] call cntr_fnc_writeEvent;
 }];
 
-private _despawnedEventHandler = _entity addEventHandler ["Delete", { params ["_entity"];
+private _despawnedEventHandler = _entity addEventHandler ["Deleted", { params ["_entity"];
   [CNTR_EVENT_DESPAWNED, _entity getVariable ["cntr_id", ""]] call cntr_fnc_writeEvent;
   _entity call fn_removeEntityEventHandlers;
 }];
