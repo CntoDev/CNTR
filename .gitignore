@@ -6,7 +6,8 @@ extension/obj/*
 extension/.vs/*
 
 ## ADDON ##
-web/node_modules
+web/node_modules/
+web/build/
 web/data/
 web/maps/
 **/.idea
