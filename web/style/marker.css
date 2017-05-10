@@ -1,5 +1,5 @@
-.marker.unused {
-  display: none !important;
+.marker {
+  opacity: 1;
 }
 
 .marker.west {
@@ -22,14 +22,6 @@
   fill: rgb(184, 134, 11);
 }
 
-.marker.alive {
-  opacity: 1;
-}
-
-.marker.dead {
-  opacity: 0.2;
-}
-
 .marker.hit {
   stroke: #f862ff;
   stroke-width: 20;
@@ -44,10 +36,6 @@
 .marker.followed {
   stroke: rgb(184, 134, 11);
   stroke-width: 20;
-}
-
-.marker.inVehicle {
-  opacity: 0;
 }
 
 .hitLine {
@@ -97,3 +85,12 @@
   stroke-width: 4;
   opacity: 1;
 }
+
+.marker.dead {
+  opacity: 0.2 !important;
+}
+
+.marker.hidden {
+  display: none !important;
+}
+

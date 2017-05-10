@@ -1,4 +1,4 @@
-const classes = ['empty', 'east', 'west', 'ind', 'civ', 'hit', 'killed', 'alive', 'dead', 'inVehicle', 'followed']
+const classes = ['empty', 'east', 'west', 'ind', 'civ', 'hit', 'killed', 'alive', 'dead', 'inVehicle', 'followed', 'hidden']
 
 L.SvgIcon = L.Icon.extend({
   options: {
