@@ -1,9 +1,14 @@
 import React from 'react'
-import zip from 'lodash/zip'
-import isEqual from 'lodash/isEqual'
 
 import cx from 'classnames'
 import styles from './unit-list.css'
+
+const SIDE_NAMES = {
+  'west': 'BLUFOR',
+  'east': 'OPFOR',
+  'guer': 'INDEPENDENT',
+  'civ': 'CIVILIAN',
+}
 
 export class UnitList extends React.Component {
   constructor () {
@@ -22,14 +27,16 @@ export class UnitList extends React.Component {
       const side = list[unit.side] || (list[unit.side] = {
             name: unit.side,
             groups: {},
-            open: oldList[unit.side] && oldList[unit.side].open || unit.followed
+            open: oldList[unit.side] && oldList[unit.side].open,
           })
+      side.open = side.open || unit.followed
 
       const group = side.groups[unit.group] || (side.groups[unit.group] = {
             name: unit.group,
             units: {},
-            open: oldList[unit.side] && oldList[unit.side].groups[unit.group] && oldList[unit.side].groups[unit.group].open || unit.followed
+            open: oldList[unit.side] && oldList[unit.side].groups[unit.group] && oldList[unit.side].groups[unit.group].open
           })
+      group.open = group.open || unit.followed
 
       group.units[unit.id] || (group.units[unit.id] = unit)
     })
@@ -76,7 +83,7 @@ function Side({side, side: {name, groups, open}, toggleOpen, followUnit}) {
   return <li className={cx(styles.side)}>
       <span onClick={() => toggleOpen(side)}>
         <span className={cx(styles.collapseButton)}>{open ? '▾' : '▸'}</span>
-        <span className={cx(styles.sideName, styles[name])}>{name}</span>
+        <span className={cx(styles.sideName, styles[name])}>{SIDE_NAMES[name]}</span>
       </span>
     { open && <ul className={cx(styles.groupList, open && styles.open)}>{Object.values(groups).map(group =>
         <Group key={group.name} group={group} toggleOpen={toggleOpen} followUnit={followUnit}/>

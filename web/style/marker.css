@@ -2,24 +2,24 @@
   opacity: 1;
 }
 
+.marker.empty {
+  fill: rgb(184, 134, 11) !important;
+}
+
 .marker.west {
-  fill: rgb(0, 77, 153);
+  fill: rgb(0, 77, 153) !important;
 }
 
 .marker.east {
-  fill: rgb(128, 0, 0);
+  fill: rgb(128, 0, 0) !important;
 }
 
 .marker.guer {
-  fill: rgb(0, 128, 0);
+  fill: rgb(0, 128, 0) !important;
 }
 
 .marker.civ {
-  fill: rgb(102, 0, 128);
-}
-
-.marker.empty {
-  fill: rgb(184, 134, 11);
+  fill: rgb(102, 0, 128) !important;
 }
 
 .marker.hit {
@@ -28,7 +28,7 @@
 }
 
 .marker.killed {
-  stroke: red;
+  stroke: rgb(255, 0, 0);
   stroke-width: 20;
   opacity: 1;
 }
@@ -78,12 +78,6 @@
   stroke: rgb(102, 0, 128);
   stroke-width: 2;
   opacity: 0.4;
-}
-
-.testLine {
-  stroke: #000000;
-  stroke-width: 4;
-  opacity: 1;
 }
 
 .marker.dead {

@@ -84,11 +84,14 @@ export class App extends React.Component {
   }
 
   loadMap (entry) {
-    const {state, map, mapIndex} = this.props
+    const {state, map, player, mapIndex} = this.props
+
     const worldInfo = mapIndex.find(world => world.worldName.toLowerCase() === entry.worldName.toLowerCase())
 
     state.reset()
     map.loadWorld(worldInfo)
+    player.load([])
+    player.reset()
     this.setState({
       loadMapDialogOpen: false
     })

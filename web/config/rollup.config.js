@@ -1,6 +1,7 @@
 import camelCase from 'lodash/camelCase'
 
 import babel from 'rollup-plugin-babel'
+import json from 'rollup-plugin-json'
 import commonJs from 'rollup-plugin-commonjs'
 import nodeResolve from 'rollup-plugin-node-resolve'
 import replace from 'rollup-plugin-replace'
@@ -35,6 +36,9 @@ export default {
         return cssExportMap[id]
       },
       extensions: ['.css'],
+    }),
+    json({
+      preferConst: true, // Default: false
     }),
     babel({
       babelrc: false,

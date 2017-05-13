@@ -2,8 +2,6 @@ import '../../vendor/leaflet.js'
 import '../../vendor/leaflet.svgIcon.js'
 import '../../vendor/leaflet.rotatedMarker.js'
 
-import debounce from 'lodash/debounce'
-
 import { MAP_DIRECTORY, MAP_MAX_NATIVE_ZOOM, MAP_MIN_ZOOM, MAP_MAX_ZOOM } from '../constants.js'
 
 export function createMapController (mapElement, state, settings) {
@@ -15,8 +13,6 @@ export function createMapController (mapElement, state, settings) {
   let map = null
   let mapMultiplier
   let mapImageSize
-
-  const logId = debounce(() => console.log(markerId), 100)
 
   return {
     loadWorld,
@@ -91,7 +87,7 @@ export function createMapController (mapElement, state, settings) {
     lines = []
     state.events.forEach(event => renderEvent(event, state))
 
-    Object.values(markers).forEach(marker => marker.toggleClass('unused', !marker.used))
+    Object.values(markers).forEach(marker => !marker.used && marker.setClasses({unused: true}))
 
     if (state.followedUnit) {
       const pose = state.followedUnit.pose
@@ -111,8 +107,6 @@ export function createMapController (mapElement, state, settings) {
     const marker = L.marker([-1000000, -1000000]).addTo(map)
 
     marker.id = markerId++
-
-    logId()
 
     marker.setIcon(L.svgIcon({
       iconSize: entity.type === 'Man' ? [16, 16] : [32, 32],
@@ -142,7 +136,6 @@ export function createMapController (mapElement, state, settings) {
     })
 
     markers[entity.id] = marker
-    marker.used = true
 
     marker.move = function ({x, y, dir}) {
       marker.setLatLng(coordinatesToLatLng({x, y}))
@@ -161,18 +154,16 @@ export function createMapController (mapElement, state, settings) {
     const marker = getMarker(entity) || createMarker(entity)
 
     marker.used = true
-
     marker.move(entity.pose)
-
     marker.setClasses({
+      ['cntr-id--' + entity.id]: true,
       [entity.side]: true,
       followed: (entity.crew || [entity]).includes(state.followedUnit),
       dead: !entity.alive,
+      hidden: !!entity.vehicle,
       hit: false,
       killed: false,
       unused: false,
-      hidden: !!entity.vehicle,
-      inVehicle: !!entity.vehicle,
     })
 
     renderPopup(marker, entity)

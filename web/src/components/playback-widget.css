@@ -1,37 +1,34 @@
 .container {
   display: flex;
   flex-direction: row;
-  padding: 0 0.5em;
+  padding: 0 0.25em;
 }
 
 .playButton {
   position: relative;
-  background-image: url("images/play-pause.png");
-  background-position: 100% 0;
-  height: 16px;
-  width: 16px;
-  background-size: auto 16px;
-  top: 4px;
-  margin: 0 0.5em;
+  background: url("images/icons/pause.png") no-repeat center / 24px auto;
+  height: 40px;
+  width: 40px;
+  margin: 0 0.25em;
 
   flex-grow: 0;
   flex-shrink: 0;
 }
 
 .playButton.paused {
-  background-position: 0 0;
+  background: url("images/icons/play.png") no-repeat center / 24px auto;
 }
 
 .timeDisplay {
   flex-grow: 0;
   flex-shrink: 0;
-  margin: 0 0.5em;
+  margin: 0 0.25em;
 }
 
 .slider {
   flex-grow: 1;
   flex-shrink: 1;
-  margin: 0 0.5em;
+  margin: 0 0.25em;
 }
 
 .playbackSpeedWidget {
@@ -43,6 +40,7 @@
   position: relative;
   display: inline-block;
   width: 2em;
+  margin: 0 0.25em;
 }
 
 .playbackSpeedSlider {

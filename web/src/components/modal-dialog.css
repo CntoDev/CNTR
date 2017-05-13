@@ -36,10 +36,11 @@
 .modalBody {
   box-sizing: border-box;
   background-color: rgba(0,0,0,0.7);
-  min-height: 200px;
-  max-height: 400px;
+  min-height: 256px;
+  max-height: 512px;
   height: auto;
   padding: 0.5em;
+  overflow-y: scroll;
   overflow-y: overlay;
   overflow-x: hidden;
   text-align: left;
