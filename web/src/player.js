@@ -42,6 +42,14 @@ export function createPlayer (state, settings) {
     emitUpdate()
   }
 
+  function reset () {
+    state.eventLog = []
+    currentFrameIndex = -1
+    if (frames) {
+      applyNextFrame()
+    }
+  }
+
   function emitUpdate() {
     player.emit('update', player)
   }
@@ -95,17 +103,13 @@ export function createPlayer (state, settings) {
     }
   }
 
-  function reset () {
-    state.eventLog = []
-    currentFrameIndex = -1
-    applyNextFrame()
-  }
-
   function applyNextFrame (suppressUpdate = false) {
-    const currentFrame = frames[++currentFrameIndex]
+
+    const currentFrame = frames[currentFrameIndex + 1]
 
     if (currentFrame) {
       applyFrameToState(currentFrame, suppressUpdate)
+      ++currentFrameIndex
       return true
     } else {
       return false

@@ -88,3 +88,6 @@
   display: none !important;
 }
 
+.marker.unused {
+  display: none !important;
+}

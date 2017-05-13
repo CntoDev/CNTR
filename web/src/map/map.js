@@ -2,7 +2,7 @@ import '../../vendor/leaflet.js'
 import '../../vendor/leaflet.svgIcon.js'
 import '../../vendor/leaflet.rotatedMarker.js'
 
-import { MAP_DIRECTORY, MAP_MAX_NATIVE_ZOOM, MAP_MIN_ZOOM, MAP_MAX_ZOOM } from '../constants.js'
+import { MAP_DIRECTORY, MAP_MAX_NATIVE_ZOOM, MAP_MIN_ZOOM, MAP_MAX_ZOOM, SIDE_CLASSES } from '../constants.js'
 
 export function createMapController (mapElement, state, settings) {
 
@@ -34,9 +34,7 @@ export function createMapController (mapElement, state, settings) {
       crs: L.CRS.Simple,
       attributionControl: false,
       closePopupOnClick: false,
-      fadeAnimation: true,
       scrollWheelZoom: false,
-      zoomAnimation: true,
       zoomControl: false,
       zoomDelta: 1,
       zoomSnap: 0.1,
@@ -80,14 +78,31 @@ export function createMapController (mapElement, state, settings) {
     state.on('reset', reset)
   }
 
+  function reset () {
+    Object.values(markers).forEach(marker => {
+      marker.used = false
+      marker.setClasses({unused: true})
+    })
+  }
+
   function update (state) {
+    Object.values(markers).forEach(marker => {
+      marker.setClasses({unused: true})
+    })
+
     state.entities.forEach(renderEntity)
 
     lines.forEach(line => map.removeLayer(line))
     lines = []
     state.events.forEach(event => renderEvent(event, state))
 
-    Object.values(markers).forEach(marker => !marker.used && marker.setClasses({unused: true}))
+
+    Object.values(markers).forEach(marker => {
+      if (!marker.used) {
+        marker.setClasses({unused: true})
+        marker.popupOpen && marker.closePopup()
+      }
+    })
 
     if (state.followedUnit) {
       const pose = state.followedUnit.pose
@@ -155,7 +170,7 @@ export function createMapController (mapElement, state, settings) {
 
     marker.used = true
     marker.move(entity.pose)
-    marker.setClasses({
+    marker.setClasses(Object.assign({}, SIDE_CLASSES, {
       ['cntr-id--' + entity.id]: true,
       [entity.side]: true,
       followed: (entity.crew || [entity]).includes(state.followedUnit),
@@ -164,38 +179,56 @@ export function createMapController (mapElement, state, settings) {
       hit: false,
       killed: false,
       unused: false,
-    })
+    }))
 
     renderPopup(marker, entity)
+    entity.justCreated = false
   }
 
   function renderPopup (marker, entity) {
+    if (entity.crew) {
+      if(entity.crew.length) {
+        const label = [`${entity.name} (${entity.crew.length})`, ...entity.crew.map(unit => unit.name)].join('<br>')
+        marker.getPopup().setContent(label)
+      } else {
+        marker.getPopup().setContent(entity.name)
+      }
+    }
+
+    if (shouldOpenPopup(entity)) {
+      if (!entity.justCreated || !marker.popupOpen) {
+        marker.openPopup()
+      }
+      marker.popupOpen = true
+    } else {
+      if (!marker.popupOpen) {
+        marker.closePopup()
+      }
+      marker.popupOpen = false
+    }
+  }
+
+  function shouldOpenPopup(entity) {
+    if (!entity.alive) {
+      return false
+    }
+
     let popupOpen = false
 
     if (entity.isPlayer && settings.labels.players) {
       popupOpen = !entity.vehicle
     } else if (entity.type === 'Man' && settings.labels.ai) {
-      popupOpen = true
-    } else if (entity.crew && entity.crew.some(unit => unit.isPlayer) && settings.labels.vehicles && settings.labels.players) {
-      popupOpen = true
-
-      marker.getPopup().setContent(`${entity.name} (${entity.crew.length})<br>` +
-        entity.crew.map(unit => unit.name).join('<br>'))
-    } else if (entity.crew && entity.crew.some(unit => !unit.isPlayer) && settings.labels.vehicles && settings.labels.ai) {
-      popupOpen = true
+      popupOpen = !entity.vehicle
+    } else if (entity.crew && settings.labels.vehicles) {
+      if (settings.labels.players && entity.crew.some(unit => unit.isPlayer)) {
+        popupOpen = true
+      }
+      if (settings.labels.ai && !entity.crew.some(unit => unit.isPlayer)) {
+        popupOpen = true
+      }
     }
 
-    if (!entity.alive) {
-      popupOpen = false
-    }
-
-    if (popupOpen) {
-      !marker.popupOpen && marker.openPopup()
-      marker.popupOpen = true
-    } else {
-      marker.popupOpen && marker.closePopup()
-      marker.popupOpen = false
-    }
+    return popupOpen
   }
 
   function createPopup (entity) {
@@ -252,10 +285,6 @@ export function createMapController (mapElement, state, settings) {
       line.addTo(map)
       lines.push(line)
     }
-  }
-
-  function reset () {
-    Object.values(markers).forEach(marker => marker.used = false)
   }
 
   function coordinatesToLatLng ({x, y}) {

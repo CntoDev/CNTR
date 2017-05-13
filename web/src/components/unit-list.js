@@ -3,12 +3,7 @@ import React from 'react'
 import cx from 'classnames'
 import styles from './unit-list.css'
 
-const SIDE_NAMES = {
-  'west': 'BLUFOR',
-  'east': 'OPFOR',
-  'guer': 'INDEPENDENT',
-  'civ': 'CIVILIAN',
-}
+import { SIDE_NAMES } from '../constants'
 
 export class UnitList extends React.Component {
   constructor () {
@@ -24,17 +19,19 @@ export class UnitList extends React.Component {
     const list = {}
 
     units.forEach(unit => {
+      const oldSide = oldList[unit.side]
       const side = list[unit.side] || (list[unit.side] = {
             name: unit.side,
             groups: {},
-            open: oldList[unit.side] && oldList[unit.side].open,
+            open: oldSide && oldSide.open,
           })
       side.open = side.open || unit.followed
 
+      const oldGroup = oldList[unit.side] && oldList[unit.side].groups[unit.group]
       const group = side.groups[unit.group] || (side.groups[unit.group] = {
             name: unit.group,
             units: {},
-            open: oldList[unit.side] && oldList[unit.side].groups[unit.group] && oldList[unit.side].groups[unit.group].open
+            open: oldGroup && oldGroup.open
           })
       group.open = group.open || unit.followed
 
@@ -66,12 +63,14 @@ export class UnitList extends React.Component {
   render () {
     const {state} = this.props
     const {unitList} = this.state
+
     const followUnit = unit => state.follow(unit)
+    const sortedList = [unitList.west, unitList.east, unitList.guer, unitList.civ].filter(side => side)
 
     return <div className={cx(styles.container)}>
       <div className={styles.header}>Units</div>
       <div className={cx(styles.listContainer)}>
-        <ul className={styles.list}> {Object.values(unitList).map(side =>
+        <ul className={styles.list}> {sortedList.map(side =>
             <Side key={side.name} side={side} toggleOpen={this.toggleOpen.bind(this)} followUnit={followUnit}/>
         )}</ul>
       </div>

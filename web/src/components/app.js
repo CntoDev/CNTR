@@ -67,10 +67,9 @@ export class App extends React.Component {
       state.reset()
       map.loadWorld(worldInfo)
       player.load(frames)
-      player.reset()
     }).then(() => {
       this.setState({
-        loadCaptureDialogOpen: false
+        loadCaptureDialogOpen: false,
       })
     })
   }
@@ -90,10 +89,15 @@ export class App extends React.Component {
 
     state.reset()
     map.loadWorld(worldInfo)
-    player.load([])
+    player.load(null)
     player.reset()
     this.setState({
-      loadMapDialogOpen: false
+      loadMapDialogOpen: false,
+      playback: Object.assign({}, this.state.playback, {
+        currentFrameIndex: null,
+        totalFrameCount: null,
+        playing: false,
+      }),
     })
   }
 
