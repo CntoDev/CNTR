@@ -21,7 +21,7 @@ export function createPlayer (state, settings) {
     get playbackSpeed () { return playbackSpeed },
     set playbackSpeed (newPlaybackSpeed) { updatePlaybackSpeed(newPlaybackSpeed) },
     get playing () { return !!intervalHandle },
-    get totalFrameCount () { return frames ? frames.length : null },
+    get totalFrameCount () { return frames ? frames.length - 1 : null },
     get currentFrame () { return frames ? frames[currentFrameIndex] : null },
     get currentFrameIndex () { return frames ? currentFrameIndex : null },
   })
@@ -64,8 +64,10 @@ export function createPlayer (state, settings) {
   }
 
   function play () {
-    intervalHandle = setInterval(playFrame, FRAME_PLAYBACK_INTERVAL / playbackSpeed)
-    emitUpdate()
+    if (frames) {
+      intervalHandle = setInterval(playFrame, FRAME_PLAYBACK_INTERVAL / playbackSpeed)
+      emitUpdate()
+    }
   }
 
   function playFrame () {

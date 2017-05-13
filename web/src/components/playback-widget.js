@@ -8,13 +8,15 @@ const MIN_PLAYBACK_SPEED = 1
 const MAX_PLAYBACK_SPEED = 20
 const INVALID_TIME = '--:--:--'
 
-export function PlaybackWidget({togglePlayback, goTo, setPlaybackSpeed, playback: {playing, currentFrameIndex, totalFrameCount, playbackSpeed}}) {
+export function PlaybackWidget({togglePlayback, goTo, setPlaybackSpeed, playback}) {
+  const {playing, currentFrameIndex, totalFrameCount, playbackSpeed} = playback
 
   return <div className={styles.container}>
     <span className={cx(styles.playButton, !playing && styles.paused)} onClick={togglePlayback}/>
     <TimeDisplay currentFrameIndex={currentFrameIndex} totalFrameCount={totalFrameCount}/>
     <input type="range" className={styles.slider}
-           min={0} value={currentFrameIndex || 0} max={totalFrameCount || 0} step={1} onChange={({target: {value}}) => goTo(value)}/>
+           min={0} value={currentFrameIndex || 0} max={totalFrameCount || 0} step={1}
+           onChange={({target: {value}}) => goTo(value)}/>
     <PlaybackSpeedWidget playbackSpeed={playbackSpeed} setPlaybackSpeed={setPlaybackSpeed}/>
   </div>
 }

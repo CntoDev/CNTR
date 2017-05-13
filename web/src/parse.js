@@ -11,7 +11,7 @@ export function parse (dataString) {
 
   if (!semver.satisfies(header.formatVersion, CNTR_FORMAT_VERSION)) throw new Error ('Incompatible CNTR format!')
 
-  const frames = ['', ...frameLines]
+  const frames = frameLines
     .map(line => line.split(';')
       .filter(entry => entry)
       .map(entry => entry.split(',')
