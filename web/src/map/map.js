@@ -32,9 +32,11 @@ export function createMapController (mapElement, state, settings) {
 
     map = L.map(mapElement, {
       crs: L.CRS.Simple,
+      fadeAnimation: false,
+      zoomAnimationThreshold: 16,
+      markerZoomAnimation: false,
       attributionControl: false,
       closePopupOnClick: false,
-      scrollWheelZoom: false,
       zoomControl: false,
       zoomDelta: 1,
       zoomSnap: 0.1,
@@ -63,16 +65,18 @@ export function createMapController (mapElement, state, settings) {
     mapMultiplier = multiplier / 10
     mapImageSize = imageSize
 
-    attachListeners(map, mapElement, state)
+    attachListeners(map, state)
   }
 
-  function attachListeners (map, mapElement, state) {
-    map.on('dragstart', () => state.follow(null))
-
-    mapElement.addEventListener('wheel', event => {
-      const zoom = event.deltaY > 0 ? -0.5 : 0.5
-      map.zoomIn(zoom, {animate: false})
+  function attachListeners (map, state) {
+    map.on('dragstart', () => {
+      if (state.followedUnit) {
+        markers[state.followedUnit.id].closePopup()
+        state.follow(null)
+      }
     })
+    map.on('zoomstart', () => document.querySelector('.leaflet-pane.leaflet-popup-pane').classList.add('zooming'))
+    map.on('zoomend', () => document.querySelector('.leaflet-pane.leaflet-popup-pane').classList.remove('zooming'))
 
     state.on('update', update)
     state.on('reset', reset)
@@ -201,7 +205,7 @@ export function createMapController (mapElement, state, settings) {
       }
       marker.popupOpen = true
     } else {
-      if (!marker.popupOpen) {
+      if (marker.popupOpen && !marker.popupOnMouse) {
         marker.closePopup()
       }
       marker.popupOpen = false

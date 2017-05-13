@@ -114,4 +114,6 @@ input[type=range]::-webkit-slider-runnable-track {
   padding: unset;
 }
 
-
+.leaflet-pane.leaflet-popup-pane.zooming {
+  display: none;
+}
