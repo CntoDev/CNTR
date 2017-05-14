@@ -3,16 +3,16 @@
 [CarpeNoctem]: http://www.carpenoctem.co/
 [Icons8]: https://icons8.com/
 [AUTHORS]: https://github.com/CntoDev/CNTR/blob/master/AUTHORS
-[LOGO]: https://github.com/CntoDev/CNTR/raw/master/web/images/cntr-logo.png
+[LOGO]: https://github.com/CntoDev/CNTR/raw/develop/web/images/cntr-logo.png
 [CNTR_Capture]: https://github.com/CntoDev/CNTR/blob/master/docs/cntr-format.md
 
 ![CNTR][LOGO]
 # Carpe Noctem Tactical Recap (CNTR)
 
 **CNTR** is a recording and playback system for ArmA 3. The system captures infantry and vehicle movement, weapons fire, 
-casualties and many other aspects of an armed operation and stored it for later playback in a 2D environment similar to 
-the ArmA 3 map functionality. **CNTR** thus allows for both planning an operation as well as reviewing team-performance 
-and coordination post-operation.
+casualties and many other aspects of an armed operation and stores it for later playback in a 2D environment with 
+functionality similar to that of the Arma 3 map. **CNTR** thus allows for both planning an operation as well as 
+reviewing team-performance and coordination post-operation.
 
 **CNTR** started as a modification [**OCAP**][OCAP_Repo], modified to suit CNTO's specific needs, but eventually ended 
 up being a complete rewrite of it with a different capture and playback algorithms, and a completely new storage format.
@@ -35,7 +35,7 @@ up being a complete rewrite of it with a different capture and playback algorith
 * Capturing and reproduction of in-game placed map markers
 * Unit role detection (AR, AT, MEDIC, etc.)
 
-## Installation guide (Server-side only!)
+## Installation guide (server-side only!)
 *Please note that if the game server is not on the same server as the web player server, capture files will have to be 
 transferred manually together with the updated index file! Remote upload feature is in the works.*
 * Download & extract the latest CNTR release
