@@ -11,7 +11,6 @@ function createBaseEntity ([, id, type, name, x, y, dir]) {
     name,
     alive: true,
     visible: true,
-    justCreated: true,
     get pose () {
       return this.vehicle ? this.vehicle.pose : pose
     },

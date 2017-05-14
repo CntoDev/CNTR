@@ -1,3 +1,5 @@
+const _setPos = L.Marker.prototype._setPos
+
 L.SvgIcon = L.Icon.extend({
   options: {
     iconSize: [16, 16],
@@ -37,14 +39,32 @@ L.svgIcon = function (options) {
 }
 
 L.Marker.include({
+
+  _setPos (pos) {
+    _setPos.call(this, pos)
+
+    if (this.options.rotationAngle) {
+      this._icon.style[L.DomUtil.TRANSFORM + 'Origin'] = this.options.rotationOrigin
+      this._icon.style[L.DomUtil.TRANSFORM] += ' rotateZ(' + this.options.rotationAngle + 'deg)'
+    }
+  },
+
+  setRotationAngle (angle) {
+    this.options.rotationAngle = angle
+    return this
+  },
+
+  setRotationOrigin (origin) {
+    this.options.rotationOrigin = origin
+    return this
+  },
+
   setClasses (newClasses) {
     Object.keys(newClasses).forEach(className => this._icon.classList.toggle(className, !!newClasses[className]))
   },
-  toggleClass (className, state) {
-    if (state !== undefined) {
-      this._icon.classList.toggle(className, state)
-    } else {
-      this._icon.classList.toggle(className)
-    }
-  },
+})
+
+L.Marker.addInitHook(function () {
+  this.options.rotationOrigin = 'center'
+  this.options.rotationAngle = this.options.rotationAngle || 0
 })

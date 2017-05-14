@@ -1,6 +1,5 @@
 import 'leaflet'
-import './svg-icon.js'
-import './rotated-marker.js'
+import './entity-symbol'
 
 import { MAP_DIRECTORY, MAP_MAX_NATIVE_ZOOM, MAP_MIN_ZOOM, MAP_MAX_ZOOM, SIDE_CLASSES } from '../constants.js'
 
@@ -29,6 +28,10 @@ export function createMapController (mapElement, state, settings) {
     mapElement = Object.assign(document.createElement('div'), {id: 'map'})
     parent.insertBefore(mapElement, oldMapElement)
     parent.removeChild(oldMapElement)
+
+    if (map) {
+      Object.values(markers).forEach(marker => marker.removeFrom(map))
+    }
 
     markers = {}
     lines = []
@@ -195,11 +198,10 @@ export function createMapController (mapElement, state, settings) {
       hidden: !!entity.vehicle,
       hit: false,
       killed: false,
-      unused: false,
+      unused: !entity.visible,
     }))
 
     renderPopup(marker, entity)
-    entity.justCreated = false
   }
 
   function renderPopup (marker, entity) {
@@ -214,7 +216,7 @@ export function createMapController (mapElement, state, settings) {
 
     const shouldOpen = shouldOpenPopup(entity)
     if (shouldOpen) {
-      if (entity.justCreated || !marker.popupOpen) {
+      if (!marker.popupOpen) {
         marker.openPopup()
       }
       marker.popupOpen = true
