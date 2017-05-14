@@ -1,6 +1,6 @@
-import '../../vendor/leaflet.js'
-import '../../vendor/leaflet.svgIcon.js'
-import '../../vendor/leaflet.rotatedMarker.js'
+import 'leaflet'
+import './svg-icon.js'
+import './rotated-marker.js'
 
 import { MAP_DIRECTORY, MAP_MAX_NATIVE_ZOOM, MAP_MIN_ZOOM, MAP_MAX_ZOOM, SIDE_CLASSES } from '../constants.js'
 
@@ -11,8 +11,11 @@ export function createMapController (mapElement, state, settings) {
   let lines = []
 
   let map = null
+  let popupLayer = null
+  let markerLayer = null
   let mapMultiplier
   let mapImageSize
+  let skipUpdate = false
 
   return {
     loadWorld,
@@ -65,6 +68,9 @@ export function createMapController (mapElement, state, settings) {
     mapMultiplier = multiplier / 10
     mapImageSize = imageSize
 
+    popupLayer = document.querySelector('#map .leaflet-pane.leaflet-popup-pane')
+    markerLayer = document.querySelector('#map .leaflet-pane.leaflet-marker-pane')
+
     attachListeners(map, state)
   }
 
@@ -75,8 +81,14 @@ export function createMapController (mapElement, state, settings) {
         state.follow(null)
       }
     })
-    map.on('zoomstart', () => document.querySelector('.leaflet-pane.leaflet-popup-pane').classList.add('zooming'))
-    map.on('zoomend', () => document.querySelector('.leaflet-pane.leaflet-popup-pane').classList.remove('zooming'))
+    map.on('zoomstart', () => {
+      skipUpdate = true
+      popupLayer.classList.add('zooming')
+    })
+    map.on('zoomend', () => {
+      skipUpdate = false
+      popupLayer.classList.remove('zooming')
+    })
 
     state.on('update', update)
     state.on('reset', reset)
@@ -90,6 +102,8 @@ export function createMapController (mapElement, state, settings) {
   }
 
   function update (state) {
+    if (skipUpdate) return
+
     Object.values(markers).forEach(marker => {
       marker.setClasses({unused: true})
     })
@@ -99,7 +113,6 @@ export function createMapController (mapElement, state, settings) {
     lines.forEach(line => map.removeLayer(line))
     lines = []
     state.events.forEach(event => renderEvent(event, state))
-
 
     Object.values(markers).forEach(marker => {
       if (!marker.used) {
@@ -191,7 +204,7 @@ export function createMapController (mapElement, state, settings) {
 
   function renderPopup (marker, entity) {
     if (entity.crew) {
-      if(entity.crew.length) {
+      if (entity.crew.length) {
         const label = [`${entity.name} (${entity.crew.length})`, ...entity.crew.map(unit => unit.name)].join('<br>')
         marker.getPopup().setContent(label)
       } else {
@@ -212,7 +225,7 @@ export function createMapController (mapElement, state, settings) {
     }
   }
 
-  function shouldOpenPopup(entity) {
+  function shouldOpenPopup (entity) {
     if (!entity.alive) {
       return false
     }

@@ -12,3 +12,5 @@ web/data/
 web/maps/
 **/.idea
 
+.yarnclean
+npm-debug.log
