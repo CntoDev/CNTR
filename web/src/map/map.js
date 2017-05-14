@@ -203,7 +203,7 @@ export function createMapController (mapElement, state, settings) {
   }
 
   function renderPopup (marker, entity) {
-    if (entity.crew) {
+    if (entity.crew && marker.popupOpen) {
       if (entity.crew.length) {
         const label = [`${entity.name} (${entity.crew.length})`, ...entity.crew.map(unit => unit.name)].join('<br>')
         marker.getPopup().setContent(label)
@@ -212,8 +212,9 @@ export function createMapController (mapElement, state, settings) {
       }
     }
 
-    if (shouldOpenPopup(entity)) {
-      if (!entity.justCreated || !marker.popupOpen) {
+    const shouldOpen = shouldOpenPopup(entity)
+    if (shouldOpen) {
+      if (entity.justCreated || !marker.popupOpen) {
         marker.openPopup()
       }
       marker.popupOpen = true
