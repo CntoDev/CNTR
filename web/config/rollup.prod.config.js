@@ -1,14 +1,17 @@
 import camelCase from 'lodash/camelCase'
 
 import babel from 'rollup-plugin-babel'
+import json from 'rollup-plugin-json'
 import commonJs from 'rollup-plugin-commonjs'
 import nodeResolve from 'rollup-plugin-node-resolve'
 import replace from 'rollup-plugin-replace'
 import postCss from 'rollup-plugin-postcss'
+import babili from 'rollup-plugin-babili'
 import postcssModules from 'postcss-modules'
-import simpleVars from 'postcss-simple-vars'
-import nested from 'postcss-nested'
 import cssNext from 'postcss-cssnext'
+import autoprefixer from 'autoprefixer'
+import cssNano from 'cssnano'
+
 const cssExportMap = {}
 
 export default {
@@ -25,21 +28,27 @@ export default {
           },
           getJSON(id, exportTokens) {
             cssExportMap[id] = exportTokens
-          }
+          },
         }),
-        simpleVars(),
-        nested(),
         cssNext({warnForDuplicates: false}),
+        autoprefixer(),
+        cssNano(),
       ],
       getExport(id) {
         return cssExportMap[id]
       },
       extensions: ['.css'],
     }),
+    json({
+      preferConst: true,
+    }),
     babel({
       babelrc: false,
       presets: ['react'],
       exclude: 'node_modules/**',
+    }),
+    babili({
+      comments: false,
     }),
     nodeResolve({
       jsnext: true,
@@ -52,7 +61,7 @@ export default {
       sourceMap: false,
     }),
     replace({
-      'process.env.NODE_ENV': JSON.stringify('production')
-    })
+      'process.env.NODE_ENV': JSON.stringify('production'),
+    }),
   ],
 }

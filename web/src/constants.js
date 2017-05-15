@@ -1,4 +1,4 @@
-export const OCAP_FORMAT_VERSION = '^0.2.0'
+export const CNTR_FORMAT_VERSION = '^0.2.0'
 
 export const MAP_DIRECTORY = 'maps'
 export const MAP_INDEX_URL = `${MAP_DIRECTORY}/index.json`
@@ -34,4 +34,21 @@ export const DEFAULT_SETTINGS = {
     vehicles: true,
   },
   hideCurators: true,
+}
+
+export const SIDE_CLASSES = {
+  unused: true,
+  hidden: true,
+  empty: true,
+  west: false,
+  east: false,
+  guer: false,
+  civ: false,
+}
+
+export const SIDE_NAMES = {
+  west: 'BLUFOR',
+  east: 'OPFOR',
+  guer: 'INDEPENDENT',
+  civ: 'CIVILIAN',
 }

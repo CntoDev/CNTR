@@ -6,7 +6,11 @@ extension/obj/*
 extension/.vs/*
 
 ## ADDON ##
-web/node_modules
+web/node_modules/
+web/build/
 web/data/
 web/maps/
-web/.idea
+**/.idea
+
+.yarnclean
+npm-debug.log

@@ -1,16 +1,21 @@
-import '../../vendor/leaflet.js'
-import '../../vendor/leaflet.svgIcon.js'
-import '../../vendor/leaflet.rotatedMarker.js'
+import 'leaflet'
+import './svg-icon.js'
+import './rotated-marker.js'
 
-import { MAP_DIRECTORY, MAP_MAX_NATIVE_ZOOM, MAP_MIN_ZOOM, MAP_MAX_ZOOM } from '../constants.js'
+import { MAP_DIRECTORY, MAP_MAX_NATIVE_ZOOM, MAP_MIN_ZOOM, MAP_MAX_ZOOM, SIDE_CLASSES } from '../constants.js'
 
 export function createMapController (mapElement, state, settings) {
 
+  let markerId = 0
   let markers = {}
   let lines = []
+
   let map = null
+  let popupLayer = null
+  let markerLayer = null
   let mapMultiplier
   let mapImageSize
+  let skipUpdate = false
 
   return {
     loadWorld,
@@ -30,11 +35,11 @@ export function createMapController (mapElement, state, settings) {
 
     map = L.map(mapElement, {
       crs: L.CRS.Simple,
+      fadeAnimation: false,
+      zoomAnimationThreshold: 16,
+      markerZoomAnimation: false,
       attributionControl: false,
       closePopupOnClick: false,
-      fadeAnimation: true,
-      scrollWheelZoom: false,
-      zoomAnimation: true,
       zoomControl: false,
       zoomDelta: 1,
       zoomSnap: 0.1,
@@ -63,72 +68,58 @@ export function createMapController (mapElement, state, settings) {
     mapMultiplier = multiplier / 10
     mapImageSize = imageSize
 
-    addDrawingTool(window, map)
-    attachListeners(map, mapElement, state)
+    popupLayer = document.querySelector('#map .leaflet-pane.leaflet-popup-pane')
+    markerLayer = document.querySelector('#map .leaflet-pane.leaflet-marker-pane')
+
+    attachListeners(map, state)
   }
 
-  function attachListeners (map, mapElement, state) {
-    map.on('dragstart', () => state.follow(null))
-
-    mapElement.addEventListener('wheel', event => {
-      const zoom = event.deltaY > 0 ? -0.5 : 0.5
-      map.zoomIn(zoom, {animate: false})
+  function attachListeners (map, state) {
+    map.on('dragstart', () => {
+      if (state.followedUnit) {
+        markers[state.followedUnit.id].closePopup()
+        state.follow(null)
+      }
+    })
+    map.on('zoomstart', () => {
+      skipUpdate = true
+      popupLayer.classList.add('zooming')
+    })
+    map.on('zoomend', () => {
+      skipUpdate = false
+      popupLayer.classList.remove('zooming')
     })
 
     state.on('update', update)
     state.on('reset', reset)
   }
 
-  function addDrawingTool (window, map) {
-    let drawing = false
-    let line
-
-    window.addEventListener('keydown', function (e) {
-      if (e.ctrlKey) {
-        map.dragging.disable()
-        drawing = true
-      } else {
-        map.dragging.enable()
-        drawing = false
-      }
-    })
-    window.addEventListener('keyup', function (e) {
-      if (e.ctrlKey) {
-        map.dragging.disable()
-        drawing = true
-      } else {
-        map.dragging.enable()
-        drawing = false
-      }
-    })
-
-    map.on('mousedown', function (e) {
-      if (drawing) {
-        const thisLine = line = L.polyline([e.latlng], {className: 'testLine'})
-        thisLine.on('click', () => thisLine.removeFrom(map))
-        thisLine.addTo(map)
-      }
-    })
-    map.on('mousemove', function (e) {
-      if (drawing && line) {
-        line.addLatLng(e.latlng)
-      }
-    })
-    map.on('mouseup', function (e) {
-      if (drawing) {
-        line = null
-      }
+  function reset () {
+    Object.values(markers).forEach(marker => {
+      marker.used = false
+      marker.setClasses({unused: true})
     })
   }
 
   function update (state) {
+    if (skipUpdate) return
+
+    Object.values(markers).forEach(marker => {
+      marker.setClasses({unused: true})
+    })
+
     state.entities.forEach(renderEntity)
 
     lines.forEach(line => map.removeLayer(line))
     lines = []
     state.events.forEach(event => renderEvent(event, state))
 
-    Object.values(markers).forEach(marker => marker.toggleClass('unused', !marker.used))
+    Object.values(markers).forEach(marker => {
+      if (!marker.used) {
+        marker.setClasses({unused: true})
+        marker.popupOpen && marker.closePopup()
+      }
+    })
 
     if (state.followedUnit) {
       const pose = state.followedUnit.pose
@@ -140,45 +131,14 @@ export function createMapController (mapElement, state, settings) {
     }
   }
 
-  function renderEntity (entity) {
-    const marker = getMarker(entity) || createMarker(entity)
-
-    marker.used = true
-
-    marker.setLatLng(coordinatesToLatLng(entity.pose))
-    marker.setRotationAngle(entity.pose.dir)
-
-    marker.setClasses({
-      [entity.side]: true,
-      followed: (entity.crew || [entity]).includes(state.followedUnit),
-      alive: entity.alive,
-      dead: !entity.alive,
-      hit: false,
-      killed: false,
-      unused: false,
-      inVehicle: !!entity.vehicle || (settings.hideCurators && entity.isCurator),
-    })
-
-    renderPopup(marker, entity)
-  }
-
-  function renderPopup (marker, entity) {
-    if (entity.isPlayer && !entity.vehicle && settings.labels.players) {
-      marker.openPopup()
-    } else if (entity.type === 'Man' && settings.labels.ai) {
-      marker.openPopup()
-    } else if (entity.crew && entity.crew.some(unit => unit.isPlayer) && settings.labels.vehicles && settings.labels.players) {
-      marker.openPopup()
-
-      marker.getPopup().setContent(`${entity.description} (${entity.crew.length})<br>` +
-        entity.crew.map(unit => unit.name).join('<br>'))
-    } else if (entity.crew && entity.crew.some(unit => !unit.isPlayer) && settings.labels.vehicles && settings.labels.ai) {
-      marker.openPopup()
-    }
+  function getMarker ({id}) {
+    return markers[id]
   }
 
   function createMarker (entity) {
     const marker = L.marker([-1000000, -1000000]).addTo(map)
+
+    marker.id = markerId++
 
     marker.setIcon(L.svgIcon({
       iconSize: entity.type === 'Man' ? [16, 16] : [32, 32],
@@ -195,28 +155,102 @@ export function createMapController (mapElement, state, settings) {
       marker.openPopup()
     })
     marker.on('mouseover', () => {
-      if (state.followedUnit !== entity && settings.labels.mouseOver) {
-        console.log('yay')
-        marker.openPopup()
+      if (state.followedUnit !== entity && !entity.vehicle && settings.labels.mouseOver) {
+        !marker.popupOpen && marker.openPopup()
         marker.popupOnMouse = true
       }
     })
     marker.on('mouseout', () => {
-      if (state.followedUnit !== entity && marker.popupOnMouse) {
-        console.log('damn')
-        marker.closePopup()
+      if (state.followedUnit !== entity && !entity.vehicle && marker.popupOnMouse) {
+        !marker.popupOpen && marker.closePopup()
         marker.popupOnMouse = false
       }
     })
 
     markers[entity.id] = marker
-    marker.used = true
+
+    marker.move = function ({x, y, dir}) {
+      marker.setLatLng(coordinatesToLatLng({x, y}))
+      marker.setRotationAngle(dir)
+    }
+
+    marker.hide = function () {
+      marker.setClasses({hidden: true})
+      marker.closePopup()
+    }
 
     return marker
   }
 
+  function renderEntity (entity) {
+    const marker = getMarker(entity) || createMarker(entity)
+
+    marker.used = true
+    marker.move(entity.pose)
+    marker.setClasses(Object.assign({}, SIDE_CLASSES, {
+      ['cntr-id--' + entity.id]: true,
+      [entity.side]: true,
+      followed: (entity.crew || [entity]).includes(state.followedUnit),
+      dead: !entity.alive,
+      hidden: !!entity.vehicle,
+      hit: false,
+      killed: false,
+      unused: false,
+    }))
+
+    renderPopup(marker, entity)
+    entity.justCreated = false
+  }
+
+  function renderPopup (marker, entity) {
+    if (entity.crew && marker.popupOpen) {
+      if (entity.crew.length) {
+        const label = [`${entity.name} (${entity.crew.length})`, ...entity.crew.map(unit => unit.name)].join('<br>')
+        marker.getPopup().setContent(label)
+      } else {
+        marker.getPopup().setContent(entity.name)
+      }
+    }
+
+    const shouldOpen = shouldOpenPopup(entity)
+    if (shouldOpen) {
+      if (entity.justCreated || !marker.popupOpen) {
+        marker.openPopup()
+      }
+      marker.popupOpen = true
+    } else {
+      if (marker.popupOpen && !marker.popupOnMouse) {
+        marker.closePopup()
+      }
+      marker.popupOpen = false
+    }
+  }
+
+  function shouldOpenPopup (entity) {
+    if (!entity.alive) {
+      return false
+    }
+
+    let popupOpen = false
+
+    if (entity.isPlayer && settings.labels.players) {
+      popupOpen = !entity.vehicle
+    } else if (entity.type === 'Man' && settings.labels.ai) {
+      popupOpen = !entity.vehicle
+    } else if (entity.crew && settings.labels.vehicles) {
+      if (settings.labels.players && entity.crew.some(unit => unit.isPlayer)) {
+        popupOpen = true
+      }
+      if (settings.labels.ai && !entity.crew.some(unit => unit.isPlayer)) {
+        popupOpen = true
+      }
+    }
+
+    return popupOpen
+  }
+
   function createPopup (entity) {
-    let popup = L.popup({
+    const popup = L.popup({
       autoPan: false,
       autoClose: false,
       closeButton: false,
@@ -269,20 +303,6 @@ export function createMapController (mapElement, state, settings) {
       line.addTo(map)
       lines.push(line)
     }
-  }
-
-  function getMarker ({id}) {
-    const marker = markers[id]
-
-    if (marker) {
-      marker.used = true
-    }
-
-    return marker
-  }
-
-  function reset () {
-    Object.values(markers).forEach(marker => marker.used = false)
   }
 
   function coordinatesToLatLng ({x, y}) {

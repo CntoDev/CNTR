@@ -24,6 +24,7 @@
 
 .topPanel {
   position: absolute;
+  display: flex;
   top: 0;
   left: 0;
   width: 100%;
@@ -37,8 +38,42 @@
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 32px;
-  background-color: rgba(0, 0, 0, 0.8);
-  padding-top: 8px;
-  line-height: 1.5em;
+  height: 40px;
+  background-color: rgba(0, 0, 0, .8);
+  line-height: 2.5em;
+}
+
+.logo {
+  background: url("images/cntr-logo.png") center no-repeat;
+  background-size: 70px auto;
+  width: 192px;
+  height: 40px;
+}
+
+.button {
+  -webkit-appearance: none;
+
+  width: 40px;
+  height: 40px;
+
+  border: none;
+}
+
+.button:focus {
+  box-shadow: none;
+}
+
+.loadCaptureButton {
+  background: url("images/icons/folder.png") center no-repeat;
+  background-size: 24px 24px;
+}
+
+.infoButton {
+  background: url("images/icons/info.png") center no-repeat;
+  background-size: 24px 24px;
+}
+
+.loadMapButton {
+  background: url("images/icons/map.png") center no-repeat;
+  background-size: 24px 24px;
 }

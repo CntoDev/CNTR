@@ -1,137 +1,108 @@
 import React from 'react'
-import zip from 'lodash/zip'
-import isEqual from 'lodash/isEqual'
 
 import cx from 'classnames'
 import styles from './unit-list.css'
+
+import { SIDE_NAMES } from '../constants'
 
 export class UnitList extends React.Component {
   constructor () {
     super()
 
     this.state = {
-      units: []
+      unitList: {},
     }
+  }
+
+  createUnitList (units) {
+    const oldList = this.state.unitList
+    const list = {}
+
+    units.forEach(unit => {
+      const oldSide = oldList[unit.side]
+      const side = list[unit.side] || (list[unit.side] = {
+            name: unit.side,
+            groups: {},
+            open: oldSide && oldSide.open,
+          })
+      side.open = side.open || unit.followed
+
+      const oldGroup = oldList[unit.side] && oldList[unit.side].groups[unit.group]
+      const group = side.groups[unit.group] || (side.groups[unit.group] = {
+            name: unit.group,
+            units: {},
+            open: oldGroup && oldGroup.open
+          })
+      group.open = group.open || unit.followed
+
+      group.units[unit.id] || (group.units[unit.id] = unit)
+    })
+
+    return list
+  }
+
+  toggleOpen (node) {
+    node.open = !node.open
+
+    this.setState({
+      unitList: this.state.unitList
+    })
   }
 
   componentDidMount () {
     this.props.state.on('update', () => {
+      const units = this.props.state.entities.filter(entity => entity.type === 'Man')
+      const unitList = this.createUnitList(units)
+
       this.setState({
-        units: this.props.state.entities
-          .filter(entity => entity.type === 'Man')
-          .map(({alive, vehicle, group, side, followed}) => ({alive, vehicle, group, side, followed})),
+        unitList,
       })
     })
   }
 
-  shouldComponentUpdate (_, nextState) {
-    return (nextState.units.length !== this.state.units.length) ||
-      zip(this.state.units, nextState.units).some(([prev, next]) => !isEqual(prev, next))
-  }
-
   render () {
-    const list = {}
-    this.props.state.entities.forEach(entity => {
-      if (entity.type === 'Man') {
-        const side = list[entity.side] || (list[entity.side] = {
-            name: entity.side,
-            groups: {},
-          })
+    const {state} = this.props
+    const {unitList} = this.state
 
-        side.open = side.open || entity.followed
-
-        const group = side.groups[entity.group] || (side.groups[entity.group] = {
-            name: entity.group,
-            units: {},
-            open: entity.followed,
-          })
-
-        group.open = group.open || entity.followed
-
-        const unit = group.units[entity.id] || (group.units[entity.id] = entity)
-      }
-    })
-
-    const onClick = unit => this.props.state.follow(unit)
+    const followUnit = unit => state.follow(unit)
+    const sortedList = [unitList.west, unitList.east, unitList.guer, unitList.civ].filter(side => side)
 
     return <div className={cx(styles.container)}>
       <div className={styles.header}>Units</div>
       <div className={cx(styles.listContainer)}>
-        <ul className={styles.list}> {Object.values(list).map(({name, groups, open}) =>
-          <Side key={name} name={name} groups={groups} open={open} onClick={onClick}/>
+        <ul className={styles.list}> {sortedList.map(side =>
+            <Side key={side.name} side={side} toggleOpen={this.toggleOpen.bind(this)} followUnit={followUnit}/>
         )}</ul>
       </div>
     </div>
   }
 }
 
-export class Side extends React.Component {
-  constructor ({open = false}) {
-    super()
-
-    this.state = {
-      open,
-    }
-  }
-
-  componentWillReceiveProps ({open}) {
-    if (open !== this.state.open) {
-      this.setState({
-        open,
-      })
-    }
-  }
-
-  render () {
-    const {name, groups, onClick} = this.props
-    const {open} = this.state
-
-    return <li className={cx(styles.side)}>
-      <span onClick={() => this.setState({open: !open})}>
-        <span className={cx(styles.collapseButton)}>{open ? '▸' : '▾'}</span>
-        <span className={cx(styles.sideName, styles[name])}>{name}</span>
+function Side({side, side: {name, groups, open}, toggleOpen, followUnit}) {
+  return <li className={cx(styles.side)}>
+      <span onClick={() => toggleOpen(side)}>
+        <span className={cx(styles.collapseButton)}>{open ? '▾' : '▸'}</span>
+        <span className={cx(styles.sideName, styles[name])}>{SIDE_NAMES[name]}</span>
       </span>
-      <ul className={cx(styles.groupList, open && styles.open)}>{Object.values(groups).map(({name, units, open}) =>
-        <Group key={name} name={name} units={units} open={open} onClick={onClick}/>
-      )}</ul>
-    </li>
-  }
+    { open && <ul className={cx(styles.groupList, open && styles.open)}>{Object.values(groups).map(group =>
+        <Group key={group.name} group={group} toggleOpen={toggleOpen} followUnit={followUnit}/>
+    )}</ul> }
+  </li>
 }
 
-export class Group extends React.Component {
-  constructor ({open = false}) {
-    super()
-
-    this.state = {
-      open,
-    }
-  }
-
-  componentWillReceiveProps ({open}) {
-    if (open !== this.state.open) {
-      this.setState({
-        open,
-      })
-    }
-  }
-
-  render () {
-    const {name, units, onClick} = this.props
-    const {open} = this.state
-
-    return <li className={cx(styles.group)}>
-      <span onClick={() => this.setState({open: !open})}>
-        <span className={cx(styles.collapseButton)}>{open ? '▸' : '▾'}</span>
+function Group({group, group: {name, units, open}, toggleOpen, followUnit}) {
+  return <li className={cx(styles.group)}>
+      <span onClick={() => toggleOpen(group)}>
+        <span className={cx(styles.collapseButton)}>{open ? '▾' : '▸'}</span>
         <span className={cx(styles.groupName)}>{name}</span>
       </span>
-      <ul className={cx(styles.unitList, open && styles.open)}>{Object.values(units).map(unit =>
-        <Unit key={unit.name} unit={unit} onClick={onClick}/>
-      )}</ul>
-    </li>
-  }
+    { open && <ul className={cx(styles.unitList, open && styles.open)}>{Object.values(units).map(unit =>
+        <Unit key={unit.name} unit={unit} followUnit={followUnit}/>
+    )}</ul> }
+  </li>
 }
 
-function Unit ({unit, onClick}) {
+function Unit ({unit, followUnit}) {
   const symbols = []
   if (unit.vehicle) {
     symbols.push('✇')
@@ -145,7 +116,7 @@ function Unit ({unit, onClick}) {
     symbols.push('👁')//'⌖', '⊕', '✔'
   }
 
-  return <li className={cx(styles.unit, !unit.alive && styles.dead)} onClick={() => onClick(unit)}>
+  return <li className={cx(styles.unit, !unit.alive && styles.dead)} onClick={() => followUnit(unit)}>
     <span>{unit.name}</span>
     { symbols.map(symbol => <UnitSymbol symbol={symbol}/>) }
   </li>

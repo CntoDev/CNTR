@@ -1,5 +1,3 @@
-const classes = ['empty', 'east', 'west', 'ind', 'civ', 'hit', 'killed', 'alive', 'dead', 'inVehicle', 'followed']
-
 L.SvgIcon = L.Icon.extend({
   options: {
     iconSize: [16, 16],
@@ -40,7 +38,7 @@ L.svgIcon = function (options) {
 
 L.Marker.include({
   setClasses (newClasses) {
-    classes.forEach(className => this._icon.classList.toggle(className, !!newClasses[className]))
+    Object.keys(newClasses).forEach(className => this._icon.classList.toggle(className, !!newClasses[className]))
   },
   toggleClass (className, state) {
     if (state !== undefined) {

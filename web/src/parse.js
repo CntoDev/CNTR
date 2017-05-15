@@ -1,6 +1,6 @@
 import semver from 'semver'
 
-import { OCAP_FORMAT_VERSION } from './constants.js'
+import { CNTR_FORMAT_VERSION } from './constants.js'
 
 export function parse (dataString) {
   console.time('parse')
@@ -9,9 +9,9 @@ export function parse (dataString) {
 
   const header = processHeader (headerLine)
 
-  if (!semver.satisfies(header.formatVersion, OCAP_FORMAT_VERSION)) throw new Error ('Incompatible OCAP format!')
+  if (!semver.satisfies(header.formatVersion, CNTR_FORMAT_VERSION)) throw new Error ('Incompatible CNTR format!')
 
-  const frames = ['', ...frameLines]
+  const frames = frameLines
     .map(line => line.split(';')
       .filter(entry => entry)
       .map(entry => entry.split(',')

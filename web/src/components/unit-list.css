@@ -13,7 +13,8 @@
 
 .listContainer {
   flex-grow: 1;
-  overflow: scroll;
+  overflow-y: scroll;
+  overflow-y: overlay;
 }
 
 .list {
@@ -29,6 +30,13 @@
 }
 
 .collapseButton {
+}
+
+.sideName {
+  padding-left: 0.5em;
+  text-transform: uppercase;
+  font-size: larger;
+  font-weight: bold;
 }
 
 .side {
@@ -81,14 +89,6 @@
 
 .unitSymbol {
   padding-left: 0.25em;
-}
-
-
-.sideName {
-  padding-left: 0.5em;
-  text-transform: uppercase;
-  font-size: larger;
-  font-weight: bold;
 }
 
 .east {

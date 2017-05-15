@@ -1,33 +1,25 @@
-.marker.unused {
-  display: none !important;
-}
-
-.marker.west {
-  fill: rgb(0, 77, 153);
-}
-
-.marker.east {
-  fill: rgb(128, 0, 0);
-}
-
-.marker.ind {
-  fill: rgb(0, 128, 0);
-}
-
-.marker.civ {
-  fill: rgb(102, 0, 128);
-}
-
-.marker.empty {
-  fill: rgb(184, 134, 11);
-}
-
-.marker.alive {
+.marker {
   opacity: 1;
 }
 
-.marker.dead {
-  opacity: 0.2;
+.marker.empty {
+  fill: rgb(184, 134, 11) !important;
+}
+
+.marker.west {
+  fill: rgb(0, 77, 153) !important;
+}
+
+.marker.east {
+  fill: rgb(128, 0, 0) !important;
+}
+
+.marker.guer {
+  fill: rgb(0, 128, 0) !important;
+}
+
+.marker.civ {
+  fill: rgb(102, 0, 128) !important;
 }
 
 .marker.hit {
@@ -36,7 +28,7 @@
 }
 
 .marker.killed {
-  stroke: red;
+  stroke: rgb(255, 0, 0);
   stroke-width: 20;
   opacity: 1;
 }
@@ -44,10 +36,6 @@
 .marker.followed {
   stroke: rgb(184, 134, 11);
   stroke-width: 20;
-}
-
-.marker.inVehicle {
-  opacity: 0;
 }
 
 .hitLine {
@@ -80,7 +68,7 @@
   opacity: 0.4;
 }
 
-.hitLine.ind {
+.hitLine.guer {
   stroke: rgb(0, 128, 0);
   stroke-width: 2;
   opacity: 0.4;
@@ -92,8 +80,14 @@
   opacity: 0.4;
 }
 
-.testLine {
-  stroke: #000000;
-  stroke-width: 4;
-  opacity: 1;
+.marker.dead {
+  opacity: 0.2 !important;
+}
+
+.marker.hidden {
+  display: none !important;
+}
+
+.marker.unused {
+  display: none !important;
 }

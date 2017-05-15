@@ -41,6 +41,10 @@ export function applyEvent (state, event, frameIndex) {
 
 function applyMoveEvent (state, event) {
   const [, entityId, x, y, dir] = event
+  
+  if (!isNumber(entityId)) {
+    return window.cntrDebug && console.warn('Malformed event: ' + event)
+  }
 
   const entityPose = state.entities[entityId].pose
   const newPose = {
@@ -81,21 +85,34 @@ function applyVehicleSpawnedEvent (state, event) {
 }
 
 function applyRespawnedEvent (state, event) {
-  const entityId = event[1]
+  const [, entityId] = event
+  if (!isNumber(entityId)) {
+    return window.cntrDebug && console.warn('Malformed event: ' + event)
+  }
   state.entities[entityId].alive = true
+  if (state.entities[entityId].vehicle) {
+    state.entities[entityId].vehicle.removeCrewMember(state.entities[entityId])
+    state.entities[entityId].vehicle = null
+  }
 }
 
 function applyDespawnedEvent (state, event) {
-  const entityId = event[1]
-  state.entities[entityId].alive = false
+  const [, entityId] = event
+  if (!isNumber(entityId)) {
+    return window.cntrDebug && console.warn('Malformed event: ' + event)
+  }
   state.entities[entityId].visible = false
+  if (state.entities[entityId].vehicle) {
+    state.entities[entityId].vehicle.removeCrewMember(state.entities[entityId])
+    state.entities[entityId].vehicle = null
+  }
 }
 
 function applyConnectedEvent (state, event, frameIndex) {
   addLoggedEvent(state, {
     frameIndex,
     type: event[0],
-    player: state.entities[event[1]],
+    playerName: event[1],
   })
 }
 
@@ -103,7 +120,7 @@ function applyDisconnectedEvent (state, event, frameIndex) {
   addLoggedEvent(state, {
     frameIndex,
     type: event[0],
-    player: state.entities[event[1]],
+    playerName: event[1],
   })
 }
 
@@ -130,6 +147,10 @@ function applyFiredEvent (state, event) {
 function applyKilledEvent (state, event, frameIndex) {
   const victimId = event[1]
   state.entities[victimId].alive = false
+  if (state.entities[victimId].vehicle) {
+    state.entities[victimId].vehicle.removeCrewMember(state.entities[victimId])
+    state.entities[victimId].vehicle = null
+  }
   addBattleEvent(state, event)
   addLoggedEvent(state, {
     frameIndex,
@@ -139,15 +160,23 @@ function applyKilledEvent (state, event, frameIndex) {
   })
 }
 
-function applyGotInEvent (state, [, unitId, vehicleId]) {
+function applyGotInEvent (state, event) {
+  const [, unitId, vehicleId] = event
+  if (!isNumber(unitId) || !isNumber(vehicleId)) {
+    return window.cntrDebug && console.warn('Malformed event: ' + event)
+  }
   const unit = state.entities[unitId]
   const vehicle = state.entities[vehicleId]
   vehicle.addCrewMember(unit)
 }
 
-function applyGotOutEvent (state, [, entityId]) {
+function applyGotOutEvent (state, event) {
+  const [, entityId] = event
+  if (!isNumber(entityId)) {
+    return window.cntrDebug && console.warn('Malformed event: ' + event)
+  }
   const unit = state.entities[entityId]
-  unit.vehicle.removeCrewMember(unit)
+  unit.vehicle && unit.vehicle.removeCrewMember(unit)
 }
 
 function addLoggedEvent (state, event) {
