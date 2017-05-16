@@ -1,9 +1,12 @@
 import 'leaflet'
+import Leaflet from 'leaflet'
 import './entity-symbol'
 
-import { MAP_DIRECTORY, MAP_MAX_NATIVE_ZOOM, MAP_MIN_ZOOM, MAP_MAX_ZOOM, SIDE_CLASSES } from '../constants.js'
+import { MAP_DIRECTORY, MAP_DEFAULTS, MAP_MAX_NATIVE_ZOOM, MAP_MIN_ZOOM, TILE_LAYER_DEFAULTS, SIDE_CLASSES } from '../constants.js'
 
 export function createMapController (mapElement, state, settings) {
+
+  console.log(Leaflet)
 
   let markerId = 0
   let markers = {}
@@ -38,15 +41,7 @@ export function createMapController (mapElement, state, settings) {
 
     map = L.map(mapElement, {
       crs: L.CRS.Simple,
-      fadeAnimation: false,
-      zoomAnimationThreshold: 16,
-      markerZoomAnimation: false,
-      attributionControl: false,
-      closePopupOnClick: false,
-      zoomControl: false,
-      zoomDelta: 1,
-      zoomSnap: 0.1,
-      maxBoundsViscosity: 1.0,
+      ...MAP_DEFAULTS,
     }).setView([0, 0], MAP_MAX_NATIVE_ZOOM)
 
     const mapBounds = new L.LatLngBounds(
@@ -58,12 +53,8 @@ export function createMapController (mapElement, state, settings) {
     map._zoom = 6 //FIXME: investigate why this needs to be hardcoded on init!
 
     L.tileLayer(`${MAP_DIRECTORY}/${worldName}/{z}/{x}/{y}.png`, {
-      maxNativeZoom: MAP_MAX_NATIVE_ZOOM,
-      maxZoom: MAP_MAX_ZOOM,
-      minZoom: MAP_MIN_ZOOM,
       bounds: mapBounds,
-      noWrap: true,
-      tms: false
+      ...TILE_LAYER_DEFAULTS,
     }).addTo(map)
 
     map.setView(map.unproject([imageSize / 2, imageSize / 2]), MAP_MIN_ZOOM)
