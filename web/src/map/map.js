@@ -135,8 +135,8 @@ export function createMapController (mapElement, state, settings) {
     marker.id = markerId++
 
     marker.setIcon(L.svgIcon({
-      iconSize: entity.type === 'Man' ? [16, 16] : [32, 32],
-      iconUrl: `images/markers/${entity.type}.svg#symbol`,
+      iconSize: entity.crew ? [32, 32] : [24, 24],
+      iconUrl: `images/markers/${entity.type.toLowerCase()}.svg#symbol`,
       classList: ['marker']
     }))
 
@@ -247,7 +247,7 @@ export function createMapController (mapElement, state, settings) {
       autoPan: false,
       autoClose: false,
       closeButton: false,
-      className: entity.type === 'Man' ? 'leaflet-popup-unit' : 'leaflet-popup-vehicle',
+      className: entity.crew ? 'leaflet-popup-vehicle' : 'leaflet-popup-unit',
     })
     popup.setContent(entity.name)
     return popup

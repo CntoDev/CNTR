@@ -1,4 +1,4 @@
-export const CNTR_FORMAT_VERSION = '^0.2.0'
+export const CNTR_FORMAT_VERSION = '^0.3.0'
 
 export const MAP_DIRECTORY = 'maps'
 export const MAP_INDEX_URL = `${MAP_DIRECTORY}/index.json`

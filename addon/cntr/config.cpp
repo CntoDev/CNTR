@@ -30,7 +30,7 @@ class CfgFunctions
 			class initEntity {};
 			class processEntity {};
 			class eventHandlerFired {};
-			class eventHandlerShot {};
+			class getUnitKind {};
 			class getVehicleKind {};
 			class round {};
 			class logDebug {};

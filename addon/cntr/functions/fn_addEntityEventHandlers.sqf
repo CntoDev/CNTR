@@ -16,27 +16,28 @@ private _firedEventHandler = _entity addEventHandler ["Fired", { params ["_shoot
 }];
 
 private _hitEventHandler = _entity addEventHandler ["Hit", { params ["_victim", "", "", "_instigator"];
-  [CNTR_EVENT_HIT, _victim, _instigator] call cntr_fnc_eventHandlerShot;
+	private _victimId = _victim getVariable ["cntr_id", ""];
+	private _event = [CNTR_EVENT_HIT, _victimId];
+
+	if (not isNull _instigator) then {
+		_event pushBack (_instigator getVariable ["cntr_id", ""]);
+		_event pushBack (getText (configFile >> "CfgWeapons" >> currentWeapon _instigator >> "displayName"));
+	};
+
+	_victim call cntr_fnc_removeEntityEventHandlers;
+	_event call cntr_fnc_writeEvent;
 }];
 
 private _gotInEventHandler = _entity addEventHandler ["GetIn", { params ["_vehicle", "", "_entity"];
-  if (alive _entity and ((_entity getVariable ["cntr_id", ""]) isEqualTo "")) then {
-    _entity call cntr_fnc_initEntity;
-  };
-  if (alive _vehicle and ((_vehicle getVariable ["cntr_id", ""]) isEqualTo "")) then {
-    _vehicle call cntr_fnc_initEntity;
-  };
+  _entity call cntr_fnc_initEntity;
+  _vehicle call cntr_fnc_initEntity;
 
   [CNTR_EVENT_GOT_IN, _entity getVariable ["cntr_id", ""], _vehicle getVariable ["cntr_id", ""]] call cntr_fnc_writeEvent;
 }];
 
 private _gotOutEventHandler = _entity addEventHandler ["GetOut", { params ["_vehicle", "", "_entity"];
-  if (alive _entity and ((_entity getVariable ["cntr_id", ""]) isEqualTo "")) then {
-    _entity call cntr_fnc_initEntity;
-  };
-  if (alive _vehicle and ((_vehicle getVariable ["cntr_id", ""]) isEqualTo "")) then {
-    _vehicle call cntr_fnc_initEntity;
-  };
+  _entity call cntr_fnc_initEntity;
+  _vehicle call cntr_fnc_initEntity;
 
   [CNTR_EVENT_GOT_OUT, _entity getVariable ["cntr_id", ""], _vehicle getVariable ["cntr_id", ""]] call cntr_fnc_writeEvent;
 }];
