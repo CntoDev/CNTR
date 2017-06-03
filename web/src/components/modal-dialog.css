@@ -35,7 +35,7 @@
 
 .modalBody {
   box-sizing: border-box;
-  background-color: rgba(0,0,0,0.7);
+  background-color: rgba(0, 10, 0, .7);
   min-height: 256px;
   max-height: 512px;
   height: auto;

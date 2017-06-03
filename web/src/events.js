@@ -43,7 +43,7 @@ function applyMoveEvent (state, event) {
   const [, entityId, x, y, dir] = event
   
   if (!isNumber(entityId)) {
-    return window.cntrDebug && console.warn('Malformed event: ' + event)
+    return console.warn('Malformed event: ' + event)
   }
 
   const entityPose = state.entities[entityId].pose
@@ -87,7 +87,7 @@ function applyVehicleSpawnedEvent (state, event) {
 function applyRespawnedEvent (state, event) {
   const [, entityId] = event
   if (!isNumber(entityId)) {
-    return window.cntrDebug && console.warn('Malformed event: ' + event)
+    return console.warn('Malformed event: ' + event)
   }
   state.entities[entityId].alive = true
   if (state.entities[entityId].vehicle) {
@@ -99,7 +99,7 @@ function applyRespawnedEvent (state, event) {
 function applyDespawnedEvent (state, event) {
   const [, entityId] = event
   if (!isNumber(entityId)) {
-    return window.cntrDebug && console.warn('Malformed event: ' + event)
+    return console.warn('Malformed event: ' + event)
   }
   state.entities[entityId].visible = false
   if (state.entities[entityId].vehicle) {
@@ -163,7 +163,7 @@ function applyKilledEvent (state, event, frameIndex) {
 function applyGotInEvent (state, event) {
   const [, unitId, vehicleId] = event
   if (!isNumber(unitId) || !isNumber(vehicleId)) {
-    return window.cntrDebug && console.warn('Malformed event: ' + event)
+    return console.warn('Malformed event: ' + event)
   }
   const unit = state.entities[unitId]
   const vehicle = state.entities[vehicleId]
@@ -173,7 +173,7 @@ function applyGotInEvent (state, event) {
 function applyGotOutEvent (state, event) {
   const [, entityId] = event
   if (!isNumber(entityId)) {
-    return window.cntrDebug && console.warn('Malformed event: ' + event)
+    return console.warn('Malformed event: ' + event)
   }
   const unit = state.entities[entityId]
   unit.vehicle && unit.vehicle.removeCrewMember(unit)

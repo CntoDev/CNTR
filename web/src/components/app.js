@@ -123,6 +123,7 @@ export class App extends React.Component {
       <div className={styles.bottomPanel}>
         <PlaybackWidget togglePlayback={player.togglePlayback} goTo={player.goTo} setPlaybackSpeed={setPlaybackSpeed} playback={playback}/>
       </div>
+      <a className={cx(styles.watermark)} target="_blank"  href="http://www.carpenoctem.co/" />
       <LoadCaptureDialog open={loadCaptureDialogOpen} onClose={this.closeAllDialogs.bind(this)} entries={captureIndex} loadCapture={this.loadCapture.bind(this)} />
       <LoadMapDialog open={loadMapDialogOpen} onClose={this.closeAllDialogs.bind(this)} maps={mapIndex} loadMap={this.loadMap.bind(this)} />
       <InfoDialog open={infoDialogOpen} onClose={this.closeAllDialogs.bind(this)} />
