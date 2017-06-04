@@ -1,4 +1,4 @@
-export const CNTR_FORMAT_VERSION = '^0.3.0'
+export const CNTR_FORMAT_VERSION = '^0.2.0'
 
 export const MAP_DIRECTORY = 'maps'
 export const MAP_INDEX_URL = `${MAP_DIRECTORY}/index.json`
@@ -74,4 +74,18 @@ export const SIDE_NAMES = {
   east: 'OPFOR',
   guer: 'INDEPENDENT',
   civ: 'CIVILIAN',
+}
+
+export const DEFAULT_STATE = {
+  loadCaptureDialogOpen: true,
+  loadMapDialogOpen: false,
+  infoDialogOpen: false,
+  eventLog: [],
+  showCurators: true,
+  playback: {
+    currentFrameIndex: null,
+    totalFrameCount: null,
+    playing: false,
+    playbackSpeed: 10,
+  }
 }

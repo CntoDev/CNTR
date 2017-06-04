@@ -54,6 +54,7 @@ function applyMoveEvent (state, event) {
   }
   Object.assign(entityPose, newPose)
 
+  state.entities[entityId].visible = true
   ;(entityPose.crew || []).forEach(unit => Object.assign(unit, newPose))
 }
 
@@ -168,6 +169,7 @@ function applyGotInEvent (state, event) {
   const unit = state.entities[unitId]
   const vehicle = state.entities[vehicleId]
   vehicle.addCrewMember(unit)
+  unit.visible = false
 }
 
 function applyGotOutEvent (state, event) {
@@ -177,6 +179,7 @@ function applyGotOutEvent (state, event) {
   }
   const unit = state.entities[entityId]
   unit.vehicle && unit.vehicle.removeCrewMember(unit)
+  unit.visible = true
 }
 
 function addLoggedEvent (state, event) {

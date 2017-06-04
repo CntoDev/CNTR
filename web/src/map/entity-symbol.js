@@ -8,7 +8,7 @@ L.SvgIcon = L.Icon.extend({
     classList: [],
   },
 
-  createIcon: function () {
+  createIcon () {
     const svg = Object.assign(document.createElementNS('http://www.w3.org/2000/svg', 'svg'), {})
     svg.classList.add(...this.options.classList, 'leaflet-marker-icon')
     svg.style.width = this.options.iconSize[0] + 'px'
@@ -22,13 +22,14 @@ L.SvgIcon = L.Icon.extend({
     use.setAttributeNS('http://www.w3.org/1999/xlink', 'href', this.options.iconUrl)
 
     svg.appendChild(use)
+    svg.style[L.DomUtil.TRANSFORM + 'Origin'] = 'center'
 
     this.icon = svg
 
     return svg
   },
 
-  createShadow: function () {
+  createShadow () {
     return null
   },
 
@@ -43,28 +44,31 @@ L.Marker.include({
   _setPos (pos) {
     _setPos.call(this, pos)
 
-    if (this.options.rotationAngle) {
-      this._icon.style[L.DomUtil.TRANSFORM + 'Origin'] = this.options.rotationOrigin
+    if (this.shouldRotate) {
       this._icon.style[L.DomUtil.TRANSFORM] += ' rotateZ(' + this.options.rotationAngle + 'deg)'
     }
   },
 
   setRotationAngle (angle) {
-    this.options.rotationAngle = angle
-    return this
-  },
-
-  setRotationOrigin (origin) {
-    this.options.rotationOrigin = origin
+    this.shouldRotate = this.options.rotationAngle !== angle
+    if (this.shouldRotate) {
+      this.options.rotationAngle = angle
+    }
     return this
   },
 
   setClasses (newClasses) {
-    Object.keys(newClasses).forEach(className => this._icon.classList.toggle(className, !!newClasses[className]))
+    Object.keys(newClasses).forEach(className => {
+      if (this._classes[className] !== newClasses[className]) {
+        this._classes[className] = newClasses[className]
+        this._icon.classList.toggle(className, newClasses[className])
+      }
+    })
   },
 })
 
 L.Marker.addInitHook(function () {
+  this._classes = {}
   this.options.rotationOrigin = 'center'
   this.options.rotationAngle = this.options.rotationAngle || 0
 })

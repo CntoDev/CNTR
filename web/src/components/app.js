@@ -13,21 +13,15 @@ import { InfoDialog } from './info-dialog.js'
 
 import { parse } from '../parse.js'
 
+import { DEFAULT_STATE } from '../constants'
+
 export class App extends React.Component {
   constructor (props) {
     super(props)
 
     this.state = {
-      loadCaptureDialogOpen: true,
-      loadMapDialogOpen: false,
-      infoDialogOpen: false,
+      ...DEFAULT_STATE,
       eventLog: props.state.eventLog,
-      playback: {
-        currentFrameIndex: null,
-        totalFrameCount: null,
-        playing: false,
-        playbackSpeed: 10,
-      }
     }
   }
 
@@ -59,7 +53,7 @@ export class App extends React.Component {
   }
 
   loadCapture (entry) {
-    const {state, map, player, mapIndex} = this.props
+    const {state, map, player, mapIndex, settings} = this.props
 
     const worldInfo = mapIndex.find(world => world.worldName.toLowerCase() === entry.worldName.toLowerCase())
 
@@ -102,10 +96,15 @@ export class App extends React.Component {
   }
 
   render () {
-    const {state, map, player, captureIndex, mapIndex} = this.props
-    const {loadCaptureDialogOpen, infoDialogOpen, loadMapDialogOpen, eventLog, playback} = this.state
+    const {state, settings, map, player, captureIndex, mapIndex} = this.props
+    const {loadCaptureDialogOpen, infoDialogOpen, loadMapDialogOpen, eventLog, playback, showCurators} = this.state
 
     const setPlaybackSpeed = newPlaybackSpeed => player.playbackSpeed = newPlaybackSpeed
+
+    const updateSettings = (newSettings => {
+      Object.assign(settings, newSettings)
+      this.setState(settings)
+    })
 
     return <div className={styles.container}>
       <div className={styles.topPanel}>
@@ -113,6 +112,7 @@ export class App extends React.Component {
         <button className={cx(styles.button, styles.loadCaptureButton)} onClick={() => this.setState({loadCaptureDialogOpen: true})} />
         <button className={cx(styles.button, styles.loadMapButton)} onClick={() => this.setState({loadMapDialogOpen: true})} />
         <button className={cx(styles.button, styles.infoButton)} onClick={() => this.setState({infoDialogOpen: true})} />
+        <button className={cx(styles.button, showCurators ? styles.hideCuratorsButton : styles.showCuratorsButton)} onClick={() => updateSettings({showCurators: !showCurators})} />
       </div>
       <div className={styles.leftPanel}>
         <UnitList map={map} state={state} player={player}/>

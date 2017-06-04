@@ -4,13 +4,14 @@ import './entity-symbol'
 
 import { MAP_DIRECTORY, MAP_DEFAULTS, MAP_MAX_NATIVE_ZOOM, MAP_MIN_ZOOM, TILE_LAYER_DEFAULTS, SIDE_CLASSES } from '../constants.js'
 
-export function createMapController (mapElement, state, settings) {
+export function createMapController (mapElement, state, initialSettings) {
 
   console.log(Leaflet)
 
   let markerId = 0
   let markers = {}
   let lines = []
+  let settings = initialSettings
 
   let map = null
   let popupLayer = null
@@ -21,6 +22,11 @@ export function createMapController (mapElement, state, settings) {
 
   return {
     loadWorld,
+    updateSettings,
+  }
+
+  function updateSettings(newSettings) {
+    settings = newSettings
   }
 
   function loadWorld ({worldName, imageSize, multiplier}) {
@@ -71,7 +77,7 @@ export function createMapController (mapElement, state, settings) {
   function attachListeners (map, state) {
     map.on('dragstart', () => {
       if (state.followedUnit) {
-        markers[state.followedUnit.id].closePopup()
+        markers[state.followedUnit.id].hidePopup()
         state.follow(null)
       }
     })
@@ -98,11 +104,13 @@ export function createMapController (mapElement, state, settings) {
   function update (state) {
     if (skipUpdate) return
 
-    Object.values(markers).forEach(marker => {
-      marker.setClasses({unused: true})
-    })
-
     state.entities.forEach(renderEntity)
+
+    Object.values(markers).forEach(marker => {
+      if (!marker.used) {
+        marker.setClasses({unused: true})
+      }
+    })
 
     lines.forEach(line => map.removeLayer(line))
     lines = []
@@ -111,7 +119,7 @@ export function createMapController (mapElement, state, settings) {
     Object.values(markers).forEach(marker => {
       if (!marker.used) {
         marker.setClasses({unused: true})
-        marker.popupOpen && marker.closePopup()
+        marker.hidePopup()
       }
     })
 
@@ -143,20 +151,20 @@ export function createMapController (mapElement, state, settings) {
     marker.bindPopup(createPopup(entity))
     marker.on('click', () => {
       if (state.followedUnit) {
-        markers[state.followedUnit.id].closePopup()
+        markers[state.followedUnit.id].hidePopup()
       }
       state.follow(entity)
-      marker.openPopup()
+      marker.showPopup()
     })
     marker.on('mouseover', () => {
       if (state.followedUnit !== entity && !entity.vehicle && settings.labels.mouseOver) {
-        !marker.popupOpen && marker.openPopup()
+        marker.showPopup()
         marker.popupOnMouse = true
       }
     })
     marker.on('mouseout', () => {
       if (state.followedUnit !== entity && !entity.vehicle && marker.popupOnMouse) {
-        !marker.popupOpen && marker.closePopup()
+        marker.hidePopup()
         marker.popupOnMouse = false
       }
     })
@@ -164,58 +172,93 @@ export function createMapController (mapElement, state, settings) {
     markers[entity.id] = marker
 
     marker.move = function ({x, y, dir}) {
-      marker.setLatLng(coordinatesToLatLng({x, y}))
-      marker.setRotationAngle(dir)
+      if (x !== marker.lastX || y !== marker.lastY) {
+        marker.setLatLng(coordinatesToLatLng({x, y}))
+      }
+
+      if (dir !== marker.lastDir) {
+        marker.setRotationAngle(dir)
+      }
+
+      marker.lastX = x
+      marker.lastY = y
+      marker.lastDir = dir
     }
 
     marker.hide = function () {
       marker.setClasses({hidden: true})
-      marker.closePopup()
+      marker.hidePopup()
     }
+
+    marker.showPopup = function () {
+      if (!marker.popupOpen) {
+        marker._popup._contentNode.style.display = 'block'
+        marker.popupOpen = true;
+      }
+    }
+
+    marker.hidePopup = function () {
+      if (marker.popupOpen) {
+        marker._popup._contentNode.style.display = 'none'
+        marker.popupOpen = false
+      }
+    }
+
+    marker.openPopup()
+    marker.popupOpen = true
+    marker.hidePopup()
+    marker.getPopup().setContent(entity.name)
 
     return marker
   }
 
   function renderEntity (entity) {
     const marker = getMarker(entity) || createMarker(entity)
-
     marker.used = true
-    marker.move(entity.pose)
-    marker.setClasses(Object.assign({}, SIDE_CLASSES, {
-      ['cntr-id--' + entity.id]: true,
-      [entity.side]: true,
-      followed: (entity.crew || [entity]).includes(state.followedUnit),
-      dead: !entity.alive,
-      hidden: !!entity.vehicle,
-      hit: false,
-      killed: false,
-      unused: !entity.visible,
-    }))
 
-    renderPopup(marker, entity)
+    const hidden = !!entity.vehicle || (!settings.showCurators && entity.isCurator)
+    const dead = !entity.alive
+
+    if (hidden) {
+      marker.setClasses({hidden})
+      marker.hidePopup()
+    } else {
+      if (!(dead && marker.renderedDead)) {
+
+        marker.move(entity.pose)
+        marker.setClasses({
+          ...SIDE_CLASSES,
+          [entity.side]: true,
+          ['cntr-id--' + entity.id]: true,
+          followed: (entity.crew || [entity]).includes(state.followedUnit),
+          dead,
+          hidden,
+          hit: false,
+          killed: false,
+          unused: false,
+        })
+        renderPopup(marker, entity)
+
+        marker.renderedDead = dead
+      } else {
+        marker.setClasses({unused: false})
+      }
+    }
   }
 
   function renderPopup (marker, entity) {
     if (entity.crew && marker.popupOpen) {
-      if (entity.crew.length) {
-        const label = [`${entity.name} (${entity.crew.length})`, ...entity.crew.map(unit => unit.name)].join('<br>')
+      const label = [`${entity.name} (${entity.crew.length})`, ...entity.crew.map(unit => unit.name)].join('<br>')
+      if (label !== marker.label) {
         marker.getPopup().setContent(label)
-      } else {
-        marker.getPopup().setContent(entity.name)
+        marker.label = label
       }
     }
 
-    const shouldOpen = shouldOpenPopup(entity)
-    if (shouldOpen) {
-      if (!marker.popupOpen) {
-        marker.openPopup()
-      }
-      marker.popupOpen = true
+    if (shouldOpenPopup(entity)) {
+      marker.showPopup()
     } else {
-      if (marker.popupOpen && !marker.popupOnMouse) {
-        marker.closePopup()
-      }
-      marker.popupOpen = false
+      marker.hidePopup()
     }
   }
 

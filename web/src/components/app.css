@@ -51,9 +51,9 @@
 }
 
 .watermark {
-  z-index: 999999999;
-  opacity: .4;
   position: absolute;
+  z-index: 1;
+  opacity: .4;
   right: 0;
   bottom: 40px;
   background: url("images/cnto-logo.png") center no-repeat;
@@ -94,5 +94,15 @@
 
 .loadMapButton {
   background: url("images/icons/map.png") center no-repeat;
+  background-size: 24px 24px;
+}
+
+.showCuratorsButton {
+  background: url("images/icons/curators-invisible.png") center no-repeat;
+  background-size: 24px 24px;
+}
+
+.hideCuratorsButton {
+  background: url("images/icons/curators-visible.png") center no-repeat;
   background-size: 24px 24px;
 }
