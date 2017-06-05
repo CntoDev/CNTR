@@ -1,4 +1,5 @@
 .marker {
+  position: absolute;
   opacity: 1;
 }
 
@@ -85,9 +86,5 @@
 }
 
 .marker.hidden {
-  display: none !important;
-}
-
-.marker.unused {
-  display: none !important;
+  visibility: hidden !important;
 }

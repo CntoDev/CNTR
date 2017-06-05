@@ -51,7 +51,7 @@ export class UnitList extends React.Component {
 
   componentDidMount () {
     this.props.state.on('update', () => {
-      const units = this.props.state.entities.filter(entity => entity.type === 'Man')
+      const units = this.props.state.entities.filter(entity => !entity.crew)
       const unitList = this.createUnitList(units)
 
       this.setState({

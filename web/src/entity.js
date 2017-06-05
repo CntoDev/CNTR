@@ -1,4 +1,4 @@
-function createBaseEntity ([, id, type, name, x, y, dir]) {
+function createBaseEntity ([, id, kind, name, x, y, dir]) {
   const pose = {
     x,
     y,
@@ -7,7 +7,7 @@ function createBaseEntity ([, id, type, name, x, y, dir]) {
 
   return {
     id,
-    type,
+    kind,
     name,
     alive: true,
     visible: true,
@@ -25,6 +25,7 @@ function createBaseEntity ([, id, type, name, x, y, dir]) {
 export function createUnit (event) {
   const [, , , , , , , group, side, isPlayer, isCurator] = event
   return Object.assign(createBaseEntity(event), {
+    isUnit: true,
     group,
     side: side.toLowerCase(),
     isPlayer,
@@ -35,6 +36,7 @@ export function createUnit (event) {
 
 export function createVehicle (event) {
   const vehicle = Object.assign(createBaseEntity(event), {
+    isVehicle: true,
     crew: [],
     addCrewMember,
     removeCrewMember,

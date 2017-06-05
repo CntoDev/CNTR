@@ -60,7 +60,6 @@ export const DEFAULT_SETTINGS = {
 }
 
 export const SIDE_CLASSES = {
-  unused: true,
   hidden: true,
   empty: true,
   west: false,

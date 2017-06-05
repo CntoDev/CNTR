@@ -58,14 +58,14 @@ export function createPlayer (state, settings) {
     playbackSpeed = newPlaybackSpeed
     if (intervalHandle) {
       clearInterval(intervalHandle)
-      intervalHandle = setInterval(playFrame, FRAME_PLAYBACK_INTERVAL / playbackSpeed)
+      intervalHandle = setInterval(() => requestAnimationFrame(playFrame), FRAME_PLAYBACK_INTERVAL / playbackSpeed)
     }
     emitUpdate()
   }
 
   function play () {
     if (frames) {
-      intervalHandle = setInterval(playFrame, FRAME_PLAYBACK_INTERVAL / playbackSpeed)
+      intervalHandle = setInterval(() => requestAnimationFrame(playFrame), FRAME_PLAYBACK_INTERVAL / playbackSpeed)
       emitUpdate()
     }
   }
