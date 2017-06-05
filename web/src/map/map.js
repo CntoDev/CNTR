@@ -213,14 +213,14 @@ export function createMapController (mapElement, state, initialSettings) {
 
     marker.showLabel = function () {
       if (!marker.labelVisible) {
-        marker._popup._contentNode.style.visibility = 'inherit'
+        marker._popup._container.style.display = 'block'
         marker.labelVisible = true
       }
     }
 
     marker.hideLabel = function () {
       if (marker.labelVisible) {
-        marker._popup._contentNode.style.visibility = 'hidden'
+        marker._popup._container.style.display = 'none'
         marker.labelVisible = false
       }
     }
