@@ -81,14 +81,10 @@ export function createMapController (mapElement, state, initialSettings) {
 
   function attachListeners (map, state) {
     map.on('dragstart', () => {
-      skipUpdate = true
       if (state.followedUnit) {
         markers[state.followedUnit.id].hideLabel()
         state.follow(null)
       }
-    })
-    map.on('dragend', () => {
-      skipUpdate = false
     })
     map.on('zoomstart', () => {
       skipUpdate = true
