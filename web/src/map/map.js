@@ -1,5 +1,5 @@
 import 'leaflet'
-import Leaflet from 'leaflet'
+import isNumber from 'lodash/isNumber'
 import './entity-symbol'
 
 import {
@@ -11,7 +11,7 @@ import {
   SIDE_CLASSES
 } from '../constants.js'
 
-export function createMapController (mapElement, state, initialSettings) {
+export function createMapController (mapElement, player, initialSettings) {
 
   let markerId = 0
   let markers = {}
@@ -31,11 +31,11 @@ export function createMapController (mapElement, state, initialSettings) {
   }
 
   function updateSettings (newSettings) {
-    settings = newSettings
+    Object.assign(settings, newSettings)
   }
 
   function loadWorld ({worldName, imageSize, multiplier}) {
-    state.off('update', update)
+    player.off('update', update)
 
     const parent = mapElement.parentNode
     const oldMapElement = mapElement
@@ -76,13 +76,13 @@ export function createMapController (mapElement, state, initialSettings) {
     popupLayer = document.querySelector('#map .leaflet-pane.leaflet-popup-pane')
     markerLayer = document.querySelector('#map .leaflet-pane.leaflet-marker-pane')
 
-    attachListeners(map, state)
+    attachListeners()
   }
 
-  function attachListeners (map, state) {
+  function attachListeners () {
     map.on('dragstart', () => {
-      if (state.followedUnit) {
-        markers[state.followedUnit.id].hideLabel()
+      if (settings.followedUnit) {
+        markers[settings.followedUnit].hideLabel()
         state.follow(null)
       }
     })
@@ -95,18 +95,14 @@ export function createMapController (mapElement, state, initialSettings) {
       popupLayer.classList.remove('zooming')
     })
 
-    state.on('update', update)
-    state.on('reset', reset)
+    player.on('update', update)
   }
 
-  function reset () {
-    Object.values(markers).forEach(marker => {
-      marker.used = false
-      marker.hide()
-    })
+  function follow (unit) {
+    settings.followedUnit = unit.id
   }
 
-  function update (state) {
+  function update ({state}) {
     if (skipUpdate) return
 
     state.entities.forEach(renderEntity)
@@ -116,13 +112,13 @@ export function createMapController (mapElement, state, initialSettings) {
     state.events.forEach(event => renderEvent(event, state))
 
     Object.values(markers).forEach(marker => {
-      if (!marker.used) {
+      if (!state.entities[marker.id]) {
         marker.hide()
       }
     })
 
-    if (state.followedUnit) {
-      const pose = state.followedUnit.pose
+    if (settings.followedUnit) {
+      const pose = state.entities[settings.followedUnit].pose
       if (pose !== null) {
         map.setView(coordinatesToLatLng(pose), map.getZoom())
       }
@@ -130,11 +126,7 @@ export function createMapController (mapElement, state, initialSettings) {
   }
 
   function getMarker ({id}) {
-    const marker = markers[id]
-    if (marker) {
-      marker.used = true
-    }
-    return marker
+    return markers[id]
   }
 
   function createPopup () {
@@ -159,22 +151,22 @@ export function createMapController (mapElement, state, initialSettings) {
     marker.bindPopup(createPopup()).openPopup()
 
     marker.on('click', () => {
-      if (state.followedUnit) {
-        getMarker(state.followedUnit).hideLabel()
+      if (settings.followedUnit) {
+        getMarker(settings.followedUnit).hideLabel()
       }
-      state.follow(entity)
+      settings.followedUnit = entity.id
       marker.showLabel()
     })
     marker.on('mouseover', () => {
       entity.mouseOver = true
-      if (state.followedUnit !== entity && !entity.vehicle && settings.labels.mouseOver) {
+      if (settings.followedUnit !== entity.id && entity.vehicle !== null && settings.labels.mouseOver) {
         marker.labelOnMouse = !marker.labelVisible
         marker.showLabel()
       }
     })
     marker.on('mouseout', () => {
       entity.mouseOver = false
-      if (state.followedUnit !== entity && !entity.vehicle && marker.labelOnMouse) {
+      if (settings.followedUnit !== entity.id && entity.vehicle !== null && marker.labelOnMouse) {
         marker.labelOnMouse = false
         marker.hideLabel()
       }
@@ -234,7 +226,6 @@ export function createMapController (mapElement, state, initialSettings) {
 
     marker.labelVisible = true
     marker.hideLabel()
-    marker.used = true
     marker.setLabel(entity.name)
 
     return marker
@@ -243,7 +234,7 @@ export function createMapController (mapElement, state, initialSettings) {
   function renderEntity (entity) {
     const marker = getMarker(entity) || createMarker(entity)
 
-    const hidden = !!entity.vehicle || (!settings.showCurators && entity.isCurator)
+    const hidden = isNumber(entity.vehicle) || (!settings.showCurators && entity.isCurator)
     const dead = !entity.alive
 
     if (hidden) {
@@ -253,8 +244,8 @@ export function createMapController (mapElement, state, initialSettings) {
         marker.move(entity.pose)
         marker.setClasses({
           ...SIDE_CLASSES,
-          [entity.side]: true,
-          followed: (entity.crew || [entity]).includes(state.followedUnit),
+          [getSide(player.state, entity)]: true,
+          followed: (entity.crew || [entity.id]).includes(settings.followedUnit),
           dead,
           hidden: false,
           hit: false,
@@ -332,7 +323,7 @@ export function createMapController (mapElement, state, initialSettings) {
 
       line = L.polyline(
         [coordinatesToLatLng(shooter.pose), coordinatesToLatLng({x: event[2], y: event[3]})],
-        {className: 'hitLine ' + shooter.side})
+        {className: 'hitLine ' + getSide(player.state, shooter)})
     } else {
 
     }
@@ -348,5 +339,11 @@ export function createMapController (mapElement, state, initialSettings) {
       x: (x * mapMultiplier),
       y: (mapImageSize - y * mapMultiplier),
     }, MAP_MAX_NATIVE_ZOOM)
+  }
+
+  function getSide(state, entity) {
+    return entity.isVehicle && entity.crew[0] ?
+      state.entities[entity.crew[0]].side :
+      entity.side
   }
 }

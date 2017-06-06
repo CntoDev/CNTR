@@ -50,8 +50,8 @@ export class UnitList extends React.Component {
   }
 
   componentDidMount () {
-    this.props.state.on('update', () => {
-      const units = this.props.state.entities.filter(entity => !entity.crew)
+    this.props.player.on('update', ({state}) => {
+      const units = state.entities.filter(entity => !entity.crew)
       const unitList = this.createUnitList(units)
 
       this.setState({
@@ -61,10 +61,10 @@ export class UnitList extends React.Component {
   }
 
   render () {
-    const {state} = this.props
+    const {settings} = this.props
     const {unitList} = this.state
 
-    const followUnit = unit => state.follow(unit)
+    const followUnit = unit => settings.followedUnit = unit.id
     const sortedList = [unitList.west, unitList.east, unitList.guer, unitList.civ].filter(side => side)
 
     return <div className={cx(styles.container)}>

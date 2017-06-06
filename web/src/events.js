@@ -1,7 +1,6 @@
 import React from 'react'
 import isNumber from 'lodash/isNumber'
 
-
 import { EVENTS } from './constants.js'
 
 import { createUnit, createVehicle } from './entity.js'
@@ -41,7 +40,7 @@ export function applyEvent (state, event, frameIndex) {
 
 function applyMoveEvent (state, event) {
   const [, entityId, x, y, dir] = event
-  
+
   if (!isNumber(entityId)) {
     return console.warn('Malformed event: ' + event)
   }
@@ -65,14 +64,11 @@ function applyUnitSpawnedEvent (state, event) {
   const oldMarker = state.entities[unitId] && state.entities[unitId].marker
 
   const unit = state.entities[unitId] = createUnit(event)
+  unit.marker = oldMarker
 
   if (isNumber(vehicleId)) {
-    const unit = state.entities[unitId]
-    const vehicle = state.entities[vehicleId]
-    vehicle.addCrewMember(unit)
+    addToVehicle(state, unitId, vehicleId)
   }
-
-  unit.marker = oldMarker
 }
 
 function applyVehicleSpawnedEvent (state, event) {
@@ -81,32 +77,27 @@ function applyVehicleSpawnedEvent (state, event) {
   const oldMarker = state.entities[vehicleId] && state.entities[vehicleId].marker
 
   const vehicle = state.entities[vehicleId] = createVehicle(event)
-
   vehicle.marker = oldMarker
 }
 
 function applyRespawnedEvent (state, event) {
-  const [, entityId] = event
-  if (!isNumber(entityId)) {
+  const [, unitId] = event
+  if (!isNumber(unitId)) {
     return console.warn('Malformed event: ' + event)
   }
-  state.entities[entityId].alive = true
-  if (state.entities[entityId].vehicle) {
-    state.entities[entityId].vehicle.removeCrewMember(state.entities[entityId])
-    state.entities[entityId].vehicle = null
-  }
+
+  state.entities[unitId].alive = true
+  removeFromVehicle(state, unitId)
 }
 
 function applyDespawnedEvent (state, event) {
-  const [, entityId] = event
-  if (!isNumber(entityId)) {
+  const [, unitId] = event
+  if (!isNumber(unitId)) {
     return console.warn('Malformed event: ' + event)
   }
-  state.entities[entityId].visible = false
-  if (state.entities[entityId].vehicle) {
-    state.entities[entityId].vehicle.removeCrewMember(state.entities[entityId])
-    state.entities[entityId].vehicle = null
-  }
+
+  state.entities[unitId].visible = false
+  removeFromVehicle(state, unitId)
 }
 
 function applyConnectedEvent (state, event, frameIndex) {
@@ -128,14 +119,6 @@ function applyDisconnectedEvent (state, event, frameIndex) {
 function applyHitEvent (state, event, frameIndex) {
   if (isNumber(event[1]) && isNumber(event[2])) {
     addBattleEvent(state, event)
-    /*
-    addLoggedEvent(state, {
-      frameIndex,
-      type: event[0],
-      victim: state.entities[event[1]],
-      shooter: state.entities[event[2]],
-    })
-    */
   }
 }
 
@@ -148,10 +131,7 @@ function applyFiredEvent (state, event) {
 function applyKilledEvent (state, event, frameIndex) {
   const victimId = event[1]
   state.entities[victimId].alive = false
-  if (state.entities[victimId].vehicle) {
-    state.entities[victimId].vehicle.removeCrewMember(state.entities[victimId])
-    state.entities[victimId].vehicle = null
-  }
+
   addBattleEvent(state, event)
   addLoggedEvent(state, {
     frameIndex,
@@ -166,20 +146,38 @@ function applyGotInEvent (state, event) {
   if (!isNumber(unitId) || !isNumber(vehicleId)) {
     return console.warn('Malformed event: ' + event)
   }
-  const unit = state.entities[unitId]
-  const vehicle = state.entities[vehicleId]
-  vehicle.addCrewMember(unit)
-  unit.visible = false
+
+  addToVehicle(state, unitId, vehicleId)
 }
 
 function applyGotOutEvent (state, event) {
-  const [, entityId] = event
-  if (!isNumber(entityId)) {
+  const [, unitId] = event
+  if (!isNumber(unitId)) {
     return console.warn('Malformed event: ' + event)
   }
-  const unit = state.entities[entityId]
-  unit.vehicle && unit.vehicle.removeCrewMember(unit)
-  unit.visible = true
+
+  removeFromVehicle(state, unitId)
+}
+
+function addToVehicle (state, unitId, vehicleId) {
+  const unit = state.entities[unitId]
+  unit.vehicle = vehicleId
+  unit.visible = false
+
+  const vehicle = state.entities[vehicleId]
+  vehicle.crew.push(unitId)
+}
+
+function removeFromVehicle (state, unitId) {
+  const unit = state.entities[unitId]
+  const vehicleId = unit.vehicle
+  unit.visible = false
+  unit.vehicle = null
+
+  if (isNumber(vehicleId)) {
+    const vehicle = state.entities[vehicleId]
+    vehicle.crew.splice(vehicle.crew.indexOf(unitId), 1)
+  }
 }
 
 function addLoggedEvent (state, event) {

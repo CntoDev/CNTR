@@ -21,16 +21,12 @@ export class App extends React.Component {
 
     this.state = {
       ...DEFAULT_STATE,
-      eventLog: props.state.eventLog,
+      eventLog: props.player.state.eventLog,
     }
   }
 
   componentDidMount () {
-    const {player} = this.props
-
-    this.props.state.on('update', newState => this.setState({
-      eventLog: newState.eventLog,
-    }))
+    const { player } = this.props
 
     this.props.player.on('update', this.updatePlaybackState.bind(this))
 
@@ -41,8 +37,9 @@ export class App extends React.Component {
     })
   }
 
-  updatePlaybackState ({currentFrameIndex, totalFrameCount, playing, playbackSpeed}) {
+  updatePlaybackState ({state, currentFrameIndex, totalFrameCount, playing, playbackSpeed}) {
     this.setState({
+      eventLog: state.eventLog,
       playback: {
         playing,
         currentFrameIndex,
@@ -53,12 +50,11 @@ export class App extends React.Component {
   }
 
   loadCapture (entry) {
-    const {state, map, player, mapIndex, settings} = this.props
+    const {map, player, mapIndex, settings} = this.props
 
     const worldInfo = mapIndex.find(world => world.worldName.toLowerCase() === entry.worldName.toLowerCase())
 
     return fetch('data/' + entry.captureFileName).then(response => response.text()).then(parse).then(({frames}) => {
-      state.reset()
       map.loadWorld(worldInfo)
       player.load(frames)
     }).then(() => {
