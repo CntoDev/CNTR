@@ -5,7 +5,7 @@ import { FRAME_PLAYBACK_INTERVAL, DEFAULT_PLAYBACK_SPEED } from './constants.js'
 
 const STATE_CACHING_INTERVAL = 20
 
-export function createPlayer (settings) {
+export function createPlayer () {
   let frames = null
   let intervalHandle = null
   let currentFrameIndex = 0
@@ -22,7 +22,7 @@ export function createPlayer (settings) {
     goTo,
     reset,
 
-    get state() { return state },
+    get state () { return state },
     get playbackSpeed () { return playbackSpeed },
     set playbackSpeed (newPlaybackSpeed) { updatePlaybackSpeed(newPlaybackSpeed) },
     get playing () { return !!intervalHandle },
@@ -33,7 +33,7 @@ export function createPlayer (settings) {
 
   return player
 
-  function togglePlayback() {
+  function togglePlayback () {
     if (player.playing) {
       pause()
     } else {
@@ -56,11 +56,11 @@ export function createPlayer (settings) {
     }
   }
 
-  function emitUpdate() {
+  function emitUpdate () {
     player.emit('update', player)
   }
 
-  function updatePlaybackSpeed(newPlaybackSpeed) {
+  function updatePlaybackSpeed (newPlaybackSpeed) {
     playbackSpeed = newPlaybackSpeed
     if (intervalHandle) {
       clearInterval(intervalHandle)
@@ -71,16 +71,19 @@ export function createPlayer (settings) {
 
   function play () {
     if (frames) {
+      if (currentFrameIndex === frames.length - 1) {
+        goTo(0)
+      }
       intervalHandle = setInterval(() => requestAnimationFrame(playFrame), FRAME_PLAYBACK_INTERVAL / playbackSpeed)
       emitUpdate()
     }
   }
 
   function playFrame () {
-    const playing = applyNextFrame()
-
-    if (!playing) {
-      player.pause()
+    if (currentFrameIndex < frames.length - 1) {
+      applyNextFrame()
+    } else {
+      pause()
     }
 
     emitUpdate()
@@ -97,7 +100,7 @@ export function createPlayer (settings) {
     reset()
   }
 
-  function findPreviousCachedIndex(frameIndex) {
+  function findPreviousCachedIndex (frameIndex) {
     let nearestIndex = Math.floor(frameIndex / STATE_CACHING_INTERVAL) * STATE_CACHING_INTERVAL
     while (!stateCache[nearestIndex]) {
       nearestIndex -= STATE_CACHING_INTERVAL
@@ -111,7 +114,7 @@ export function createPlayer (settings) {
       state = stateCache[currentFrameIndex]
     }
 
-    while (currentFrameIndex < frameIndex - 1) applyNextFrame(true)
+    while (currentFrameIndex < frameIndex - 1) applyNextFrame()
 
     emitUpdate()
 
@@ -121,7 +124,7 @@ export function createPlayer (settings) {
     }
   }
 
-  function applyNextFrame (suppressUpdate = false) {
+  function applyNextFrame () {
     const currentFrame = frames[currentFrameIndex + 1]
 
     if (currentFrame) {
@@ -132,10 +135,6 @@ export function createPlayer (settings) {
         stateCache[currentFrameIndex] = clone(state)
       }
 
-      if (!suppressUpdate) {
-        emitUpdate()
-      }
-
       return true
     } else {
       return false
@@ -143,7 +142,7 @@ export function createPlayer (settings) {
   }
 }
 
-function createEmptyState() {
+function createEmptyState () {
   return {
     frameIndex: -1,
     entities: [],
@@ -152,11 +151,11 @@ function createEmptyState() {
   }
 }
 
-function clone(object) {
+function clone (object) {
   return JSON.parse(JSON.stringify(object))
 }
 
-function applyFrame(state, events, frameIndex) {
+function applyFrame (state, events, frameIndex) {
   state.events = []
   events.forEach(event => applyEvent(state, event, frameIndex))
   state.frameIndex = frameIndex

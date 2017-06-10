@@ -48,17 +48,6 @@ export const TILE_LAYER_DEFAULTS = {
 export const FRAME_PLAYBACK_INTERVAL = 1000
 export const DEFAULT_PLAYBACK_SPEED = 10
 
-export const DEFAULT_SETTINGS = {
-  labels: {
-    mouseOver: true,
-    ai: false,
-    players: true,
-    vehicles: true,
-  },
-  showCurators: true,
-  showFileLines: true,
-}
-
 export const SIDE_CLASSES = {
   hidden: true,
   empty: true,
@@ -76,11 +65,19 @@ export const SIDE_NAMES = {
 }
 
 export const DEFAULT_STATE = {
+  labels: {
+    mouseOver: true,
+    ai: false,
+    players: true,
+    vehicles: true,
+  },
+  showCurators: true,
+  showFileLines: true,
+  followedUnit: null,
   loadCaptureDialogOpen: true,
   loadMapDialogOpen: false,
   infoDialogOpen: false,
   eventLog: [],
-  showCurators: true,
   playback: {
     currentFrameIndex: null,
     totalFrameCount: null,

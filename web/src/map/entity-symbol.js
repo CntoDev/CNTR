@@ -9,7 +9,7 @@ L.SvgIcon = L.Icon.extend({
   },
 
   createIcon () {
-    const svg = Object.assign(document.createElementNS('http://www.w3.org/2000/svg', 'svg'), {})
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
     svg.classList.add(...this.options.classList, 'leaflet-marker-icon')
     svg.style.width = this.options.iconSize[0] + 'px'
     svg.style.height = this.options.iconSize[1] + 'px'

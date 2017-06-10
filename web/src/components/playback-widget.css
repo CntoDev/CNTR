@@ -46,7 +46,7 @@
 .playbackSpeedSlider {
   display: none;
   position: absolute;
-  z-index: 99999999;
+  z-index: 1;
   top: -60px;
   left: -36px;
   width: 96px;

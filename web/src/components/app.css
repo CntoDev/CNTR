@@ -52,7 +52,7 @@
 
 .watermark {
   position: absolute;
-  z-index: 1;
+  z-index: 0;
   opacity: .4;
   right: 0;
   bottom: 40px;
