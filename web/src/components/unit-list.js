@@ -10,115 +10,118 @@ export class UnitList extends React.Component {
     super()
 
     this.state = {
-      unitList: {},
+      openNodes: {},
     }
   }
 
-  createUnitList (units) {
-    const oldList = this.state.unitList
+  componentWillReceiveProps({entities, followedUnit}) {
+    if (followedUnit) {
+      const openNodes = {...this.state.openNodes}
+
+      openNodes[entities[followedUnit].side] = true
+      openNodes[entities[followedUnit].group] = true
+
+      this.setState({
+        openNodes,
+      })
+    }
+  }
+
+  createUnitList (units, followedUnit) {
+    const {openNodes} = this.state
     const list = {}
 
     units.forEach(unit => {
-      const oldSide = oldList[unit.side]
       const side = list[unit.side] || (list[unit.side] = {
             name: unit.side,
             groups: {},
-            open: oldSide && oldSide.open,
+            open: openNodes[unit.side] = openNodes[unit.side] || unit.id === followedUnit,
           })
-      side.open = side.open || unit.followed
 
-      const oldGroup = oldList[unit.side] && oldList[unit.side].groups[unit.group]
-      const group = side.groups[unit.group] || (side.groups[unit.group] = {
+      if (side.open) {
+        const group = side.groups[unit.group] || (side.groups[unit.group] = {
             name: unit.group,
             units: {},
-            open: oldGroup && oldGroup.open
+            open: openNodes[unit.group] = openNodes[unit.group] || unit.id === followedUnit,
           })
-      group.open = group.open || unit.followed
 
-      group.units[unit.id] || (group.units[unit.id] = unit)
+        if (group.open) {
+          group.units[unit.id] || (group.units[unit.id] = unit)
+        }
+      }
     })
 
     return list
   }
 
-  toggleOpen (node) {
-    node.open = !node.open
+  toggleOpen ({name}) {
+    const openNodes = {...this.state.openNodes}
+
+    openNodes[name] = !openNodes[name]
 
     this.setState({
-      unitList: this.state.unitList
-    })
-  }
-
-  componentDidMount () {
-    this.props.state.on('update', () => {
-      const units = this.props.state.entities.filter(entity => entity.type === 'Man')
-      const unitList = this.createUnitList(units)
-
-      this.setState({
-        unitList,
-      })
+      openNodes,
     })
   }
 
   render () {
-    const {state} = this.props
-    const {unitList} = this.state
+    const {entities = [], followUnit, followedUnit} = this.props
+    const unitList = this.createUnitList(entities.filter(entity => entity.isUnit), followedUnit)
 
-    const followUnit = unit => state.follow(unit)
     const sortedList = [unitList.west, unitList.east, unitList.guer, unitList.civ].filter(side => side)
 
     return <div className={cx(styles.container)}>
       <div className={styles.header}>Units</div>
       <div className={cx(styles.listContainer)}>
         <ul className={styles.list}> {sortedList.map(side =>
-            <Side key={side.name} side={side} toggleOpen={this.toggleOpen.bind(this)} followUnit={followUnit}/>
+            <Side key={side.name} side={side} toggleOpen={this.toggleOpen.bind(this)} followedUnit={followedUnit} followUnit={followUnit}/>
         )}</ul>
       </div>
     </div>
   }
 }
 
-function Side({side, side: {name, groups, open}, toggleOpen, followUnit}) {
+function Side({side, side: {name, groups, open}, toggleOpen, followUnit, followedUnit}) {
   return <li className={cx(styles.side)}>
       <span onClick={() => toggleOpen(side)}>
         <span className={cx(styles.collapseButton)}>{open ? '▾' : '▸'}</span>
         <span className={cx(styles.sideName, styles[name])}>{SIDE_NAMES[name]}</span>
       </span>
     { open && <ul className={cx(styles.groupList, open && styles.open)}>{Object.values(groups).map(group =>
-        <Group key={group.name} group={group} toggleOpen={toggleOpen} followUnit={followUnit}/>
+        <Group key={group.name} group={group} toggleOpen={toggleOpen} followedUnit={followedUnit} followUnit={followUnit}/>
     )}</ul> }
   </li>
 }
 
-function Group({group, group: {name, units, open}, toggleOpen, followUnit}) {
+function Group({group, group: {name, units, open}, toggleOpen, followUnit, followedUnit}) {
   return <li className={cx(styles.group)}>
       <span onClick={() => toggleOpen(group)}>
         <span className={cx(styles.collapseButton)}>{open ? '▾' : '▸'}</span>
         <span className={cx(styles.groupName)}>{name}</span>
       </span>
     { open && <ul className={cx(styles.unitList, open && styles.open)}>{Object.values(units).map(unit =>
-        <Unit key={unit.name} unit={unit} followUnit={followUnit}/>
+        <Unit key={unit.name} unit={unit} followUnit={followUnit} followedUnit={followedUnit}/>
     )}</ul> }
   </li>
 }
 
-function Unit ({unit, followUnit}) {
+function Unit ({unit, followUnit, followedUnit}) {
   const symbols = []
   if (unit.vehicle) {
     symbols.push('✇')
   }
 
   if (!unit.alive) {
-    symbols.push('☠')//'✝'
+    symbols.push('☠')
   }
 
-  if (unit.followed) {
-    symbols.push('👁')//'⌖', '⊕', '✔'
+  if (unit.id === followedUnit) {
+    symbols.push('👁')
   }
 
   return <li className={cx(styles.unit, !unit.alive && styles.dead)} onClick={() => followUnit(unit)}>
     <span>{unit.name}</span>
-    { symbols.map(symbol => <UnitSymbol symbol={symbol}/>) }
+    { symbols.map(symbol => <UnitSymbol key={symbol} symbol={symbol}/>) }
   </li>
 }
 

@@ -23,21 +23,32 @@ export const MAP_MIN_ZOOM = 1
 export const MAP_MAX_NATIVE_ZOOM = 6
 export const MAP_MAX_ZOOM = MAP_MAX_NATIVE_ZOOM + 3
 
+export const MAP_DEFAULTS = {
+  fadeAnimation: false,
+  zoomAnimationThreshold: 16,
+  markerZoomAnimation: false,
+  attributionControl: false,
+  closePopupOnClick: false,
+  zoomControl: false,
+  zoomDelta: 1,
+  zoomSnap: 1,
+  maxBoundsViscosity: 1.0,
+  wheelDebounceTime: 1,
+  wheelPxPerZoomLevel: 64,
+}
+
+export const TILE_LAYER_DEFAULTS = {
+  maxNativeZoom: MAP_MAX_NATIVE_ZOOM,
+  maxZoom: MAP_MAX_ZOOM,
+  minZoom: MAP_MIN_ZOOM,
+  noWrap: true,
+  tms: false
+}
+
 export const FRAME_PLAYBACK_INTERVAL = 1000
 export const DEFAULT_PLAYBACK_SPEED = 10
 
-export const DEFAULT_SETTINGS = {
-  labels: {
-    mouseOver: true,
-    ai: false,
-    players: true,
-    vehicles: true,
-  },
-  hideCurators: true,
-}
-
 export const SIDE_CLASSES = {
-  unused: true,
   hidden: true,
   empty: true,
   west: false,
@@ -51,4 +62,26 @@ export const SIDE_NAMES = {
   east: 'OPFOR',
   guer: 'INDEPENDENT',
   civ: 'CIVILIAN',
+}
+
+export const DEFAULT_STATE = {
+  labels: {
+    mouseOver: true,
+    ai: false,
+    players: true,
+    vehicles: true,
+  },
+  showCurators: true,
+  showFileLines: true,
+  followedUnit: null,
+  loadCaptureDialogOpen: true,
+  loadMapDialogOpen: false,
+  infoDialogOpen: false,
+  eventLog: [],
+  playback: {
+    currentFrameIndex: null,
+    totalFrameCount: null,
+    playing: false,
+    playbackSpeed: 10,
+  }
 }

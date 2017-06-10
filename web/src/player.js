@@ -3,11 +3,15 @@ import { applyEvent } from './events.js'
 
 import { FRAME_PLAYBACK_INTERVAL, DEFAULT_PLAYBACK_SPEED } from './constants.js'
 
-export function createPlayer (state, settings) {
+const STATE_CACHING_INTERVAL = 20
+
+export function createPlayer () {
   let frames = null
   let intervalHandle = null
   let currentFrameIndex = 0
   let playbackSpeed = DEFAULT_PLAYBACK_SPEED
+  let state = createEmptyState()
+  let stateCache = []
 
   const player = createEmitter({
     load,
@@ -18,6 +22,7 @@ export function createPlayer (state, settings) {
     goTo,
     reset,
 
+    get state () { return state },
     get playbackSpeed () { return playbackSpeed },
     set playbackSpeed (newPlaybackSpeed) { updatePlaybackSpeed(newPlaybackSpeed) },
     get playing () { return !!intervalHandle },
@@ -28,7 +33,7 @@ export function createPlayer (state, settings) {
 
   return player
 
-  function togglePlayback() {
+  function togglePlayback () {
     if (player.playing) {
       pause()
     } else {
@@ -38,43 +43,47 @@ export function createPlayer (state, settings) {
 
   function load (newFrames) {
     frames = newFrames
+    stateCache = []
     reset()
     emitUpdate()
   }
 
   function reset () {
-    state.eventLog = []
+    state = createEmptyState()
     currentFrameIndex = -1
     if (frames) {
       applyNextFrame()
     }
   }
 
-  function emitUpdate() {
+  function emitUpdate () {
     player.emit('update', player)
   }
 
-  function updatePlaybackSpeed(newPlaybackSpeed) {
+  function updatePlaybackSpeed (newPlaybackSpeed) {
     playbackSpeed = newPlaybackSpeed
     if (intervalHandle) {
       clearInterval(intervalHandle)
-      intervalHandle = setInterval(playFrame, FRAME_PLAYBACK_INTERVAL / playbackSpeed)
+      intervalHandle = setInterval(() => requestAnimationFrame(playFrame), FRAME_PLAYBACK_INTERVAL / playbackSpeed)
     }
     emitUpdate()
   }
 
   function play () {
     if (frames) {
-      intervalHandle = setInterval(playFrame, FRAME_PLAYBACK_INTERVAL / playbackSpeed)
+      if (currentFrameIndex === frames.length - 1) {
+        goTo(0)
+      }
+      intervalHandle = setInterval(() => requestAnimationFrame(playFrame), FRAME_PLAYBACK_INTERVAL / playbackSpeed)
       emitUpdate()
     }
   }
 
   function playFrame () {
-    const playing = applyNextFrame()
-
-    if (!playing) {
-      player.pause()
+    if (currentFrameIndex < frames.length - 1) {
+      applyNextFrame()
+    } else {
+      pause()
     }
 
     emitUpdate()
@@ -91,11 +100,21 @@ export function createPlayer (state, settings) {
     reset()
   }
 
+  function findPreviousCachedIndex (frameIndex) {
+    let nearestIndex = Math.floor(frameIndex / STATE_CACHING_INTERVAL) * STATE_CACHING_INTERVAL
+    while (!stateCache[nearestIndex]) {
+      nearestIndex -= STATE_CACHING_INTERVAL
+    }
+    return nearestIndex
+  }
+
   function goTo (frameIndex) {
-    currentFrameIndex = -1
-    state.reset()
-    while (currentFrameIndex < frameIndex - 1) applyNextFrame(true)
-    applyNextFrame()
+    if (frameIndex < currentFrameIndex) {
+      currentFrameIndex = findPreviousCachedIndex(frameIndex)
+      state = stateCache[currentFrameIndex]
+    }
+
+    while (currentFrameIndex < frameIndex - 1) applyNextFrame()
 
     emitUpdate()
 
@@ -105,24 +124,39 @@ export function createPlayer (state, settings) {
     }
   }
 
-  function applyNextFrame (suppressUpdate = false) {
-
+  function applyNextFrame () {
     const currentFrame = frames[currentFrameIndex + 1]
 
     if (currentFrame) {
-      applyFrameToState(currentFrame, suppressUpdate)
+      applyFrame(state, currentFrame, currentFrameIndex)
       ++currentFrameIndex
+
+      if (currentFrameIndex % STATE_CACHING_INTERVAL === 0) {
+        stateCache[currentFrameIndex] = clone(state)
+      }
+
       return true
     } else {
       return false
     }
   }
+}
 
-  function applyFrameToState (frame, suppressUpdate) {
-    state.events = []
-    frame.forEach(event => applyEvent(state, event, currentFrameIndex))
-    if (!suppressUpdate) {
-      state.update({})
-    }
+function createEmptyState () {
+  return {
+    frameIndex: -1,
+    entities: [],
+    events: [],
+    eventLog: [],
   }
+}
+
+function clone (object) {
+  return JSON.parse(JSON.stringify(object))
+}
+
+function applyFrame (state, events, frameIndex) {
+  state.events = []
+  events.forEach(event => applyEvent(state, event, frameIndex))
+  state.frameIndex = frameIndex
 }

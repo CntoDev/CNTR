@@ -1,5 +1,15 @@
+.topPanel h1 {
+  margin: 0 auto;
+  text-align: center;
+}
+
 .container {
   z-index: 100;
+}
+
+/*easy way of setting background-color*/
+.topPanel, .bottomPanel, .leftPanel, .rightPanel {
+  background-color: rgba(0, 10, 0, .8);
 }
 
 .leftPanel {
@@ -8,8 +18,7 @@
   top: 40px;
   width: 192px;
   height: calc(100% - 40px - 40px);
-
-  background-color: rgba(0, 0, 0, 0.8);
+  border-bottom: 1px darkGray solid;
 }
 
 .rightPanel {
@@ -19,7 +28,6 @@
   width: 384px;
   height: 512px;
 
-  background-color: rgba(0, 0, 0, 0.8);
 }
 
 .topPanel {
@@ -30,7 +38,6 @@
   width: 100%;
   height: 40px;
 
-  background-color: rgba(0, 0, 0, 0.8);
 }
 
 .bottomPanel {
@@ -39,8 +46,20 @@
   left: 0;
   width: 100%;
   height: 40px;
-  background-color: rgba(0, 0, 0, .8);
   line-height: 2.5em;
+
+}
+
+.watermark {
+  position: absolute;
+  z-index: 0;
+  opacity: .4;
+  right: 0;
+  bottom: 40px;
+  background: url("images/cnto-logo.png") center no-repeat;
+  background-size: 70px auto;
+  width: 80px;
+  height: 60px;
 }
 
 .logo {
@@ -75,5 +94,15 @@
 
 .loadMapButton {
   background: url("images/icons/map.png") center no-repeat;
+  background-size: 24px 24px;
+}
+
+.showCuratorsButton {
+  background: url("images/icons/curators-invisible.png") center no-repeat;
+  background-size: 24px 24px;
+}
+
+.hideCuratorsButton {
+  background: url("images/icons/curators-visible.png") center no-repeat;
   background-size: 24px 24px;
 }

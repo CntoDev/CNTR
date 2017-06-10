@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg">
+	<symbol id="symbol" viewBox="0 0 256 256">
+		<circle cx="128" cy="128" r="72"/>
+		<path transform="translate(0,-229.26668)"
+			 d="m 128.03907,229.26668 -31.607427,45.97463 a 88,88 0 0 1 31.607427,-5.97464 88,88 0 0 1 31.5293,5.86133 z"/>
+	</symbol>
+</svg>

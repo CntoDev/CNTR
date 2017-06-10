@@ -1,3 +1,5 @@
+if (cntr_captureRunning) exitWith { systemChat "CNTR capture is already running."; };
+
 "Starting capture." call cntr_fnc_logDebug;
 
 cntr_captureRunning = true;

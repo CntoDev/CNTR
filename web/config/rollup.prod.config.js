@@ -44,7 +44,13 @@ export default {
     }),
     babel({
       babelrc: false,
-      presets: ['react'],
+      presets: [
+        'react',
+      ],
+      plugins: [
+        'transform-object-rest-spread',
+        'external-helpers',
+      ],
       exclude: 'node_modules/**',
     }),
     babili({

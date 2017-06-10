@@ -3,25 +3,22 @@ import React from 'react'
 import ReactDom from 'react-dom'
 
 import { createPlayer } from './player.js'
-import { createState } from './state.js'
 import { createMapController } from './map/map.js'
 import { App } from './components/app.js'
 
-import { DEFAULT_SETTINGS, MAP_INDEX_URL, CAPTURE_INDEX_URL } from './constants.js'
+import { DEFAULT_STATE, MAP_INDEX_URL, CAPTURE_INDEX_URL } from './constants.js'
 
 const mapElement = document.querySelector('#map')
 const appRootElement = document.querySelector('#root')
 
-const settings = Object.assign({}, DEFAULT_SETTINGS)
-const state = createState(settings)
-const map = createMapController(mapElement, state, settings)
-const player = createPlayer(state, settings)
+const initialState = {...DEFAULT_STATE}
+const player = createPlayer()
+const map = createMapController(mapElement, player, initialState)
 
 ;(function initCntr () {
   return readIndices().then(([mapIndex, captureIndex]) => ReactDom.render(
-    <App settings={settings}
+    <App initialState={initialState}
          map={map}
-         state={state}
          player={player}
          mapIndex={mapIndex}
          captureIndex={captureIndex}/>,

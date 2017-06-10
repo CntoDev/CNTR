@@ -24,7 +24,7 @@ export default {
           },
           getJSON(id, exportTokens) {
             cssExportMap[id] = exportTokens
-          }
+          },
         }),
         cssNext({warnForDuplicates: false}),
       ],
@@ -34,11 +34,18 @@ export default {
       extensions: ['.css'],
     }),
     json({
-      preferConst: true, // Default: false
+      preferConst: true,
     }),
     babel({
       babelrc: false,
-      presets: ['react'],
+      presets: [
+        'react',
+      ],
+      plugins: [
+        'transform-object-rest-spread',
+        'external-helpers',
+      ],
+      sourceMap: true,
       exclude: 'node_modules/**',
     }),
     nodeResolve({

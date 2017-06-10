@@ -1,3 +1,4 @@
+/*global fetch, console*/
 import React from 'react'
 import cx from 'classnames'
 
@@ -14,29 +15,17 @@ import { InfoDialog } from './info-dialog.js'
 import { parse } from '../parse.js'
 
 export class App extends React.Component {
-  constructor (props) {
-    super(props)
+  constructor ({initialState, player}) {
+    super()
 
     this.state = {
-      loadCaptureDialogOpen: true,
-      loadMapDialogOpen: false,
-      infoDialogOpen: false,
-      eventLog: props.state.eventLog,
-      playback: {
-        currentFrameIndex: null,
-        totalFrameCount: null,
-        playing: false,
-        playbackSpeed: 10,
-      }
+      ...initialState,
+      eventLog: player.state.eventLog,
     }
   }
 
   componentDidMount () {
-    const {player} = this.props
-
-    this.props.state.on('update', newState => this.setState({
-      eventLog: newState.eventLog,
-    }))
+    const { player, map } = this.props
 
     this.props.player.on('update', this.updatePlaybackState.bind(this))
 
@@ -45,10 +34,14 @@ export class App extends React.Component {
         player.togglePlayback()
       }
     })
+
+    map.setUiState = newState => this.setState(newState, () => map.updateUiState(this.state))
   }
 
-  updatePlaybackState ({currentFrameIndex, totalFrameCount, playing, playbackSpeed}) {
+  updatePlaybackState ({state, currentFrameIndex, totalFrameCount, playing, playbackSpeed}) {
     this.setState({
+      eventLog: state.eventLog,
+      entities: state.entities,
       playback: {
         playing,
         currentFrameIndex,
@@ -59,12 +52,11 @@ export class App extends React.Component {
   }
 
   loadCapture (entry) {
-    const {state, map, player, mapIndex} = this.props
+    const {map, player, mapIndex} = this.props
 
     const worldInfo = mapIndex.find(world => world.worldName.toLowerCase() === entry.worldName.toLowerCase())
 
     return fetch('data/' + entry.captureFileName).then(response => response.text()).then(parse).then(({frames}) => {
-      state.reset()
       map.loadWorld(worldInfo)
       player.load(frames)
     }).then(() => {
@@ -83,29 +75,31 @@ export class App extends React.Component {
   }
 
   loadMap (entry) {
-    const {state, map, player, mapIndex} = this.props
+    const {map, player, mapIndex} = this.props
 
     const worldInfo = mapIndex.find(world => world.worldName.toLowerCase() === entry.worldName.toLowerCase())
 
-    state.reset()
     map.loadWorld(worldInfo)
     player.load(null)
     player.reset()
     this.setState({
       loadMapDialogOpen: false,
-      playback: Object.assign({}, this.state.playback, {
+      playback: {
+        ...this.state.playback,
         currentFrameIndex: null,
         totalFrameCount: null,
         playing: false,
-      }),
+      },
     })
   }
 
   render () {
-    const {state, map, player, captureIndex, mapIndex} = this.props
-    const {loadCaptureDialogOpen, infoDialogOpen, loadMapDialogOpen, eventLog, playback} = this.state
+    const {map, player, captureIndex, mapIndex} = this.props
+    const {loadCaptureDialogOpen, infoDialogOpen, loadMapDialogOpen, eventLog, playback, showCurators, followedUnit, entities} = this.state
 
     const setPlaybackSpeed = newPlaybackSpeed => player.playbackSpeed = newPlaybackSpeed
+
+    const followUnit = unit => this.setState({followedUnit: unit.id}, () => map.updateUiState(this.state))
 
     return <div className={styles.container}>
       <div className={styles.topPanel}>
@@ -113,9 +107,10 @@ export class App extends React.Component {
         <button className={cx(styles.button, styles.loadCaptureButton)} onClick={() => this.setState({loadCaptureDialogOpen: true})} />
         <button className={cx(styles.button, styles.loadMapButton)} onClick={() => this.setState({loadMapDialogOpen: true})} />
         <button className={cx(styles.button, styles.infoButton)} onClick={() => this.setState({infoDialogOpen: true})} />
+        <button className={cx(styles.button, showCurators ? styles.hideCuratorsButton : styles.showCuratorsButton)} onClick={() => this.setState({showCurators: !showCurators}, () => map.updateUiState(this.state))} />
       </div>
       <div className={styles.leftPanel}>
-        <UnitList map={map} state={state} player={player}/>
+        <UnitList followUnit={followUnit} followedUnit={followedUnit} entities={entities} player={player}/>
       </div>
       <div className={styles.rightPanel}>
         <EventLog eventLog={eventLog} jumpToEvent={frameIndex => player.goTo(frameIndex)}/>
@@ -123,6 +118,7 @@ export class App extends React.Component {
       <div className={styles.bottomPanel}>
         <PlaybackWidget togglePlayback={player.togglePlayback} goTo={player.goTo} setPlaybackSpeed={setPlaybackSpeed} playback={playback}/>
       </div>
+      <a className={cx(styles.watermark)} target="_blank" href="http://www.carpenoctem.co/" />
       <LoadCaptureDialog open={loadCaptureDialogOpen} onClose={this.closeAllDialogs.bind(this)} entries={captureIndex} loadCapture={this.loadCapture.bind(this)} />
       <LoadMapDialog open={loadMapDialogOpen} onClose={this.closeAllDialogs.bind(this)} maps={mapIndex} loadMap={this.loadMap.bind(this)} />
       <InfoDialog open={infoDialogOpen} onClose={this.closeAllDialogs.bind(this)} />
