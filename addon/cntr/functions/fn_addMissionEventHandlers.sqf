@@ -10,18 +10,19 @@
 #define CNTR_EVENT_DISCONNECTED "D"
 #define CNTR_EVENT_KILLED "K"
 
-
-
-private _handleEntityKilledIndex = addMissionEventHandler ["EntityKilled", { params ["_victim", "", "_instigator"];
+private _handleEntityKilledIndex = addMissionEventHandler ["EntityKilled", { params ["_victim", "", "_killer"];
   private _victimId = _victim getVariable "cntr_id";
 
   if (not isNil {_victimId}) then {
-
 		private _event = [CNTR_EVENT_KILLED, _victimId];
+		
+		if (cntr_usingAce and isNull _killer) then {
+			_killer =_victim getVariable ["ace_medical_lastDamageSource", objNull];
+		};
 
-		if (not isNull _instigator) then {
-			_event pushBack (_instigator getVariable ["cntr_id", ""]);
-			_event pushBack (getText (configFile >> "CfgWeapons" >> currentWeapon _instigator >> "displayName"));
+		if (not isNull _killer) then {
+			_event pushBack (_killer getVariable ["cntr_id", ""]);
+			_event pushBack (getText (configFile >> "CfgWeapons" >> currentWeapon _killer >> "displayName"));
 		};
 
 		_victim call cntr_fnc_removeEntityEventHandlers;
