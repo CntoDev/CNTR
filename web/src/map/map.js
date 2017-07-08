@@ -130,7 +130,7 @@ export function createMapController (mapElement, player, initialUiState) {
   }
 
   function getEntityMarkerType(entity) {
-    if (entity.type === 'vehicle' || entity.side !== 'civ') {
+    if (entity.isVehicle || entity.side !== 'civ') {
       return entity.kind.toLowerCase()
     } else {
       return 'man'
