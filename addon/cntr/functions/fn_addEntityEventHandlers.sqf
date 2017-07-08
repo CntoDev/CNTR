@@ -4,8 +4,6 @@
 	Description:
 	Adds various relevant event handlers to given entity.
 */
-#define CNTR_EVENT_GOT_IN "I"
-#define CNTR_EVENT_GOT_OUT "O"
 #define CNTR_EVENT_DESPAWNED "X"
 #define CNTR_EVENT_HIT "H"
 
@@ -28,29 +26,19 @@ private _hitEventHandler = _entity addEventHandler ["Hit", { params ["_victim", 
 	_event call cntr_fnc_writeEvent;
 }];
 
-private _gotInEventHandler = _entity addEventHandler ["GetIn", { params ["_vehicle", "", "_entity"];
-  _entity call cntr_fnc_initEntity;
-  _vehicle call cntr_fnc_initEntity;
-
-  [CNTR_EVENT_GOT_IN, _entity getVariable ["cntr_id", ""], _vehicle getVariable ["cntr_id", ""]] call cntr_fnc_writeEvent;
-}];
-
-private _gotOutEventHandler = _entity addEventHandler ["GetOut", { params ["_vehicle", "", "_entity"];
-  _entity call cntr_fnc_initEntity;
-  _vehicle call cntr_fnc_initEntity;
-
-  [CNTR_EVENT_GOT_OUT, _entity getVariable ["cntr_id", ""], _vehicle getVariable ["cntr_id", ""]] call cntr_fnc_writeEvent;
-}];
-
 private _despawnedEventHandler = _entity addEventHandler ["Deleted", { params ["_entity"];
-  [CNTR_EVENT_DESPAWNED, _entity getVariable ["cntr_id", ""]] call cntr_fnc_writeEvent;
-  _entity call fn_removeEntityEventHandlers;
+  _entityId = _entity getVariable ["cntr_id", ""];
+  [_entity, _entityId] spawn { params ["_entity", "_entityId"];
+    sleep 0.001;
+    if (isNull _entity and not (_entityId isEqualTo "")) then {
+      [CNTR_EVENT_DESPAWNED, _entityId] call cntr_fnc_writeEvent;
+      _entity call fn_removeEntityEventHandlers;
+    };
+  };
 }];
 
 _entity setVariable ["cntr_eventHandlers", [
   ["Fired", _firedEventHandler],
   ["Hit", _hitEventHandler],
-  ["GetIn", _gotInEventHandler],
-  ["GetOut", _gotOutEventHandler],
   ["Delete", _despawnedEventHandler]
 ]];

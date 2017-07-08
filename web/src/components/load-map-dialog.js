@@ -12,7 +12,8 @@ export function LoadMapDialog ({open, maps, loadMap, onClose}) {
         <th>World</th>
         </thead>
         <tbody className={styles.mapListBody}>
-        {maps.map(map => <CaptureListItem key={map.name} name={map.name} onClick={() => loadMap(map)}/>)}
+        {maps.sort((a, b) => a.name > b.name)
+          .map(map => <CaptureListItem key={map.name} name={map.name} onClick={() => loadMap(map)}/>)}
         </tbody>
       </table>
       </div>

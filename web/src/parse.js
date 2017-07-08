@@ -38,5 +38,5 @@ function processHeader (headerString) {
 
 function processEntry (entry) {
   const number = Number.parseFloat(entry)
-  return Number.isNaN(number) ? entry : number
+  return number.toString() === entry ? number : entry
 }

@@ -14,15 +14,24 @@ private _initEntity = { params ["_entity", "_vehicleId"];
 
 	_entity setVariable ["cntr_id", cntr_nextEntityId];
 	_entity call cntr_fnc_addEntityEventHandlers;
+	
+	private _position = getPosWorld _entity;
+	private _pose = [
+		(_position select 0) call cntr_fnc_round,
+		(_position select 1) call cntr_fnc_round,
+		round (getDir _entity)
+	];
 
-  (getPosWorld _entity) params ["_positionX", "_positionY"];
+	_entity setVariable ["cntr_previousPose", _pose];
+
+    (getPosWorld _entity) params ["_positionX", "_positionY"];
 
 	if (_entity isKindOf "Man") then {
 		[
 			CNTR_EVENT_UNIT_SPAWNED, cntr_nextEntityId, _entity call cntr_fnc_getUnitKind, name _entity,
-			_positionX call cntr_fnc_round,
-			_positionY call cntr_fnc_round,
-			round (getDir _entity),
+			_pose select 0,
+			_pose select 1,
+			_pose select 2,
 			groupID (group _entity), str (side _entity),
 			parseNumber (isPlayer _entity),
 			parseNumber (_entity in (allCurators apply { getAssignedCuratorUnit _x })),
@@ -32,9 +41,9 @@ private _initEntity = { params ["_entity", "_vehicleId"];
 		[
 			CNTR_EVENT_VEHICLE_SPAWNED, cntr_nextEntityId, _entity call cntr_fnc_getVehicleKind,
 			getText (configFile >> "CfgVehicles" >> typeOf _entity >> "displayName"),
-			_positionX call cntr_fnc_round,
-			_positionY call cntr_fnc_round,
-			round (getDir _entity)
+			_pose select 0,
+			_pose select 1,
+			_pose select 2
 		] call cntr_fnc_writeEvent;
 	};
 };
