@@ -15,12 +15,11 @@ import { InfoDialog } from './info-dialog.js'
 import { parse } from '../parse.js'
 
 export class App extends React.Component {
-  constructor ({initialState, player}) {
+  constructor ({initialState}) {
     super()
 
     this.state = {
       ...initialState,
-      eventLog: player.state.eventLog,
     }
   }
 
