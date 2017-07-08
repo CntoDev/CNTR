@@ -16,13 +16,17 @@ const player = createPlayer()
 const map = createMapController(mapElement, player, initialState)
 
 ;(function initCntr () {
-  return readIndices().then(([mapIndex, captureIndex]) => ReactDom.render(
-    <App initialState={initialState}
-         map={map}
-         player={player}
-         mapIndex={mapIndex}
-         captureIndex={captureIndex}/>,
-    appRootElement))
+  return readIndices().then(([mapIndex, captureIndex]) => {
+    addWorldDisplayName(mapIndex, captureIndex)
+
+    ReactDom.render(
+      <App initialState={initialState}
+           map={map}
+           player={player}
+           mapIndex={mapIndex}
+           captureIndex={captureIndex}/>,
+      appRootElement)
+  })
     .catch(error => console.error(error))
 }())
 
@@ -31,4 +35,15 @@ function readIndices () {
     fetch(MAP_INDEX_URL).then(response => response.json()),
     fetch(CAPTURE_INDEX_URL).then(response => response.json()),
   ])
+}
+
+function addWorldDisplayName (mapIndex, captureIndex) {
+  captureIndex.forEach(entry => {
+    const map = mapIndex.find(map => map.worldName.toLowerCase() === entry.worldName.toLowerCase())
+    if (map) {
+      entry.worldDisplayName = map.name
+    } else {
+      entry.worldDisplayName = entry.worldName + '(!)'
+    }
+  })
 }
