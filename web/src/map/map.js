@@ -129,6 +129,14 @@ export function createMapController (mapElement, player, initialUiState) {
     return markers[id]
   }
 
+  function getEntityMarkerType(entity) {
+    if (entity.type === 'vehicle' || entity.side !== 'civ') {
+      return entity.kind.toLowerCase()
+    } else {
+      return 'man'
+    }
+  }
+
   function createMarker (entity) {
     const marker = markers[entity.id] = L.marker([-1000000, -1000000]).addTo(map)
 
@@ -136,7 +144,7 @@ export function createMapController (mapElement, player, initialUiState) {
 
     marker.setIcon(L.svgIcon({
       iconSize: entity.isVehicle ? [32, 32] : [24, 24],
-      iconUrl: `images/markers/${entity.kind.toLowerCase()}.svg#symbol`,
+      iconUrl: `images/markers/${getEntityMarkerType(entity)}.svg#symbol`,
       classList: ['marker'],
     }))
 
