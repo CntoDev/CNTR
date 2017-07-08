@@ -20,6 +20,12 @@
   padding: 0.5em;
 }
 
+.filterField {
+  background-color: white;
+  padding: 0.5em;
+  border: none;
+}
+
 .listContainer {
   flex-grow: 1;
   overflow-y: scroll;
