@@ -57,3 +57,11 @@
 .playbackSpeedSlider.visible {
   display: block;
 }
+
+.linkIcon {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  background: url("images/icons/link.png") center no-repeat;
+  background-size: 24px auto;
+}

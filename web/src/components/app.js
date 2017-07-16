@@ -24,7 +24,7 @@ export class App extends React.Component {
   }
 
   componentDidMount () {
-    const { player, map } = this.props
+    const { player, map, initialState: { mission, startTime } } = this.props
 
     this.props.player.on('update', this.updatePlaybackState.bind(this))
 
@@ -35,6 +35,10 @@ export class App extends React.Component {
     })
 
     map.setUiState = newState => this.setState(newState, () => map.updateUiState(this.state))
+
+    if (mission) {
+      this.loadCapture(mission, startTime)
+    }
   }
 
   updatePlaybackState ({state, currentFrameIndex, totalFrameCount, playing, playbackSpeed}) {
@@ -50,7 +54,7 @@ export class App extends React.Component {
     })
   }
 
-  loadCapture (entry) {
+  loadCapture (entry, startTime = 0) {
     const {map, player, mapIndex} = this.props
 
     const worldInfo = mapIndex.find(world => world.worldName.toLowerCase() === entry.worldName.toLowerCase())
@@ -58,9 +62,11 @@ export class App extends React.Component {
     return fetch('data/' + entry.captureFileName).then(response => response.text()).then(parse).then(({frames}) => {
       map.loadWorld(worldInfo)
       player.load(frames)
+      player.goTo(startTime)
     }).then(() => {
       this.setState({
         loadCaptureDialogOpen: false,
+        mission: entry,
       })
     })
   }
@@ -94,7 +100,7 @@ export class App extends React.Component {
 
   render () {
     const {map, player, captureIndex, mapIndex} = this.props
-    const {loadCaptureDialogOpen, infoDialogOpen, loadMapDialogOpen, eventLog, playback, showCurators, followedUnit, entities} = this.state
+    const {loadCaptureDialogOpen, infoDialogOpen, loadMapDialogOpen, eventLog, playback, showCurators, followedUnit, entities, mission} = this.state
 
     const setPlaybackSpeed = newPlaybackSpeed => player.playbackSpeed = newPlaybackSpeed
 
@@ -115,7 +121,7 @@ export class App extends React.Component {
         <EventLog eventLog={eventLog} jumpToEvent={frameIndex => player.goTo(frameIndex)}/>
       </div>
       <div className={styles.bottomPanel}>
-        <PlaybackWidget togglePlayback={player.togglePlayback} goTo={player.goTo} setPlaybackSpeed={setPlaybackSpeed} playback={playback}/>
+        <PlaybackWidget togglePlayback={player.togglePlayback} goTo={player.goTo} setPlaybackSpeed={setPlaybackSpeed} playback={playback} mission={mission}/>
       </div>
       <a className={cx(styles.watermark)} target="_blank" href="http://www.carpenoctem.co/" />
       <LoadCaptureDialog open={loadCaptureDialogOpen} onClose={this.closeAllDialogs.bind(this)} entries={captureIndex} maps={mapIndex} loadCapture={this.loadCapture.bind(this)} />

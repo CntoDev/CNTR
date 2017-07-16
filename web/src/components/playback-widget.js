@@ -8,12 +8,18 @@ const MIN_PLAYBACK_SPEED = 1
 const MAX_PLAYBACK_SPEED = 20
 const INVALID_TIME = '--:--:--'
 
-export function PlaybackWidget({togglePlayback, goTo, setPlaybackSpeed, playback}) {
+export function PlaybackWidget({togglePlayback, goTo, setPlaybackSpeed, playback, mission = {}}) {
   const {playing, currentFrameIndex, totalFrameCount, playbackSpeed} = playback
 
+  const url = mission.hash ?
+    `${window.location.origin}${window.location.pathname}?m=${mission.hash}&t=${currentFrameIndex}` :
+    `${window.location.origin}${window.location.pathname}`
+
   return <div className={styles.container}>
+    <a className={styles.linkIcon} href={url} onClick={e => e.preventDefault()}/>
     <span className={cx(styles.playButton, !playing && styles.paused)} onClick={togglePlayback}/>
     <TimeDisplay currentFrameIndex={currentFrameIndex} totalFrameCount={totalFrameCount}/>
+
     <input type="range" className={styles.slider}
            min={0} value={currentFrameIndex || 0} max={totalFrameCount || 0} step={1}
            onChange={({target: {value}}) => goTo(value)}/>

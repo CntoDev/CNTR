@@ -65,6 +65,8 @@ export const SIDE_NAMES = {
 }
 
 export const DEFAULT_STATE = {
+  mission: null,
+  time: 0,
   labels: {
     mouseOver: true,
     ai: false,
