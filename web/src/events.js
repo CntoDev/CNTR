@@ -45,7 +45,8 @@ function applyMoveEvent (state, event) {
     return console.warn('Malformed event: ' + event)
   }
 
-  const entityPose = state.entities[entityId].pose
+  const entity = state.entities[entityId]
+  const entityPose = entity.pose
   const newPose = {
     x: isNumber(x) ? x : entityPose.x,
     y: isNumber(y) ? y : entityPose.y,
@@ -53,8 +54,8 @@ function applyMoveEvent (state, event) {
   }
   Object.assign(entityPose, newPose)
 
-  state.entities[entityId].visible = true
-  ;(entityPose.crew || []).forEach(unit => Object.assign(unit, newPose))
+  entity.visible = true
+  ;(entity.crew || []).forEach(crewId => Object.assign(state.entities[crewId].pose, newPose))
 }
 
 function applyUnitSpawnedEvent (state, event) {
