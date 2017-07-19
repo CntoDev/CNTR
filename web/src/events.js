@@ -96,7 +96,8 @@ function applyDespawnedEvent (state, event) {
     return console.warn('Malformed event: ' + event)
   }
 
-  state.entities[unitId].visible = false
+  state.entities[unitId].alive = false
+  state.entities[unitId].hidden = true
   removeFromVehicle(state, unitId)
 }
 
