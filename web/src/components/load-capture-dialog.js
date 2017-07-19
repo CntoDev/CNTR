@@ -44,6 +44,7 @@ export class LoadCaptureDialog extends React.Component {
                     ascending={ascending}/>
         <HeaderCell setSortBy={this.setSortBy.bind(this)} sortKey={'date'} label={'Date'} sortBy={sortBy}
                     ascending={ascending}/>
+        <HeaderCell setSortBy={() => {}} sortKey={''} label={'Link'} sortBy={sortBy} ascending={ascending}/>
         </thead>
         <tbody className={styles.captureList}>
         {sortListBy(entries, sortBy, ascending).map(entry =>
@@ -55,12 +56,17 @@ export class LoadCaptureDialog extends React.Component {
   }
 }
 
-function CaptureListItem ({entry: {missionName, worldDisplayName, duration, date}, onClick}) {
+function CaptureListItem ({entry: {missionName, worldDisplayName, duration, date, hash}, onClick}) {
   return <tr onClick={onClick} className={styles.captureListItem}>
     <td className={styles.captureListItemProperty}>{missionName}</td>
     <td className={styles.captureListItemProperty}>{worldDisplayName}</td>
     <td className={styles.captureListItemProperty}>{moment.utc(duration * 1000).format('HH:mm:ss')}</td>
     <td className={styles.captureListItemProperty}>{moment.unix(date).format('DD.MM.YYYY')}</td>
+    <td className={styles.captureListItemLink}>
+      <a href={`${window.location.origin}${window.location.pathname}?m=${hash}`}>
+        <span className={styles.captureListItemLink}/>
+      </a>
+    </td>
   </tr>
 }
 

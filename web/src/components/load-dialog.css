@@ -30,3 +30,11 @@
 .captureListItemProperty {
   padding: 0 0.5em;
 }
+
+.captureListItemLink {
+  display: inline-block;
+  width: 2.5em;
+  height: 1em;
+  background: url('images/icons/link.png') center no-repeat;
+  background-size: 1em auto;
+}
