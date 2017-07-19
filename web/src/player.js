@@ -135,6 +135,8 @@ export function createPlayer () {
         stateCache[currentFrameIndex] = clone(state)
       }
 
+      window.state = state
+
       return true
     } else {
       return false

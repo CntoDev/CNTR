@@ -4,7 +4,7 @@ function createBaseEntity ([, id, kind, name, x, y, dir]) {
     kind,
     name,
     alive: true,
-    visible: true,
+    hidden: false,
     pose: {
       x,
       y,
