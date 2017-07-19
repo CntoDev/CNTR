@@ -54,8 +54,11 @@ function applyMoveEvent (state, event) {
   }
   Object.assign(entityPose, newPose)
 
-  entity.visible = true
-  ;(entity.crew || []).forEach(crewId => Object.assign(state.entities[crewId].pose, newPose))
+  entity.hidden = false
+
+  if (entity.crew) {
+    (entity.crew || []).forEach(crewId => Object.assign(state.entities[crewId].pose, newPose))
+  }
 }
 
 function applyUnitSpawnedEvent (state, event) {
@@ -134,6 +137,8 @@ function applyKilledEvent (state, event, frameIndex) {
   const victimId = event[1]
   state.entities[victimId].alive = false
 
+  removeFromVehicle(state, victimId)
+
   addBattleEvent(state, event)
   addLoggedEvent(state, {
     frameIndex,
@@ -163,22 +168,26 @@ function applyGotOutEvent (state, event) {
 
 function addToVehicle (state, unitId, vehicleId) {
   const unit = state.entities[unitId]
-  unit.vehicle = vehicleId
-  unit.visible = false
 
   const vehicle = state.entities[vehicleId]
-  vehicle.crew.push(unitId)
+
+  if (!vehicle.crew.includes(unitId)) {
+    vehicle.crew = [...vehicle.crew, unitId]
+    unit.vehicle = vehicleId
+  }
 }
 
 function removeFromVehicle (state, unitId) {
   const unit = state.entities[unitId]
   const vehicleId = unit.vehicle
-  unit.visible = false
-  unit.vehicle = null
+  const vehicle = state.entities[vehicleId]
 
-  if (isNumber(vehicleId)) {
-    const vehicle = state.entities[vehicleId]
-    vehicle.crew.splice(vehicle.crew.indexOf(unitId), 1)
+  if (vehicle && vehicle.crew.includes(unitId)) {
+    const index = vehicle.crew.indexOf(unitId)
+    const newCrew = [...vehicle.crew]
+    newCrew.splice(index, 1)
+    vehicle.crew = newCrew
+    unit.vehicle = null
   }
 }
 

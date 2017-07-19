@@ -276,7 +276,8 @@ export function createMapController (mapElement, player, initialUiState) {
 
   function renderLabel (marker, entity) {
     if (entity.isVehicle && marker.labelVisible) {
-      const label = [`${entity.name} (${entity.crew.length})`, ...entity.crew.map(unit => unit.name)].join('<br>')
+      const crewNames = entity.crew.map(crewId => state.entities[crewId].name)
+      const label = [`${entity.name} (${entity.crew.length})`, ...crewNames].join('<br>')
       marker.setLabel(label)
     }
 
@@ -294,8 +295,8 @@ export function createMapController (mapElement, player, initialUiState) {
     if (entity.isPlayer && uiState.labels.players) return !isNumber(entity.vehicle)
     if (entity.isUnit && uiState.labels.ai) return !isNumber(entity.vehicle)
     if (entity.isVehicle && uiState.labels.vehicles) {
-      if (uiState.labels.players && entity.crew.some(unit => unit.isPlayer)) return true
-      if (uiState.labels.ai && !entity.crew.some(unit => unit.isPlayer)) return true
+      if (uiState.labels.players && entity.crew.some(crewId => state.entities[crewId].isPlayer)) return true
+      if (uiState.labels.ai && !entity.crew.some(crewId => state.entities[crewId].isPlayer)) return true
     }
     return false
   }
