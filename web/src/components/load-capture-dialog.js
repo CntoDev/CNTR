@@ -12,6 +12,7 @@ export class LoadCaptureDialog extends React.Component {
     this.state = {
       sortBy: 'date',
       ascending: false,
+      loading: false,
     }
   }
 
@@ -31,9 +32,21 @@ export class LoadCaptureDialog extends React.Component {
 
   render () {
     const {open, entries, loadCapture, onClose} = this.props
-    const {sortBy, ascending} = this.state
+    const {sortBy, ascending, loading} = this.state
+
+    const loadCaptureWithDialog = async entry => {
+      try {
+        this.setState({loading: true});
+        await loadCapture(entry);
+      } finally {
+        this.setState({loading: false});
+      }
+    };
 
     return <ModalDialog title="Load mission capture" open={open} onClose={onClose}>
+      {loading && <div className={styles.loadingContainer}>
+        <div className={styles.loading} />
+      </div>}
       <table className={styles.captureList}>
         <thead className={styles.captureListHeader}>
         <HeaderCell setSortBy={this.setSortBy.bind(this)} sortKey={'missionName'} label={'Mission'} sortBy={sortBy}
@@ -48,7 +61,7 @@ export class LoadCaptureDialog extends React.Component {
         </thead>
         <tbody className={styles.captureList}>
         {sortListBy(entries, sortBy, ascending).map(entry =>
-          <CaptureListItem key={entry.date} entry={entry} onClick={() => loadCapture(entry)}/>
+          <CaptureListItem key={entry.date} entry={entry} onClick={() => loadCaptureWithDialog(entry)}/>
         )}
         </tbody>
       </table>
