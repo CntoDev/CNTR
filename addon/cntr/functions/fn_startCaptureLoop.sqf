@@ -11,15 +11,15 @@ waitUntil { sleep 1; count allPlayers >= cntr_minPlayerCount and cntr_captureRun
 
 private _header = [
   CNTR_FORMAT_VERSION, worldName, briefingName,
-	getMissionConfigValue ["author", "Unknown"], cntr_captureInterval
+  getMissionConfigValue ["author", "Unknown"], cntr_captureInterval
 ];
 
 ["start", _header joinString ","] call cntr_fnc_export;
 
 while { cntr_captureRunning and (!cntr_endCaptureOnNoPlayers or count allPlayers >= cntr_minPlayerCount) } do {
-	{ _x call cntr_fnc_processEntity } forEach entities [["LandVehicle",  "Air", "Ship"], ["Logic"]] + allUnits;
-
-	sleep cntr_captureInterval;
+  { _x call cntr_fnc_processEntity } forEach entities [["LandVehicle",  "Air", "Ship"], ["Logic"]] + allUnits;
+  
+  sleep cntr_captureInterval;
   cntr_currentFrameIndex = cntr_currentFrameIndex + 1;
 };
 

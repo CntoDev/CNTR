@@ -1,9 +1,9 @@
 ## VISUAL STUDIO ##
 *.nupkg
-extension/packages/*
-extension/bin/*
-extension/obj/*
-extension/.vs/*
+extension/windows/packages/*
+extension/windows/bin/*
+extension/windows/obj/*
+extension/windows/.vs/*
 
 ## ADDON ##
 web/node_modules/

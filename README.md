@@ -9,12 +9,12 @@
 ![CNTR][LOGO]
 # Carpe Noctem Tactical Recap (CNTR)
 
-**CNTR** is a recording and playback system for ArmA 3. The system captures infantry and vehicle movement, weapons fire, 
-casualties and many other aspects of an armed operation and stores it for later playback in a 2D environment with 
-functionality similar to that of the Arma 3 map. **CNTR** thus allows for both planning an operation as well as 
+**CNTR** is a recording and playback system for ArmA 3. The system captures infantry and vehicle movement, weapons fire,
+casualties and many other aspects of an armed operation and stores it for later playback in a 2D environment with
+functionality similar to that of the Arma 3 map. **CNTR** thus allows for both planning an operation as well as
 reviewing team-performance and coordination post-operation.
 
-**CNTR** started as a modification [**OCAP**][OCAP_Repo], modified to suit CNTO's specific needs, but eventually ended 
+**CNTR** started as a modification [**OCAP**][OCAP_Repo], modified to suit CNTO's specific needs, but eventually ended
 up being a complete rewrite of it with a different capture and playback algorithms, and a completely new storage format.
 
 ## Features
@@ -36,7 +36,7 @@ up being a complete rewrite of it with a different capture and playback algorith
 * Unit role detection (AR, AT, MEDIC, etc.)
 
 ## Installation guide (server-side only!)
-*Please note that if the game server is not on the same server as the web player server, capture files will have to be 
+*Please note that if the game server is not on the same server as the web player server, capture files will have to be
 transferred manually together with the updated index file! Remote upload feature is in the works.*
 * Download & extract the latest CNTR release
 * Copy contents of `addon` folder into Arma 3 root folder (i.e. `C:\Games\Arma 3`)
@@ -54,7 +54,7 @@ cntr_exportPath = "C:\wamp64\www\cntr-player\data";
 ## Dev Setup Guide
 
 * Install [Git](https://git-scm.com/)
-* Clone CNTR repository to desired folder (in this example, `cntr`): 
+* Clone CNTR repository to desired folder (in this example, `cntr`):
 ```
 git clone https://github.com/CntoDev/CNTR.git cntr
 ```
@@ -63,19 +63,39 @@ git clone https://github.com/CntoDev/CNTR.git cntr
 * Install **Arma 3 Tools** from [Steam](http://store.steampowered.com/app/233800/Arma_3_Tools/)
 * Open **Arma 3 Tools** and open the **Addon Builder**
 * Under **Addon source directory** put the path to the addon source files, i.e. `cntr\addon\cntr`
-* Under **Destination directory** put the path where the bundle should appear, such as directly to the Arma 3 folder: 
+* Under **Destination directory** put the path where the bundle should appear, such as directly to the Arma 3 folder:
 `<Arma 3 root folder>\@cntr\addons\`
 * Make sure the `Binarize` option is deselected!
 * Click on **PACK** to create the addon bundle
 
-### Extension
+### Extension (Windows)
 * Install [Visual Studio 2017 Community Edition](https://www.visualstudio.com/vs/)
 * During installation, make sure C# features are enabled
-* Open `cntr\extension\CNTRExporter.sln` (`.sln` extension should be automatically associated with Visual Studio after 
+* Open `cntr\extension\windows\CNTRExporter.sln` (`.sln` extension should be automatically associated with Visual Studio after
 installation)
 * Under `Build` menu, select `Build solution`
-* Compiled DLLs will appear in `cntr\extension\bin\x86\Release` and `cntr\extension\bin\x64\Release`, for `x86` and 
+* Compiled DLLs will appear in `cntr\extension\bin\x86\Release` and `cntr\extension\bin\x64\Release`, for `x86` and
 `x64` platforms, respectively
+
+### Extension (Linux - Ubuntu)
+* Open terminal
+* Install g++ compiler
+```
+sudo apt-get install g++
+```
+or
+```
+yum install gcc-c++
+```
+* Go to directory containing CNTR Exporter source files (`cntr/extension/linux`)
+* Compile shared object for 64bit version
+```
+g++ -std=c++11 -fPIC -shared -o cntr_exporter.so cntr.cpp
+```
+or, for 32bit version:
+```
+g++ -std=c++11 -fPIC -shared -m32 -o cntr_exporter.so cntr.cpp
+```
 
 ### Web player
 * Install latest version of [Node.js](https://nodejs.org/en/)
@@ -85,7 +105,7 @@ installation)
 * To build for production (minified), run `npm run build:prod`
 
 ## CNTR capture format
-CNTR uses its own human-readable capture format inspired by CSV and YAML formats. Please see the 
+CNTR uses its own human-readable capture format inspired by CSV and YAML formats. Please see the
 [following document][CNTR_Capture] for detailed documentation.
 
 ## Credit list

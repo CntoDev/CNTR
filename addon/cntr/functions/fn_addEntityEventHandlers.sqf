@@ -29,7 +29,7 @@ private _hitEventHandler = _entity addEventHandler ["Hit", { params ["_victim", 
 private _despawnedEventHandler = _entity addEventHandler ["Deleted", { params ["_entity"];
   _entityId = _entity getVariable ["cntr_id", ""];
   [_entity, _entityId] spawn { params ["_entity", "_entityId"];
-    sleep 0.001;
+    sleep 0.1;
     if (isNull _entity and not (_entityId isEqualTo "")) then {
       [CNTR_EVENT_DESPAWNED, _entityId] call cntr_fnc_writeEvent;
       _entity call fn_removeEntityEventHandlers;
