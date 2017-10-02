@@ -11,6 +11,7 @@ web/build/
 web/data/
 web/maps/
 **/.idea
+@cntr/
 
 .yarnclean
 npm-debug.log
