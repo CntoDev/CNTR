@@ -7,6 +7,40 @@
 #include <ctime>
 #include <mutex>
 
+#ifdef _WIN64
+#ifdef ADD_EXPORTS
+#define DLLEXPORT __declspec(dllexport)
+#else
+#define DLLEXPORT __declspec(dllimport)
+#endif
+#define STDCALL __stdcall
+
+#define WIN32_LEAN_AND_MEAN
+#include <Windows.h>
+
+BOOL APIENTRY DllMain( HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserved )
+{
+    switch ( ul_reason_for_call )
+    {
+    case DLL_PROCESS_ATTACH:
+        break;
+    case DLL_THREAD_ATTACH:
+        break;
+    case DLL_THREAD_DETACH:
+        break;
+    case DLL_PROCESS_DETACH:
+        break;
+    }
+    return TRUE;
+}
+
+#else
+
+#define DLLEXPORT
+#define STDCALL
+
+#endif
+
 
 #define CMD_SEPARATOR "::"
 #define ENTRY_SEPARATOR  ","
@@ -58,11 +92,11 @@ void log( const std::string& message )
 }
 
 std::string createIndexEntry(
-    const std::string& worldName,
-    const std::string& missionName,
-    const int& duration,
-    const long& date,
-    const std::string& captureFilename )
+        const std::string& worldName,
+        const std::string& missionName,
+        const int& duration,
+        const long& date,
+        const std::string& captureFilename )
 {
     std::stringstream entry;
 
@@ -189,16 +223,17 @@ void stopCapture( const std::string& exportDir )
     }
 }
 
-extern "C"
-{
-    void RVExtension( char* output, int outputSize, const char* function );
-}
-
-void RVExtension( char* output, int outputSize, const char* function )
+extern "C" DLLEXPORT void STDCALL RVExtension(char *output, size_t outputSize, const char *function)
 {
     auto splitInput = split( function, CMD_SEPARATOR );
 
     if ( splitInput[ 0 ] == "start" ) return startCapture( splitInput[ 1 ] );
     if ( splitInput[ 0 ] == "append" ) return appendCaptureData( splitInput[ 1 ] );
     if ( splitInput[ 0 ] == "stop" ) return stopCapture( splitInput[ 1 ] );
+    
+    output[0] = 'C';
+    output[1] = 'N';
+    output[2] = 'T';
+    output[3] = 'R';
+    output[4] = '\0';
 }
