@@ -8,9 +8,9 @@
 #include <ctime>
 #include <mutex>
 
-#ifdef _WIN64
+#if defined(_WIN64) || defined(_WIN32)
 #define WIN32_LEAN_AND_MEAN
-#include <Windows.h>
+#include <windows.h>
 
 BOOL APIENTRY DllMain( HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserved )
 {
