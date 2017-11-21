@@ -32,7 +32,7 @@ private _despawnedEventHandler = _entity addEventHandler ["Deleted", { params ["
     sleep 0.1;
     if (isNull _entity and not (_entityId isEqualTo "")) then {
       [CNTR_EVENT_DESPAWNED, _entityId] call cntr_fnc_writeEvent;
-      _entity call fn_removeEntityEventHandlers;
+      _entity call cntr_fnc_removeEntityEventHandlers;
     };
   };
 }];
