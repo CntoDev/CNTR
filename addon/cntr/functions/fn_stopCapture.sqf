@@ -11,4 +11,4 @@ cntr_captureRunning = false;
   _x call cntr_fnc_removeEntityEventHandlers;
 } forEach entities [["LandVehicle",  "Air", "Ship"], ["Logic"]] + allUnits;
 
-["stop", cntr_exportPath] call cntr_fnc_export;
+"cntr_exporter" callExtension ["stop", []];

@@ -2,7 +2,7 @@ export const CNTR_FORMAT_VERSION = '0.2.0 || 0.3.0'
 
 export const MAP_DIRECTORY = 'maps'
 export const MAP_INDEX_URL = `${MAP_DIRECTORY}/index.json`
-export const CAPTURE_INDEX_URL = 'data/index.json'
+export const CAPTURE_INDEX_URL = 'data/index.tsv'
 
 export const EVENTS = {
   UNIT_SPAWNED: { ID: 'U', LENGTH: 12 },
