@@ -69,13 +69,13 @@ git clone https://github.com/CntoDev/CNTR.git cntr
 * Click on **PACK** to create the addon bundle
 
 ### Extension (Windows)
-* Install [Visual Studio 2017 Community Edition](https://www.visualstudio.com/vs/)
-* During installation, make sure C# features are enabled
-* Open `cntr\extension\windows\CNTRExporter.sln` (`.sln` extension should be automatically associated with Visual Studio after
-installation)
-* Under `Build` menu, select `Build solution`
-* Compiled DLLs will appear in `cntr\extension\bin\x86\Release` and `cntr\extension\bin\x64\Release`, for `x86` and
-`x64` platforms, respectively
+* Install [mingw-w64](https://mingw-w64.org/doku.php) compiler suite
+* Open MinGW prompt
+* Go to directory containing CNTR Exporter source files (`cntr/extension`)
+* Compile shared object for 64bit version
+```
+x86_64-w64-mingw32-g++ library.cpp -std=c++11 -shared -static-libgcc -static-libstdc++ -Wl,-Bstatic -lstdc++ -lwinpthread -o cntr_exporter_x64.dll
+```
 
 ### Extension (Linux - Ubuntu)
 * Open terminal
@@ -87,14 +87,10 @@ or
 ```
 yum install gcc-c++
 ```
-* Go to directory containing CNTR Exporter source files (`cntr/extension/linux`)
+* Go to directory containing CNTR Exporter source files (`cntr/extension`)
 * Compile shared object for 64bit version
 ```
 g++ -std=c++11 -fPIC -shared -o cntr_exporter.so cntr.cpp
-```
-or, for 32bit version:
-```
-g++ -std=c++11 -fPIC -shared -m32 -o cntr_exporter.so cntr.cpp
 ```
 
 ### Web player
