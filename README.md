@@ -5,6 +5,7 @@
 [AUTHORS]: https://github.com/CntoDev/CNTR/blob/master/AUTHORS
 [LOGO]: https://github.com/CntoDev/CNTR/raw/develop/web/images/cntr-logo.png
 [CNTR_Capture]: https://github.com/CntoDev/CNTR/blob/master/docs/cntr-format.md
+[BugReport]: https://feedback.bistudio.com/T120253
 
 ![CNTR][LOGO]
 # Carpe Noctem Tactical Recap (CNTR)
@@ -45,6 +46,11 @@ cntr_exportPath = "<EXPORT_PATH>";
 ```
 to include the path where you placed the player. Make sure the path above is writable, otherwise the addon won't be able to copy the capture file and update the index!
 * Copy `web` folder into web server's app folder (i.e. `C:\wamp64\www`) and name it as you wish (in this example, `cntr-player`)
+
+## **IMPORTANT NOTE**
+`Ended` mission handler is still bugged when using dedicated servers (see the related [bug report][BugReport]). One workaround is to manually stop the capture once the mission has been completed. 
+The capture can be ended by the GM by executing the following command in the console:
+```{ [] call cntr_fnc_stopCapture; } remoteExecCall ["call", 2]```
 
 ## Dev Setup Guide
 
