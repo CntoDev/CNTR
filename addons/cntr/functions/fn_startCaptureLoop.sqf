@@ -24,6 +24,4 @@ while { cntr_captureRunning and (!cntr_endCaptureOnNoPlayers or count allPlayers
   cntr_currentFrameIndex = cntr_currentFrameIndex + 1;
 };
 
-if (cntr_captureRunning) then {
-  [] call cntr_fnc_stopCapture;
-};
+[] call cntr_fnc_stopCapture;
