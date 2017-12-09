@@ -66,17 +66,6 @@ struct CaptureInfo
 CaptureInfo captureInfo;
 
 
-std::string createCaptureFilename( const CaptureInfo& captureInfo )
-{
-    char timestamp[32];
-    strftime( timestamp, sizeof( timestamp ), "__%Y-%m-%d__%H-%M.cntr", localtime( &captureInfo.time ) );
-
-    std::stringstream filename;
-    filename << captureInfo.missionName << timestamp;
-    std::cout << filename.str();
-    return filename.str();
-}
-
 void log( const std::string& message )
 {
     if (!logStream.is_open()) {
@@ -84,6 +73,17 @@ void log( const std::string& message )
         logStream.open( LOG_FILE );
     }
     logStream << message << std::endl;
+}
+
+std::string createCaptureFilename( const CaptureInfo& captureInfo )
+{
+    char timestamp[32];
+    strftime( timestamp, sizeof( timestamp ), "__%Y-%m-%d__%H-%M.cntr", localtime( &captureInfo.time ) );
+
+    std::stringstream filename;
+    filename << captureInfo.missionName << timestamp;
+    log( filename.str() );
+    return filename.str();
 }
 
 int getCaptureLength()
@@ -118,7 +118,7 @@ void startCapture( const CaptureInfo& captureInfo )
     }
     else
     {
-        log( "CNTR: Error! Cannot open '" + captureFilePath + "'!" );
+        log( "CNTR: Error in startCapture()! Cannot open '" + captureFilePath + "'!" );
     }
 }
 
@@ -131,7 +131,7 @@ void appendCaptureData( const std::string& captureData )
     }
     else
     {
-        log( "CNTR: Error! Attempting to write to closed file stream!" );
+        log( "CNTR: Error in appendCaptureData()! Attempting to write to closed file stream!" );
     }
 }
 
@@ -143,7 +143,10 @@ void stopCapture()
 
         auto captureLength = getCaptureLength();
 
-        auto destinationFilePath = captureInfo.exportDir + '/' + captureFileName;
+        auto destinationFilePath = captureInfo.exportDir + captureFileName;
+
+        log( captureFilePath );
+        log( destinationFilePath );
 
         std::rename( captureFilePath.c_str(), destinationFilePath.c_str() );
 
@@ -160,7 +163,7 @@ void stopCapture()
     }
     else
     {
-        log( "CNTR: Error! File stream already closed!" );
+        log( "CNTR: Error in stopCapture()! File stream already closed!" );
     }
 }
 
@@ -181,6 +184,7 @@ extern "C" DLLEXPORT int STDCALL RVExtensionArgs( char* output, int outputSize, 
 
     if ( functionName == "start" && argCnt == 6 )
     {
+        log( "CNTR: startCapture()" );
         captureInfo = {
                 parseString( args[ 0 ] ),
                 parseString( args[ 1 ] ),
@@ -191,15 +195,28 @@ extern "C" DLLEXPORT int STDCALL RVExtensionArgs( char* output, int outputSize, 
                 std::time( nullptr )
         };
 
+        if (!captureInfo.exportDir.empty() && *captureInfo.exportDir.rbegin() != '/')
+        {
+            captureInfo.exportDir += '/';
+        }
+
         startCapture( captureInfo );
     }
     else if ( functionName == "append" && argCnt == 1 )
     {
+        log( "CNTR: appendCaptureData()" );
         appendCaptureData( parseString( args[ 0 ] ) );
     }
     else if ( functionName == "stop" && argCnt == 0 )
     {
+        log( "CNTR: stopCapture()" );
         stopCapture();
+    }
+    else
+    {
+        std::stringstream error;
+        error << "CNTR: Error in RVExtensionArgs()! Either wrong function name (" << functionName << ") or wrong argument count (" << argCnt << ")!";
+        log( error.str() );
     }
 
     return 0;
