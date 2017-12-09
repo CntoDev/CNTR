@@ -18,7 +18,6 @@ reviewing team-performance and coordination post-operation.
 up being a complete rewrite of it with a different capture and playback algorithms, and a completely new storage format.
 
 ## Features
-* **IMPORTANT: We support only 64-bit platforms!**
 * Server-side real-time capturing - no client modding required
 * Extensively stress-tested - support for over 300 simultaneously active units on the battlefield!
 * Streamable, crash-resistant capture format - capture file is usable as-is even after fatal crashes
@@ -64,7 +63,7 @@ git clone https://github.com/CntoDev/CNTR.git cntr
 * Make sure the `Binarize` option is deselected!
 * Click on **PACK** to create the addon bundle
 
-### Extension (Windows)
+### Extension (Windows - 64-bit only!)
 * Install [mingw-w64](https://mingw-w64.org/doku.php) compiler suite
 * Open MinGW prompt
 * Go to directory containing CNTR Exporter source files (`cntr/extension`)
@@ -73,7 +72,7 @@ git clone https://github.com/CntoDev/CNTR.git cntr
 x86_64-w64-mingw32-g++ library.cpp -std=c++11 -shared -static-libgcc -static-libstdc++ -Wl,-Bstatic -lstdc++ -lwinpthread -o cntr_exporter_x64.dll
 ```
 
-### Extension (Linux - Ubuntu)
+### Extension (Linux/Ubuntu - 32-bit only!)
 * Open terminal
 * Install g++ compiler
 ```
@@ -86,7 +85,7 @@ yum install gcc-c++
 * Go to directory containing CNTR Exporter source files (`cntr/extension`)
 * Compile shared object file with following command
 ```
-g++ -std=c++11 -fPIC -shared -o cntr_exporter.so library.cpp
+g++ -std=c++11 -fPIC -shared -m32 -o cntr_exporter.so library.cpp
 ```
 
 ### Web player

@@ -16,14 +16,14 @@ BOOL APIENTRY DllMain( HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReser
 {
     switch ( ul_reason_for_call )
     {
-    case DLL_PROCESS_ATTACH:
-        break;
-    case DLL_THREAD_ATTACH:
-        break;
-    case DLL_THREAD_DETACH:
-        break;
-    case DLL_PROCESS_DETACH:
-        break;
+        case DLL_PROCESS_ATTACH:
+            break;
+        case DLL_THREAD_ATTACH:
+            break;
+        case DLL_THREAD_DETACH:
+            break;
+        case DLL_PROCESS_DETACH:
+            break;
     }
     return TRUE;
 }
@@ -39,19 +39,20 @@ BOOL APIENTRY DllMain( HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReser
 #endif
 
 #define EXTENSION_VERSION "0.9.0"
-
 #define INDEX_FILENAME "index.tsv"
 #define TEMP_DIR "Temp"
 #define LOG_FILE "logs/cntr.log"
+#define MKDIR_TEMP_CMD "mkdir logs"
+#define MKDIR_LOG_CMD "mkdir Temp"
 
 
 std::mutex mutex;
-std::ofstream logStream( LOG_FILE );
+std::ofstream logStream;
 std::ofstream fileStream;
 std::string captureFileName;
 std::string captureFilePath;
 
-struct CaptureInfo 
+struct CaptureInfo
 {
     std::string formatVersion;
     std::string missionName;
@@ -69,7 +70,7 @@ std::string createCaptureFilename( const CaptureInfo& captureInfo )
 {
     char timestamp[32];
     strftime( timestamp, sizeof( timestamp ), "__%Y-%m-%d__%H-%M.cntr", localtime( &captureInfo.time ) );
-    
+
     std::stringstream filename;
     filename << captureInfo.missionName << timestamp;
     std::cout << filename.str();
@@ -78,7 +79,10 @@ std::string createCaptureFilename( const CaptureInfo& captureInfo )
 
 void log( const std::string& message )
 {
-    std::cerr << message << std::endl;
+    if (!logStream.is_open()) {
+        system( MKDIR_LOG_CMD );
+        logStream.open( LOG_FILE );
+    }
     logStream << message << std::endl;
 }
 
@@ -88,7 +92,7 @@ int getCaptureLength()
 
     std::ifstream stream( captureFilePath );
     std::string line;
-    
+
     while ( std::getline( stream, line ) ) count += 1;
 
     return count - 1;
@@ -98,22 +102,23 @@ void startCapture( const CaptureInfo& captureInfo )
 {
     captureFileName = createCaptureFilename( captureInfo );
 
+    system( MKDIR_TEMP_CMD );
     captureFilePath = std::string( TEMP_DIR ) + '/' + captureFileName;
 
     fileStream.open( captureFilePath, std::ios_base::out | std::fstream::app );
 
-    if ( fileStream.good() )
+    if ( fileStream.is_open() )
     {
-        log( "CNTR: Error! Cannot open '" + captureFilePath + "'!" );
+        fileStream << captureInfo.formatVersion << ','
+                   << captureInfo.missionName << ','
+                   << captureInfo.worldName << ','
+                   << captureInfo.author << ','
+                   << captureInfo.captureInterval << std::endl;
+        fileStream.flush();
     }
     else
     {
-        fileStream << captureInfo.formatVersion << ',' 
-                   << captureInfo.missionName << ',' 
-                   << captureInfo.worldName << ',' 
-                   << captureInfo.author << ',' 
-                   << captureInfo.captureInterval << std::endl;
-        fileStream.flush();
+        log( "CNTR: Error! Cannot open '" + captureFilePath + "'!" );
     }
 }
 
@@ -135,21 +140,22 @@ void stopCapture()
     if ( fileStream.is_open() )
     {
         fileStream.close();
-        
+
+        auto captureLength = getCaptureLength();
+
         auto destinationFilePath = captureInfo.exportDir + '/' + captureFileName;
 
         std::rename( captureFilePath.c_str(), destinationFilePath.c_str() );
 
         auto timestamp = static_cast<long>( captureInfo.time );
-        auto captureLength = getCaptureLength();
-        
+
         auto indexFilePath = captureInfo.exportDir + '/' + INDEX_FILENAME;
-        
+
         std::ofstream indexFile( indexFilePath, std::ios_base::out | std::ios_base::app );
-        indexFile << captureInfo.missionName << '\t' 
-                  << captureInfo.worldName << '\t' 
-                  << captureLength << '\t' 
-                  << timestamp << '\t' 
+        indexFile << captureInfo.missionName << '\t'
+                  << captureInfo.worldName << '\t'
+                  << captureLength << '\t'
+                  << timestamp << '\t'
                   << captureFileName << std::endl;
     }
     else
@@ -158,37 +164,43 @@ void stopCapture()
     }
 }
 
+std::string parseString( const char* param )
+{
+    return strlen( param ) > 1 ? std::string( param + 1, strlen( param ) - 2 ) : "";
+}
+
 extern "C" DLLEXPORT void STDCALL RVExtensionVersion( char* output, int outputSize )
 {
-    outputSize -= 1;
-    strncpy(output, EXTENSION_VERSION, outputSize);
+    strncpy( output, EXTENSION_VERSION, strlen( EXTENSION_VERSION ) );
 }
 
 extern "C" DLLEXPORT int STDCALL RVExtensionArgs( char* output, int outputSize, const char* function, const char** args, int argCnt )
 {
     std::lock_guard<std::mutex> lock( mutex );
     std::string functionName( function );
-    
+
     if ( functionName == "start" && argCnt == 6 )
     {
-        captureInfo = { args[ 0 ], args[ 1 ], args[ 2 ], args[ 3 ], args[ 4 ], args[ 5 ], std::time( nullptr ) };
+        captureInfo = {
+                parseString( args[ 0 ] ),
+                parseString( args[ 1 ] ),
+                parseString( args[ 2 ] ),
+                parseString( args[ 3 ] ),
+                args[ 4 ],
+                parseString( args[ 5 ] ),
+                std::time( nullptr )
+        };
+
         startCapture( captureInfo );
     }
     else if ( functionName == "append" && argCnt == 1 )
     {
-        appendCaptureData( args[ 0 ] );
+        appendCaptureData( parseString( args[ 0 ] ) );
     }
     else if ( functionName == "stop" && argCnt == 0 )
     {
         stopCapture();
     }
-    
-    return 0;
-}
 
-int main()
-{
-    const char* args[] = { "0.2.0", "TestMission", "VR", "Shakan", "1", "tmp/" };
-    RVExtensionArgs( nullptr, 0, "start", args, 6 );
     return 0;
 }
