@@ -65,6 +65,8 @@ cntr_missionEventHandlers pushBack ["PlayerConnected", _handlePlayerConnectedInd
 
 
 if (cntr_endCaptureOnEndMission) then {
+  // Currently broken due to Arma bug
+ 	// https://feedback.bistudio.com/T120253
 	private _handleEndedIndex = addMissionEventHandler ["Ended", {
 		[] call cntr_fnc_stopCapture;
 	}];

@@ -38,3 +38,34 @@
   background: url('images/icons/link.png') center no-repeat;
   background-size: 1em auto;
 }
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.loading {
+  position: absolute;
+  top: calc(50% - 32px);
+  left: calc(50% - 32px);
+  transform: translate(-50%, -50%);
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: .75rem solid rgba(255, 255, 255, 0.5);
+  border-top-color: rgba(255, 255, 255, 1);
+  animation: spin 2s infinite linear;
+}
+
+.loadingContainer {
+  position: absolute;
+  top: 32px;
+  left: 0;
+  width: 100%;
+  height: calc(100% - 32px);
+  background: rgba(0, 0, 0, 0.7);
+}

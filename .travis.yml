@@ -1,0 +1,20 @@
+addons:
+  apt:
+    packages:
+      - "g++-multilib"
+      - "g++-mingw-w64-i686"
+      - "g++-mingw-w64-x86-64"
+      - "sshpass"
+before_install:
+  - "sudo add-apt-repository ppa:koffeinflummi/armake -y"
+  - "sudo apt-get update -q"
+  - "sudo apt-get install armake -y"
+script:
+  - "bash -x ./build.sh"
+deploy:
+  - provider: script
+    skip_cleanup: true
+    script: 
+      - "echo 'rename incoming/@cntr incoming/@cntr.old\nmkdir incoming/@cntr\nput -r ./@cntr incoming/' | sshpass -e -- sftp -o StrictHostKeyChecking=no cnto-pipeline@repo.carpenoctem.co"
+    on:
+      branch: master

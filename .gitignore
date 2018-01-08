@@ -1,16 +1,8 @@
-## VISUAL STUDIO ##
-*.nupkg
-extension/packages/*
-extension/bin/*
-extension/obj/*
-extension/.vs/*
-
-## ADDON ##
 web/node_modules/
 web/build/
 web/data/
 web/maps/
 **/.idea
-
+@cntr/
 .yarnclean
 npm-debug.log

@@ -21,7 +21,6 @@ class CfgFunctions
 			class startCapture {};
 			class startCaptureLoop {};
 			class stopCapture {};
-			class export {};
 			class writeEvent {};
 			class addMissionEventHandlers {};
 			class removeMissionEventHandlers {};

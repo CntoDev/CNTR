@@ -34,10 +34,25 @@ const map = createMapController(mapElement, player, initialState)
     .catch(error => console.error(error))
 }({missionHash, startTime}))
 
+function parseCaptureIndex(content) {
+  return content.split(/[\n\r]+/)
+    .filter(line => line)
+    .map(line => {
+      const [worldName, missionName, duration, date, captureFileName] = line.split('\t')
+      return {
+        missionName,
+        worldName,
+        duration: Number.parseInt(duration),
+        date: Number.parseInt(date),
+        captureFileName,
+      }
+    })
+}
+
 function readIndices () {
   return Promise.all([
     fetch(MAP_INDEX_URL).then(response => response.json()),
-    fetch(CAPTURE_INDEX_URL).then(response => response.json()),
+    fetch(CAPTURE_INDEX_URL).then(response => response.text()).then(parseCaptureIndex),
   ]).then(([mapIndex, captureIndex]) => {
     addWorldDisplayName(mapIndex, captureIndex)
     addMissionHashes(captureIndex)

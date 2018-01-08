@@ -11,7 +11,7 @@ if (cntr_captureRunning) then {
     cntr_lastWrittenFrameIndex = cntr_currentFrameIndex;
   };
 
-  ["append", _eventString] call cntr_fnc_export;
+  "cntr_exporter" callExtension ["append", [_eventString]];
 
   if (cntr_debugLogEvents) then { _eventString call cntr_fnc_logDebug; };
 
