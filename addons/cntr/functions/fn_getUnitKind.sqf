@@ -55,6 +55,11 @@ private _isSniper = { params ["_unit"];
 };
 
 
+/*
+  roleDescription works for playableUnits only. That means not on AI disabled in lobby and not in SP (even for player).
+*/
+if (cntr_roleDescription && roleDescription _unit != "") exitWith { roleDescription _unit };
+
 if (_unit call _isOfficer) exitWith { "Officer" };
 if (_unit call _isLeader) exitWith { "Leader" };
 if (_unit call _isAntitank) exitWith { "AT" };

@@ -6,3 +6,4 @@ web/maps/
 @cntr/
 .yarnclean
 npm-debug.log
+package-lock.json
