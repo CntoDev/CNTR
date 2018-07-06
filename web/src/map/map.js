@@ -26,11 +26,9 @@ export function createMapController (mapElement, player, initialUiState) {
 
   // getting custom markers
   let customMarkers
-  fetch('images/markers//customMarkers.json')
-  .then(res =>  {
-    return res.json();
-  }).then(res => {
-    customMarkers = res
+  fetch( 'images/markers//customMarkers.json' )
+  .then( res => {
+    customMarkers = res.json();
   })
   
   const mapController = {
