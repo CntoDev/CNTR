@@ -34,6 +34,8 @@ class CfgFunctions
 			class round {};
 			class logDebug {};
 			class addDebugPlayerActions {};
+			class processMapMarkers {};
+			class initMapMarkers {};
 		};
 	};
 };

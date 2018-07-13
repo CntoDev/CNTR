@@ -9,6 +9,8 @@ cntr_lastWrittenFrameIndex = -1;
 cntr_currentFrameIndex = -1;
 cntr_nextEntityId = -1;
 cntr_nextWeaponId = -1;
+cntr_nextMarkerId = -1;
+cntr_previousMapMarkers = [];
 
 [] call cntr_fnc_addMissionEventHandlers;
 

@@ -37,6 +37,32 @@ Final semicolon in the frame is unnecessary, but allowed as keeps the capturing 
 
 
 ## Events:
+<!-- Used letters:
+  W, G, Z, U, V, R, X, C, D, M, F, H, K, I, O -->
+
+### MapMarkerSpawnedEvent: 
+* eventTypeId: `Z`
+* params:
+  * `markerId`: int
+  * `markerType`: string - in-game marker type
+  * `markerText`: string - in-game marker text
+  * `markerCol`: string - in-game marker color  
+  * `x`: int - initial in-game x coordinate in cm
+  * `y`: int - initial in-game y coordinate in cm
+  * `dir`: int - initial in-game direction in degrees
+
+### MapMarkerMovedEvent: 
+* eventTypeId: `G`
+* params:
+  * `markerId`: int
+  * `x`: int - initial in-game x coordinate in cm
+  * `y`: int - initial in-game y coordinate in cm
+  * `dir`: int - initial in-game direction in degrees
+
+### MapMarkerDeletedEvent: 
+* eventTypeId: `W`
+* params:
+  * `markerId`: int
 
 ### UnitSpawnedEvent:  
 * eventTypeId: `U`
