@@ -3,12 +3,18 @@ import isNumber from 'lodash/isNumber'
 
 import { EVENTS } from './constants.js'
 
-import { createUnit, createVehicle } from './entity.js'
+import { createMarker, createUnit, createVehicle } from './entity.js'
 
 export function applyEvent (state, event, frameIndex) {
   const eventId = event[0]
 
   switch (eventId) {
+    case EVENTS.MARKER_SPAWNED.ID:
+      return applyMarkerSpawned (state, event)
+    case EVENTS.MARKER_MOVED.ID:
+      return applyMarkerMoved (state, event)
+    case EVENTS.MARKER_DELETED.ID:
+      return applyMarkerDeleted (state, event)
     case EVENTS.MOVED.ID:
       return applyMoveEvent(state, event)
     case EVENTS.UNIT_SPAWNED.ID:
@@ -36,6 +42,21 @@ export function applyEvent (state, event, frameIndex) {
     default:
       return
   }
+}
+
+//Add event for markers
+function applyMarkerSpawned (state, event) {
+  const markerId = event[1]
+
+  state.mapMarkers[markerId] = createMarker(event)
+}
+
+function applyMarkerMoved (state, event) {
+  
+}
+
+function applyMarkerDeleted (state, event) {
+  
 }
 
 function applyMoveEvent (state, event) {

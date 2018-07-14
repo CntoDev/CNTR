@@ -148,6 +148,7 @@ function createEmptyState () {
   return {
     frameIndex: -1,
     entities: [],
+    mapMarkers: [],
     events: [],
     eventLog: [],
   }
