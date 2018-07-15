@@ -13,6 +13,7 @@ import {
 
 export function createMapController (mapElement, player, initialUiState) {
 
+  let mapMarkers = {}
   let icons = {}
   let lines = []
   let uiState = initialUiState
@@ -51,7 +52,7 @@ export function createMapController (mapElement, player, initialUiState) {
     if (map) {
       Object.values(icons).forEach(icon => icon.removeFrom(map))
     }
-
+    mapMarkers = {}
     icons = {}
     lines = []
 
@@ -106,6 +107,7 @@ export function createMapController (mapElement, player, initialUiState) {
     if (skipUpdate) return
 
     state.entities.forEach(renderEntity)
+    state.mapMarkers.forEach(renderMapMarker)
 
     lines.forEach(line => map.removeLayer(line))
     lines = []
@@ -125,8 +127,18 @@ export function createMapController (mapElement, player, initialUiState) {
     }
   }
 
-  function getIcon ({id}) {
+  function getIcon ({id}) {  
     return icons[id]
+  }
+
+  function getMapMarker ({id}) {
+    return mapMarkers[id]
+  }
+
+  function getMapMarkerType(mapMarker) {
+    // Currently not used, as mapMarkers needs to be created 
+//  return mapMarker.type
+    return 'unknown'
   }
 
   function getEntityIconType(entity) {
@@ -135,6 +147,91 @@ export function createMapController (mapElement, player, initialUiState) {
     } else {
       return 'man'
     }
+  }
+
+  function createMapMarker (mapMarker) {
+    const marker = mapMarkers[mapMarker.id] = L.marker([-1000000, -1000000]).addTo(map)
+    marker.id = mapMarker.id
+
+    marker.setIcon(L.svgIcon({
+      iconSize: [24, 24],
+      iconUrl: `images/mapMarkers/${getMapMarkerType(mapMarker)}.svg#symbol`,
+      classList: ['icon'],
+    }))
+
+    marker.bindPopup(L.popup({
+      maxWidth: 256,
+      autoPan: false,
+      autoClose: false,
+      closeButton: false,
+      closeOnClick: false,
+    })).openPopup()
+
+    marker.move = function ({x, y, dir}) {
+      if (dir !== marker.lastDir) {
+        marker.setRotationAngle(dir)
+      }
+
+      if (x !== marker.lastX || y !== marker.lastY) {
+        marker.setLatLng(coordinatesToLatLng({x, y}))
+      }
+
+      marker.lastX = x
+      marker.lastY = y
+      marker.lastDir = dir
+    }
+
+    marker.show = function () {
+      marker.setClasses({hidden: false})
+      if (marker.labelVisible) {
+        marker.showLabel()
+      }
+    }
+
+    marker.showLabel = function () {
+      if (!marker.labelVisible) {
+        marker._popup._container.style.display = 'block'
+        marker.labelVisible = true
+      }
+    }
+
+    marker.hideLabel = function () {
+      if (marker.labelVisible) {
+        marker._popup._container.style.display = 'none'
+        marker.labelVisible = false
+      }
+    }
+
+    marker.hide = function () {
+      marker.setClasses({hidden: true})
+      marker.hideLabel()
+    }
+
+    marker.setLabel = function (label) {
+      if (label !== marker.text) {
+        marker.getPopup().setContent(label)
+        marker.text = label
+      }
+    }
+
+    marker.setClasses({
+      ['cntr-mapMarkerId--' + mapMarker.id]: true,
+    })
+
+    marker.labelVisible = true
+    marker.setLabel(mapMarker.text)
+    return marker
+  }
+
+  function renderMapMarker (mapMarker) {
+    const marker = getMapMarker(mapMarker) || createMapMarker(mapMarker)
+    const hidden = mapMarker.hidden
+
+    if (hidden) {
+      marker.hide()
+    } 
+
+    marker.move(mapMarker.pose)
   }
 
   function createIcon (entity) {

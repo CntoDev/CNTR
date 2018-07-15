@@ -47,16 +47,29 @@ export function applyEvent (state, event, frameIndex) {
 //Add event for markers
 function applyMarkerSpawned (state, event) {
   const markerId = event[1]
-
+  malformedCheck(markerId, event)
   state.mapMarkers[markerId] = createMarker(event)
 }
 
 function applyMarkerMoved (state, event) {
-  
+  const [ , markerId, x, y, dir] = event
+
+  malformedCheck(markerId, event)
+
+  const marker = state.mapMarkers[markerId]
+  const markerPose = marker.pose
+  const newPose = {
+    x: isNumber(x) ? x : markerPose.x,
+    y: isNumber(y) ? y : markerPose.y,
+    dir: isNumber(dir) ? dir : markerPose.dir,
+  }
+  Object.assign(markerPose, newPose)
 }
 
 function applyMarkerDeleted (state, event) {
-  
+  const markerId = event[1]
+  malformedCheck(markerId, event)
+  state.mapMarkers[markerId].hidden = true
 }
 
 function applyMoveEvent (state, event) {
@@ -218,4 +231,10 @@ function addLoggedEvent (state, event) {
 
 function addBattleEvent (state, event) {
   state.events.push(event)
+}
+
+function malformedCheck (Id, event) {
+  if (!isNumber(Id)) {
+    return console.warn('Malformed event: ' + event)
+  }
 }
