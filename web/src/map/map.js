@@ -188,23 +188,17 @@ export function createMapController (mapElement, player, initialUiState) {
       }
     }
 
-    marker.showLabel = function () {
-      if (!marker.labelVisible) {
-        marker._popup._container.style.display = 'block'
-        marker.labelVisible = true
-      }
-    }
-
-    marker.hideLabel = function () {
-      if (marker.labelVisible) {
-        marker._popup._container.style.display = 'none'
-        marker.labelVisible = false
-      }
-    }
-
     marker.hide = function () {
       marker.setClasses({hidden: true})
       marker.hideLabel()
+    }
+
+    marker.showLabel = function () {
+        marker._popup._container.style.display = 'block'
+    }
+
+    marker.hideLabel = function () {
+        marker._popup._container.style.display = 'none'
     }
 
     marker.setLabel = function (label) {
@@ -218,8 +212,10 @@ export function createMapController (mapElement, player, initialUiState) {
       ['cntr-mapMarkerId--' + mapMarker.id]: true,
     })
 
+    // Visibility of marker labels, as well as markers will be controlled using an upcoming settings menu 
     marker.labelVisible = true
     marker.setLabel(mapMarker.text)
+
     return marker
   }
 
@@ -227,11 +223,12 @@ export function createMapController (mapElement, player, initialUiState) {
     const marker = getMapMarker(mapMarker) || createMapMarker(mapMarker)
     const hidden = mapMarker.hidden
 
-    if (hidden) {
+    if (state.frameIndex >= mapMarker.frameIndex && !hidden) {
+      marker.move(mapMarker.pose)
+      marker.show()
+    } else {
       marker.hide()
     } 
-
-    marker.move(mapMarker.pose)
   }
 
   function createIcon (entity) {

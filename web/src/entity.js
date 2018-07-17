@@ -1,10 +1,11 @@
-function createBaseMarker ([, id, type, text, color, x, y, dir]) {
+function createBaseMarker ([, id, type, text, color, x, y, dir], frameIndex) {
   return {
     id,
     type,
     text,
     color,
     hidden: false,
+    frameIndex,
     pose: {
       x,
       y,
@@ -28,8 +29,8 @@ function createBaseEntity ([, id, kind, name, x, y, dir]) {
   }
 }
 
-export function createMarker (event) {
-  return Object.assign(createBaseMarker(event))
+export function createMarker (event, frameIndex) {
+  return Object.assign(createBaseMarker(event, frameIndex))
 }
 
 export function createUnit (event) {

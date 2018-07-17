@@ -10,7 +10,7 @@ export function applyEvent (state, event, frameIndex) {
 
   switch (eventId) {
     case EVENTS.MARKER_SPAWNED.ID:
-      return applyMarkerSpawned (state, event)
+      return applyMarkerSpawned (state, event, frameIndex)
     case EVENTS.MARKER_MOVED.ID:
       return applyMarkerMoved (state, event)
     case EVENTS.MARKER_DELETED.ID:
@@ -45,15 +45,15 @@ export function applyEvent (state, event, frameIndex) {
 }
 
 //Add event for markers
-function applyMarkerSpawned (state, event) {
+function applyMarkerSpawned (state, event, frameIndex) {
   const markerId = event[1]
   malformedCheck(markerId, event)
-  state.mapMarkers[markerId] = createMarker(event)
+  
+  state.mapMarkers[markerId] = createMarker(event, frameIndex)
 }
 
 function applyMarkerMoved (state, event) {
   const [ , markerId, x, y, dir] = event
-
   malformedCheck(markerId, event)
 
   const marker = state.mapMarkers[markerId]
@@ -69,6 +69,7 @@ function applyMarkerMoved (state, event) {
 function applyMarkerDeleted (state, event) {
   const markerId = event[1]
   malformedCheck(markerId, event)
+
   state.mapMarkers[markerId].hidden = true
 }
 
