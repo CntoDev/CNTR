@@ -2,7 +2,9 @@
   Author: BananaPeel
 
   Description:
-  write what the code does
+  Handle different event from map marker capture data.
+  * Moved a mapmarker
+  * Deleted a mapmarker
 */
 #define CNTR_EVENT_MARKER_MOVED "G"
 #define CNTR_EVENT_MARKER_DELETED "W"

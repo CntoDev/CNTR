@@ -156,7 +156,7 @@ export function createMapController (mapElement, player, initialUiState) {
     marker.setIcon(L.svgIcon({
       iconSize: [24, 24],
       iconUrl: `images/mapMarkers/${getMapMarkerType(mapMarker)}.svg#symbol`,
-      classList: ['icon'],
+      classList: ['marker'],
     }))
 
     marker.bindPopup(L.popup({
@@ -208,6 +208,10 @@ export function createMapController (mapElement, player, initialUiState) {
       }
     }
 
+    marker.setColor = function (color) {
+      marker.getElement().style.fill = color
+    }
+
     marker.setClasses({
       ['cntr-mapMarkerId--' + mapMarker.id]: true,
     })
@@ -215,6 +219,7 @@ export function createMapController (mapElement, player, initialUiState) {
     // Visibility of marker labels, as well as markers will be controlled using an upcoming settings menu 
     marker.labelVisible = true
     marker.setLabel(mapMarker.text)
+    marker.setColor(mapMarker.markerColor)
 
     return marker
   }

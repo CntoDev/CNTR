@@ -25,7 +25,6 @@ while { cntr_captureRunning and (!cntr_endCaptureOnNoPlayers or count allPlayers
   // loop to process all mapMarkers
   { if ((markerType _x) isEqualTo ("")) then {
       // Markers of type = "" are hand-drawn markers and are being left out for the time being  
-      // Empty to simulate exitWith method
     } else {
       _x call cntr_fnc_processMapMarkers 
     }

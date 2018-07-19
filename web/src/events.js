@@ -3,7 +3,8 @@ import isNumber from 'lodash/isNumber'
 
 import { EVENTS } from './constants.js'
 
-import { createMarker, createUnit, createVehicle } from './entity.js'
+import { createUnit, createVehicle } from './entity.js'
+import { createMarker } from './mapMarker.js'
 
 export function applyEvent (state, event, frameIndex) {
   const eventId = event[0]

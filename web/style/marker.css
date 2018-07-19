@@ -1,4 +1,13 @@
-.icon {
+.marker {
+  position: absolute;
+  opacity: 1;
+}
+
+.marker.hidden {
+  visibility: hidden !important;
+}
+
+icon {
   position: absolute;
   opacity: 1;
 }
