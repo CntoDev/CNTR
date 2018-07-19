@@ -21,6 +21,7 @@ up being a complete rewrite of it with a different capture and playback algorith
 ## Features
 * Server-side real-time capturing - no client modding required
 * Extensively stress-tested - support for over 300 simultaneously active units on the battlefield!
+* Capturing and reproduction of in-game placed map markers
 * Streamable, crash-resistant capture format - capture file is usable as-is even after fatal crashes
 * On-the-fly capturing and storage - capture file is ready to use on mission end
 * Interactive web playback system
@@ -32,7 +33,6 @@ up being a complete rewrite of it with a different capture and playback algorith
 * Automatic remote upload to another server
 * Map drawing capabilities in web player similar to those in ArmA 3
 * Collaborative web player sessions that allow users to plan and analyze operations outside of ArmA 3
-* Capturing and reproduction of in-game placed map markers
 
 ## Installation guide (server-side only!)
 * Please note that if the game server is not on the same server as the web player server, capture files will have to be
