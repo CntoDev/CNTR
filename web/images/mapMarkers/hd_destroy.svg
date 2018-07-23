@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   height="512"
+   viewBox="0 0 512 512"
+   width="512"
+   version="1.1"
+   id="svg9"
+   sodipodi:docname="hd_cross.svg"
+   inkscape:version="0.92.1 r15371">
+ 
+    <symbol
+       id="symbol"
+       viewBox="0 0 512 512">
+      <path
+         d="M 256.18838,242.77209 C 248.26227,163.25616 201.97826,4.1417171 232.41042,4.2254218 254.45412,3.0097073 294.6184,235.18298 296.84103,241.23803 c 7.29358,9.92103 217.22446,-29.40793 214.7687,9.9714 -18.80412,20.72502 -141.64507,11.76115 -212.46761,17.64172 4.09083,80.02691 40.75791,251.8596 12.2725,240.08073 C 275.12354,481.02313 277.1539,353.48025 260.02354,275.75443 174.62741,277.03281 10.040241,304.54964 3.8351554,279.58958 -10.550079,243.21545 240.45559,256.73002 256.18838,242.77209 Z"
+         />
+    </symbol>
+
+</svg>

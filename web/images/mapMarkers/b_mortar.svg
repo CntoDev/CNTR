@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   height="5.3333335in"
+   viewBox="0 0 512 512"
+   width="5.3333335in"
+   version="1.1"
+   id="svg9"
+   sodipodi:docname="b_mortar.svg"
+   inkscape:version="0.92.1 r15371">
+ 
+    <symbol
+       id="symbol"
+
+       viewBox="0 0 512 512">
+      <rect
+         style="fill-opacity:0.502693;" 
+         width="432"
+         height="256"
+         x="34.5"
+         y="129.50002" />
+      <path
+         style="opacity:0.97000002;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1.156919;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:13;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
+         d="m 24,112.00002 v 288 h 464 v -288 z m 26.76923,28.8 h 410.46153 v 230.4 H 50.76923 Z"
+         id="rect8843"
+         inkscape:connector-curvature="0" />
+      <path
+         style="fill:#050000;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;fill-opacity:1"
+         d="M 252.25 160 L 200 216 C 188.45374 228.37494 204 244 216 232 L 248 200 L 248 257.25 A 47.188938 47.230816 0 0 0 223.42969 269.55859 L 223.28125 269.69922 A 47.188938 47.230816 0 0 0 221.85156 336.44336 A 47.188938 47.230816 0 0 0 288.53516 337.94531 A 47.188938 47.230816 0 0 0 290.10938 271.20703 A 47.188938 47.230816 0 0 0 264 257.30664 L 264 200 L 296 232 C 307.875 243.875 324.71408 227.91613 312 216 L 252.25 160 z M 257.10352 279.5332 A 24.569563 24.591368 0 0 1 273.91211 287.14062 A 24.569563 24.591368 0 0 1 273.09375 321.89062 A 24.569563 24.591368 0 0 1 238.375 321.10742 A 24.569563 24.591368 0 0 1 239.11914 286.35742 L 239.19531 286.2832 A 24.569563 24.591368 0 0 1 257.10352 279.5332 z "
+         id="path9507" />
+    </symbol>
+  
+</svg>

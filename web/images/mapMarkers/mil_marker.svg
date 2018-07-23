@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   height="512"
+   viewBox="0 0 512 512"
+   width="512"
+   version="1.1"
+   id="svg9"
+   sodipodi:docname="mil_marker.svg"
+   inkscape:version="0.92.1 r15371">
+ 
+    <symbol
+       id="symbol"
+  
+       viewBox="0 0 512 512">
+      <path
+         
+         d="M 252,512 126,386 V -1 l 261,0 V 386 L 261,512 Z M 342,386 H 171 l 81,81 8.59981,0.30467 z M 351,35 H 162 v 315 h 189 z"
+         />
+    </symbol>
+ 
+</svg>

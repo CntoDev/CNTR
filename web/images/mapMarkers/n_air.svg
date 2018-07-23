@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   height="5.3333335in"
+   viewBox="0 0 512 512"
+   width="5.3333335in"
+   version="1.1"
+   id="svg9"
+   sodipodi:docname="n_air.svg"
+   inkscape:version="0.92.1 r15371">
+ 
+    <symbol
+       id="symbol"
+  
+       viewBox="0 0 512 512">
+      <rect
+         style="fill-opacity:0.502693;stroke:#000000;stroke-width:25px;" 
+         width="357.51721"
+         height="357.44098"
+         x="77.241379"
+         y="78.046555" />
+      <path
+         style="opacity:0.97000002;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1.21528733;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:13;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
+         d="M 64,64.000015 V 448.00002 H 448 V 64.000015 Z M 94.207673,94.254238 H 417.4088 V 416.37967 H 94.207673 Z"
+         />
+      <path
+         style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 112,160 v 192 l 144,-80 144,80 V 160 l -144,80 z m 24,48 96,48 -96,56 z m 240,0 v 104 l -96,-56 z"
+          />
+    </symbol>
+  
+</svg>

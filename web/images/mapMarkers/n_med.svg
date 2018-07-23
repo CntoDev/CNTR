@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   height="5.3333335in"
+   viewBox="0 0 512 512"
+   width="5.3333335in"
+   version="1.1"
+   id="svg9"
+   sodipodi:docname="n_med.svg"
+   inkscape:version="0.92.1 r15371">
+ 
+    <symbol
+       id="symbol"
+  
+       viewBox="0 0 512 512">
+      <rect
+         style="fill-opacity:0.502693;stroke:#000000;stroke-width:25px;" 
+         width="368"
+         height="368.00003"
+         x="72"
+         y="72.000015" />
+      <path
+         inkscape:connector-curvature="0"
+         id="path9694"
+         d="M 73.958881,270.81191 443.21436,271.62445 437.334,243.23368 68.078536,242.42112 Z"
+         style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0.78751945px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+      <path
+         inkscape:connector-curvature="0"
+         id="path9692"
+         d="m 241.45928,67.022983 0.78946,371.566727 27.58487,5.91715 -0.78946,-371.566721 z"
+         style="fill:#000000;fill-opacity:0.93370164;stroke:#000000;stroke-width:0.77868706px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    </symbol>
+ 
+</svg>
