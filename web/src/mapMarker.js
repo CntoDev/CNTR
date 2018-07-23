@@ -1,5 +1,6 @@
 function colorPicker(color) { 
 	switch (color) {
+    case "Default": return 'rgba(0,0,0,1)'
     case "ColorBlack": return 'rgba(0,0,0,1)'
     case "ColorGrey": return 'rgba(128,128,128,1)'
     case "ColorRed": return	 'rgba(230,0,0,1)'

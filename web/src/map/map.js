@@ -136,9 +136,14 @@ export function createMapController (mapElement, player, initialUiState) {
   }
 
   function getMapMarkerType(mapMarker) {
-    // Currently not used, as mapMarkers needs to be created 
-//  return mapMarker.type
-    return 'unknown'
+    const markerPrefix = /^(b|c|hd|mil|n|o|u)/
+
+    if (markerPrefix.test(mapMarker.type)) {
+      return mapMarker.type
+    } else {
+      mapMarker.hidden = true
+      return 'unknown'
+    }
   }
 
   function getEntityIconType(entity) {
@@ -210,6 +215,7 @@ export function createMapController (mapElement, player, initialUiState) {
 
     marker.setColor = function (color) {
       marker.getElement().style.fill = color
+      marker.getElement().style.stroke = color
     }
 
     marker.setClasses({

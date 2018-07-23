@@ -94,6 +94,19 @@ yum install gcc-c++
 g++ -std=c++11 -fPIC -shared -m32 -o cntr_exporter.so library.cpp
 ```
 
+### Marker creation
+Inkscape is used to produce the `.svg` files.
+
+* Use one of the previous source files (found in `web/images/mapMarkers` or `web/images/markers`) as a template
+* Remove the current marker from the symbol-list (default key `ctrl + shift + Y`)
+* Add the newly created marker to the symbol-list 
+* Add `symbol` as the object ID to the symbol (default key `ctrl + shift + O`)
+* Make sure only one symbol is found in the symbol list
+* Using a text editor 
+  * add the `viewport` attribute (found in the top of the document) to the `<symbol>` tag
+  * Cleanup the `.svg` file by deleting unnecessary metadata, Inkscape settings and tags
+  * For styling to be controled by CNTR, remove any styling added by Inkscape
+
 ### Web player
 * Install latest version of [Node.js](https://nodejs.org/en/)
 * Go to `web` directory of the repository
