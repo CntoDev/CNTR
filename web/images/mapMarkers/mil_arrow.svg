@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   height="512"
+   viewBox="0 0 512 512"
+   width="512"
+   version="1.1"
+   id="svg9"
+   sodipodi:docname="mil_arrow.svg"
+   inkscape:version="0.92.1 r15371">
+ 
+    <symbol
+       id="symbol"
+     
+       viewBox="0 0 512 512">
+      <path
+         d="m 189,512 h -36 c 0,0 27,-27 27,-90 V 170 H 81 L 252,-1 h 9 l 171,171 h -99 v 252 c 0,63 27,90 27,90 h -36 c 0,0 -27,-18 -27,-90 V 143 h 54 L 261,53 h -9 l -90,90 h 54 v 279 c 0,72 -27,90 -27,90 z"
+        />
+    </symbol>
+ 
+</svg>

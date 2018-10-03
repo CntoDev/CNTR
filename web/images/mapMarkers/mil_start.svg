@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   height="512"
+   viewBox="0 0 512 512"
+   width="512"
+   version="1.1"
+   id="svg9"
+   sodipodi:docname="mil_start.svg"
+   inkscape:version="0.92.1 r15371">
+ 
+    <symbol
+       id="symbol"
+       viewBox="0 0 512 512">
+      <path
+         style="opacity:1;fill:none;fill-opacity:1;stroke-width:45;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:0;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers"
+         id="path8610"
+         sodipodi:type="arc"
+         sodipodi:cx="256.5"
+         sodipodi:cy="297.15341"
+         sodipodi:rx="184.5"
+         sodipodi:ry="184.5"
+         sodipodi:start="5.6537232"
+         sodipodi:end="3.7688397"
+         sodipodi:open="true"
+         d="M 405.63952,188.53641 A 184.5,184.5 0 0 1 380.10802,434.12533 184.5,184.5 0 0 1 133.19568,434.3988 184.5,184.5 0 0 1 107.12025,188.86703" />
+      <path
+         d="m 126,126.49153 36,36 72,-72.000005 V 297.49153 c 0,0 0,18 18,18 h 9 c 18,0 18,-18 18,-18 V 90.491525 l 72,72.000005 36,-36 L 261,0.49152543 h -9 z"
+         />
+    </symbol>
+ 
+</svg>

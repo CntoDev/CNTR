@@ -4,11 +4,18 @@ import isNumber from 'lodash/isNumber'
 import { EVENTS } from './constants.js'
 
 import { createUnit, createVehicle } from './entity.js'
+import { createMarker } from './mapMarker.js'
 
 export function applyEvent (state, event, frameIndex) {
   const eventId = event[0]
 
   switch (eventId) {
+    case EVENTS.MARKER_SPAWNED.ID:
+      return applyMarkerSpawned (state, event, frameIndex)
+    case EVENTS.MARKER_MOVED.ID:
+      return applyMarkerMoved (state, event)
+    case EVENTS.MARKER_DELETED.ID:
+      return applyMarkerDeleted (state, event)
     case EVENTS.MOVED.ID:
       return applyMoveEvent(state, event)
     case EVENTS.UNIT_SPAWNED.ID:
@@ -36,6 +43,35 @@ export function applyEvent (state, event, frameIndex) {
     default:
       return
   }
+}
+
+//Add event for markers
+function applyMarkerSpawned (state, event, frameIndex) {
+  const markerId = event[1]
+  malformedCheck(markerId, event)
+  
+  state.mapMarkers[markerId] = createMarker(event, frameIndex)
+}
+
+function applyMarkerMoved (state, event) {
+  const [ , markerId, x, y, dir] = event
+  malformedCheck(markerId, event)
+
+  const marker = state.mapMarkers[markerId]
+  const markerPose = marker.pose
+  const newPose = {
+    x: isNumber(x) ? x : markerPose.x,
+    y: isNumber(y) ? y : markerPose.y,
+    dir: isNumber(dir) ? dir : markerPose.dir,
+  }
+  Object.assign(markerPose, newPose)
+}
+
+function applyMarkerDeleted (state, event) {
+  const markerId = event[1]
+  malformedCheck(markerId, event)
+
+  state.mapMarkers[markerId].hidden = true
 }
 
 function applyMoveEvent (state, event) {
@@ -197,4 +233,10 @@ function addLoggedEvent (state, event) {
 
 function addBattleEvent (state, event) {
   state.events.push(event)
+}
+
+function malformedCheck (Id, event) {
+  if (!isNumber(Id)) {
+    return console.warn('Malformed event: ' + event)
+  }
 }

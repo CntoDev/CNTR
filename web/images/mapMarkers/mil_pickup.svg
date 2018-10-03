@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   height="512"
+   viewBox="0 0 512 512"
+   width="512"
+   version="1.1"
+   id="svg9"
+   sodipodi:docname="test.svg"
+   inkscape:version="0.92.1 r15371">
+ 
+    <symbol
+       id="symbol"
+        
+       viewBox="0 0 512 512">
+      <g
+         transform="matrix(5.2260134,0,0,5.2260134,-219.03704,-694.20006)"
+         id="symbol_transform">
+        <path
+           d="m 42.068749,136.6625 v 22.225 l 7.9375,-7.9375 41.275,41.275 48.418751,-48.41875 -6.35,-6.35 -42.06875,42.06875 -34.925,-34.925 7.937499,-7.9375 z"
+           id="path8434"
+           inkscape:connector-curvature="0"
+           sodipodi:nodetypes="cccccccccc" />
+        <path
+           style="opacity:1;fill:none;fill-opacity:1;stroke-width:7.70400047;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:0;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers"
+           id="symbol1"
+           sodipodi:type="arc"
+           sodipodi:cx="91.47802"
+           sodipodi:cy="185.61243"
+           sodipodi:rx="37.730618"
+           sodipodi:ry="37.730618"
+           sodipodi:start="5.8092461"
+           sodipodi:end="3.6481414"
+           d="m 125.04987,168.39237 a 37.730618,37.730618 0 0 1 -10.12071,46.77752 37.730618,37.730618 0 0 1 -47.853494,-0.78031 37.730618,37.730618 0 0 1 -8.590209,-47.08263"
+           sodipodi:open="true"
+           inkscape:label="symbol2" />
+        <path
+           style="opacity:1;fill-opacity:1;stroke-width:7.70400095;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:0;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers"
+           id="path9940-7"
+           sodipodi:type="arc"
+           sodipodi:cx="-91.363457"
+           sodipodi:cy="-185.57121"
+           sodipodi:rx="37.730618"
+           sodipodi:ry="37.730618"
+           sodipodi:start="1.0771989"
+           sodipodi:end="2.0651405"
+           d="m -73.486805,-152.34434 a 37.730618,37.730618 0 0 1 -35.778115,-0.0134"
+           sodipodi:open="true"
+           transform="scale(-1)" />
+      </g>
+    </symbol>
+  
+</svg>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   height="5.3333335in"
+   viewBox="0 0 512 512"
+   width="5.3333335in"
+   version="1.1"
+   id="svg9"
+   sodipodi:docname="n_mortar.svg"
+   inkscape:version="0.92.1 r15371">
+ 
+    <symbol
+       id="symbol"
+   
+       viewBox="0 0 512 512">
+      <rect
+         style="fill-opacity:0.502693;stroke:#000000;stroke-width:25px;" 
+         width="368"
+         height="368.00003"
+         x="72"
+         y="72.000015" />
+      <path
+         id="path9507"
+         d="M 252.25,160 200,216 c -11.54626,12.37494 4,28 16,16 l 32,-32 v 57.25 a 47.188938,47.230816 0 0 0 -24.57031,12.30859 l -0.14844,0.14063 a 47.188938,47.230816 0 0 0 -1.42969,66.74414 47.188938,47.230816 0 0 0 66.6836,1.50195 47.188938,47.230816 0 0 0 1.57422,-66.73828 A 47.188938,47.230816 0 0 0 264,257.30664 V 200 l 32,32 c 11.875,11.875 28.71408,-4.08387 16,-16 z m 4.85352,119.5332 a 24.569563,24.591368 0 0 1 16.80859,7.60742 24.569563,24.591368 0 0 1 -0.81836,34.75 24.569563,24.591368 0 0 1 -34.71875,-0.7832 24.569563,24.591368 0 0 1 0.74414,-34.75 l 0.0762,-0.0742 a 24.569563,24.591368 0 0 1 17.90821,-6.75 z"
+         style="fill:#050000;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         inkscape:connector-curvature="0" />
+    </symbol>
+ 
+</svg>

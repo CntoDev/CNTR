@@ -3,38 +3,47 @@
   opacity: 1;
 }
 
-.marker.empty {
+.marker.hidden {
+  visibility: hidden !important;
+}
+
+icon {
+  position: absolute;
+  opacity: 1;
+}
+
+.icon.empty {
   fill: rgb(184, 134, 11) !important;
 }
 
-.marker.west {
+.icon.west {
   fill: rgb(0, 77, 153) !important;
 }
 
-.marker.east {
+.icon.east {
   fill: rgb(128, 0, 0) !important;
 }
 
-.marker.guer {
+.icon.guer {
   fill: rgb(0, 128, 0) !important;
 }
 
-.marker.civ {
+.icon.civ {
   fill: rgb(102, 0, 128) !important;
 }
 
-.marker.hit {
+.icon.hit {
   stroke: #f862ff;
   stroke-width: 20;
 }
 
-.marker.killed {
+.icon.killed {
   stroke: rgb(255, 0, 0);
   stroke-width: 20;
   opacity: 1;
 }
 
-.marker.followed {
+.icon.followed {
   stroke: rgb(184, 134, 11);
   stroke-width: 20;
 }
@@ -81,10 +90,10 @@
   opacity: 0.4;
 }
 
-.marker.dead {
+.icon.dead {
   opacity: 0.2 !important;
 }
 
-.marker.hidden {
+.icon.hidden {
   visibility: hidden !important;
 }

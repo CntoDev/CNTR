@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   height="5.3333335in"
+   viewBox="0 0 512 512"
+   width="5.3333335in"
+   version="1.1"
+   id="svg9"
+   sodipodi:docname="n_mech_inf.svg"
+   inkscape:version="0.92.1 r15371">
+ 
+    <symbol
+       id="symbol"
+ 
+       viewBox="0 0 512 512">
+      <rect
+         style="fill-opacity:0.502693;stroke:#000000;stroke-width:25px;" 
+         width="368"
+         height="368.00003"
+         x="72"
+         y="72.000015" />
+      <path
+         inkscape:label="diag"
+         style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1.06801832px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="M 80.33151,450.87871 451.19003,93.601077 430.96139,61.121293 60.102864,418.39893 Z"
+         id="path10189"
+         inkscape:connector-curvature="0" />
+      <path
+         inkscape:label="inner"
+         style="opacity:0.97000002;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:13;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
+         d="m 196,176 c -44.32,0 -80,35.68 -80,80 0,44.32 35.68,80 80,80 h 120 c 44.32,0 80,-35.68 80,-80 0,-44.32 -35.68,-80 -80,-80 z m 8,24 h 104 c 35.37352,0 60,20.47804 60,55.85156 v 0.29688 C 368,291.52196 343.37352,312 308,312 H 204 c -35.37352,0 -60,-20.47804 -60,-55.85156 v -0.29688 C 144,220.47804 168.62648,200 204,200 Z"
+         id="path10213"
+         inkscape:connector-curvature="0"
+         sodipodi:nodetypes="sssssssccssccssc" />
+      <path
+         inkscape:label="diag"
+         style="fill:#000000;fill-opacity:0.93370164;stroke:#000000;stroke-width:1.06801832px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="M 60.102864,93.601077 430.96139,450.87871 451.19003,418.39893 80.33151,61.121293 Z"
+         id="path10187"
+         inkscape:connector-curvature="0" />
+    </symbol>
+ 
+</svg>

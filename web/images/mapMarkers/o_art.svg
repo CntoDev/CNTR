@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   height="5.3333335in"
+   viewBox="0 0 512 512"
+   width="5.3333335in"
+   version="1.1"
+   id="svg9"
+   sodipodi:docname="o_art.svg"
+   inkscape:version="0.92.1 r15371">
+ 
+    <symbol
+       id="symbol"
+     
+       viewBox="0 0 512 512">
+      <rect
+         style="fill-opacity:0.502693;stroke:#000000;stroke-width:25px;" 
+         width="328.67175"
+         height="328.67178"
+         x="197.70282"
+         y="-164.33588"
+         transform="rotate(45)" />
+      <path
+         style="opacity:0.97000002;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0.98921466;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:13;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
+         id="path9391"
+         sodipodi:type="arc"
+         sodipodi:cx="255.90948"
+         sodipodi:cy="253.27927"
+         sodipodi:rx="51.439163"
+         sodipodi:ry="51.439163"
+         sodipodi:start="3.9522283"
+         sodipodi:end="3.9478824"
+         sodipodi:open="true"
+         d="m 220.46595,216 a 51.439163,51.439163 0 0 1 72.68427,1.79525 51.439163,51.439163 0 0 1 -1.71628,72.68617 51.439163,51.439163 0 0 1 -72.688,-1.6373 51.439163,51.439163 0 0 1 1.55833,-72.68973" />
+    </symbol>
+ 
+</svg>
