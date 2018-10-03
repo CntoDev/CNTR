@@ -24,6 +24,13 @@ export function createMapController (mapElement, player, initialUiState) {
   let mapImageSize
   let skipUpdate = false
 
+  // getting custom markers
+  let customMarkers
+  fetch( 'images/markers//customMarkers.json' )
+  .then( res => {
+    customMarkers = res.json();
+  })
+  
   const mapController = {
     loadWorld,
     updateUiState,
@@ -130,11 +137,17 @@ export function createMapController (mapElement, player, initialUiState) {
   }
 
   function getEntityMarkerType(entity) {
+    for (let index of customMarkers.correlation) {
+      if (index.roleDescription.toLowerCase() === entity.kind.toLowerCase()) {
+        return index.markerType.toLowerCase()
+      } 
+    }
+
     if (entity.isVehicle || entity.side !== 'civ') {
       return entity.kind.toLowerCase()
-    } else {
-      return 'man'
-    }
+    } 
+    
+    return 'man'
   }
 
   function createMarker (entity) {

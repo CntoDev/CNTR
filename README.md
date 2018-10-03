@@ -70,7 +70,7 @@ git clone https://github.com/CntoDev/CNTR.git cntr
 * Click on **PACK** to create the addon bundle
 
 ### Extension (Windows - 64-bit only!)
-* Install [mingw-w64](https://mingw-w64.org/doku.php) compiler suite
+* Install [mingw-w64](https://mingw-w64.org/doku.php) compiler suite (be sure to select `Architecture: x86_64` & `Threads: posix`)
 * Open MinGW prompt
 * Go to directory containing CNTR Exporter source files (`cntr/extension`)
 * Compile DLL with following command
