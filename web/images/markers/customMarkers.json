@@ -1,0 +1,16 @@
+{
+  "correlation" : [
+    {
+      "roleDescription": "<roleDescription from Arma 3>",
+      "markerType": "<name of marker file eg. engineer>"
+    },
+    {
+      "roleDescription": "<roleDescription from Arma 3>",
+      "markerType": "<name of marker file eg. leader>"
+    },
+    {
+      "roleDescription": "<roleDescription from Arma 3>",
+      "markerType": "<name of marker file eg. medic>"
+    }
+  ]
+}  
