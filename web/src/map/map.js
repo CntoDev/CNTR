@@ -26,10 +26,11 @@ export function createMapController (mapElement, player, initialUiState) {
   let skipUpdate = false
 
   // getting custom markers
-  let customMarkers
-  fetch( 'images/markers//customMarkers.json' )
-  .then( res => {
-    customMarkers = res.json();
+  fetch( 'images/markers/customMarkers.json' )
+  .then(res => {
+    return res.json();
+  }).then(res => {
+    customMarkers = res
   })
   
   const mapController = {
