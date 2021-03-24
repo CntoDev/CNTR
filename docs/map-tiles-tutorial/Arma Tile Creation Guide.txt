@@ -37,11 +37,13 @@ This guide assumes you have the program OSGeo4W installed.
 	doing this:
 		- In Photoshop, use the select tool and NOT the crop tool.
 		- In GIMP, use the crop tool.
+		- In paint.net, use the Canvas Size tool. Make sure to save the resulting PNG as 24-bit. 
 
 7. 	Run shortcut and wait until .emf is converted to a .png
 
 8. 	Drag and drop <worldname>.png into OSGeo4W64 directory.
-	Launch OSGeo4W64.bat and enter the followig command:
+	Launch OSGeo4W64.bat and enter the following commands:
+	py3_env
 	gdal2tiles_legacy_no-tms -p raster -z 0-6 <worldname>.png
 	(assuming your image size is 16384 - zoom level 6)
 
