@@ -21,6 +21,7 @@ This guide assumes you have the program OSGeo4W installed.
 
 6. 	Copy <worldname>.emf (from step 4) to same folder as where we just copied EmfToPng.exe.
 	Create a shortcut of EmfToPng.exe that launches with arguments: <worldname>.emf N
+	Alternatively, open cmd, navigate to the folder and type: EmfToPng.exe <worldname>.emf N
 
 	N is the zoom level. We want to find the N which results in an image with dimensions that adheres to
 	the tile size chart (see below). This may take some experimenting and will vary between maps.
@@ -53,8 +54,8 @@ This guide assumes you have the program OSGeo4W installed.
 
 Add the map to maps/index.json. You must include details on:
 	- World name (e.g. Stratis)
-	- Image size (size of image used to create tiles, e.g. 16384)
 	- World size (size of image when N=1). Note: Please do not rely on the 'worldSize' value in Arma.
+	- Image size (size of image used to create tiles, e.g. 16384)
 	- Multiplier (value of N)
 Ideally, please provide info in the following example format:
 {
