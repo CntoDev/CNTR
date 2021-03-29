@@ -1,4 +1,4 @@
-# CNTR format v0.2.0
+# CNTR format v0.4.0
 
 Note that `,`, `;`, and newline characters (`\n` and `\r`) are currently disallowed in strings as those are used as delimiters by CNTR format.
 
