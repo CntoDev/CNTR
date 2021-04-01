@@ -65,8 +65,8 @@ cntr_missionEventHandlers pushBack ["PlayerConnected", _handlePlayerConnectedInd
 
 
 if (cntr_endCaptureOnEndMission) then {
-	private _handleEndedIndex = addMissionEventHandler ["Ended", {
+	private _handleEndedIndex = addMissionEventHandler ["MPEnded", {
 		[] call cntr_fnc_stopCapture;
 	}];
-	cntr_missionEventHandlers pushBack ["Ended", _handleEndedIndex];
+	cntr_missionEventHandlers pushBack ["MPEnded", _handleEndedIndex];
 };
